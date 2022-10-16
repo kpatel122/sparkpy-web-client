@@ -1,0 +1,160 @@
+/*COLOUR SCHEME*/
+:root {
+    --background: #DFDFDF;
+    --link_hover: #555;
+    --navbar_background: #333;
+    --navbar_text_colour: red;
+    --navbar_hamburger_button: white;
+
+  }
+ 
+
+/*FONT FAMILY*/
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+* {
+    box-sizing: border-box;
+    font-family: Raleway;
+}
+
+
+
+
+/*NAVBAR*/ 
+.navbar {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--navbar_background);
+    color: var(--navbar_text_colour);
+}
+
+.logo-title{
+    
+    margin: .5rem auto;
+    text-align: center;
+}
+
+
+.navbar-links {
+    height: 100%;
+}
+
+
+.navbar-links ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li {
+    list-style: none;
+}
+
+.navbar-links li a {
+    display: block;
+    text-decoration: none;
+    color: var(--navbar_text_colour);
+    padding: 1rem;
+}
+
+.navbar-links li:hover {
+    background-color: var(--link_hover);
+}
+
+.toggle-button {
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar {
+    height: 3px;
+    width: 100%;
+    background-color: var(--navbar_hamburger_button);
+    border-radius: 10px;
+}
+
+/*LAYOUT GRID*/
+.grid-container{
+    display: grid;
+    height:90vh;
+    grid-template-columns: 0.3fr 0.7fr; /*gap between */
+    grid-template-rows: 0.7fr; /* gap between code and console*/
+     
+}
+.grid-item{
+    background-color: #379AD6;
+    color: #222;
+    border: 1px solid white;
+     
+    text-align: center;
+}
+.grid-item-unity {
+    grid-row: 1 / 3;                           
+    grid-column: 2 / 3;                        
+  }
+
+
+
+@media (max-width: 800px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .toggle-button {
+        display: flex;
+    }
+
+    .navbar-links {
+        display: none;
+        width: 100%;
+    }
+
+    .navbar-links ul {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .navbar-links ul li {
+        text-align: center;
+    }
+
+    .navbar-links ul li a {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+}
+
+
+/*GLOBAL STYLES*/
+html {
+    
+    background-color: var(--background);
+    height: 100%;
+   
+    
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+ 
+
+
+
+
+
+
