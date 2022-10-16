@@ -1,37 +1,121 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="CSS/parentStyle.css">
-        
-        <title>sparkpy</title>
-    </head>
-    <body>
-        <!-- NAVBAR START !-->
-        <nav class="navbar">
-          <div class="logo-title"><img src="Images/logo.png"   width="50%"></div>
-          <a href="#" class="toggle-button">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-          </a>
-          <div class="navbar-links">
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Login</a></li>
-            </ul>
-          </div>
-        </nav>
-        <!-- NAVBAR END-->
-        <div class="grid-container">
-            <div class="grid-item grid-item-code-editor">code editor</div>
-            <div class="grid-item grid-item-shell">shell</div>
-            <div class="grid-item grid-item-unity">unity</div>
-        </div>
-        
-      </body>
 
-      <script src="Scripts/parentScripts.js"></script>     
+<head>
+
+  <!-- sparkpy -->
+  <link rel="stylesheet" href="CSS/parentStyle.css">
+  <title>sparkpy</title>
+  
+  <!--brython css-->
+  <link rel="stylesheet" href="brython/www/brython.css">
+  <link rel="stylesheet" href="brython/www/tests/console.css">
+
+  <!--brython javascript-->
+  <script type="text/javascript" src="brython/www/src/brython_builtins.js"></script>
+  <script type="text/javascript" src="brython/www/src/version_info.js"></script>
+  <script type="text/javascript" src="brython/www/src/python_tokenizer.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_ast.js"></script>
+  <script type="text/javascript" src="brython/www/src/py2js.js"></script>
+  <script type="text/javascript" src="brython/www/src/loaders.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_object.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_type.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_utils.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_sort.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_builtin_functions.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_exceptions.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_range_slice.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_bytes.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_set.js"></script>
+  <script type="text/javascript" src="brython/www/src/js_objects.js"></script>
+  <script type="text/javascript" src="brython/www/src/stdlib_paths.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_import.js"></script>
+  <script type="text/javascript" src="brython/www/src/unicode_data.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_string.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_int.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_long_int.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_float.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_complex.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_dict.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_list.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_generator.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_dom.js"></script>
+  <script type="text/javascript" src="brython/www/src/py_pattern_matching.js"></script>
+  <script type="text/javascript" src="brython/www/src/builtin_modules.js"></script>
+  <script type="text/javascript" src="brython/www/src/async.js"></script>
+  <script type="text/javascript" src="brython/www/src/ast_to_js.js"></script>
+  <script type="text/javascript" src="brython/www/src/symtable.js"></script>
+
+  <script src="brython/www/assets/header.brython.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ext-language_tools.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/theme-solarized_light.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/mode-python.min.js"></script>
+
+  <script type="text/python3" id="tests_editor">
+  
+  from browser import document
+  import brython.tests.editor as editor
+          
+  def run(ev):
+    document['console'].value = ''
+    editor.run(editor.editor.getValue())
+    
+  document['run'].bind('click', run)
+
+
+  editor.reset()
+          
+  </script>
+
+
+</head>
+
+<body onload="brython({debug:1})">
+<!-- NAVBAR START !-->
+<nav class="navbar">
+  <div class="logo-title"><img src="Images/logo.png"   width="50%"></div>
+  <a href="#" class="toggle-button">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </a>
+  <div class="navbar-links">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Login</a></li>
+    </ul>
+  </div>
+</nav>
+<!-- NAVBAR END-->
+
+<!-- MAIN GRID START-->
+<div class="grid-container" id="container"> 
+  <div class="grid-item grid-item-code-editor"><div id="editor" style="width:100%;"></div></div>
+  <div class="grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div> 
+  <div class="grid-item grid-item-unity">unity</div>
+</div>
+<!-- MAIN GRID END-->
+
+
+  <!-- Need to merge with main grid-->
+  <table >
+    <tr>
+      <td>Brython version: <span id="version"></span></td>
+      <td></td>
+      <td>
+        <button id="run"> ▶ Run</button>
+      </td>
+    </tr>
+  </table>
+
+
+  <!--sparkpy-->
+  <script src="Scripts/parentScripts.js"></script>   
+
+</body>
 
 </html>
