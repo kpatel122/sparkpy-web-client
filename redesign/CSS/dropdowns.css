@@ -1,0 +1,50 @@
+/*source: https://doodlenerd.com/html-control/css-dropdown-generator*/
+.theme-select {
+    display: flex;
+  flex-direction: row;
+  align-items: center;
+   
+   
+  /* padding-top:5px;*/
+  
+
+  margin: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  
+
+  
+   /*https://webcache.googleusercontent.com/search?q=cache:u4amIqEusRAJ:https://stackoverflow.com/questions/5439782/i-want-to-vertical-align-text-in-select-box&cd=1&hl=en&ct=clnk&gl=uk&client=ubuntu*/
+    
+}    .theme-select select {
+     
+
+        font-family: 'Arial';
+        display: inline-block;
+        width:min-content;
+        cursor: pointer;
+        padding: 6px 7px;
+        outline: 0;
+        border: 0px solid #000000;
+        border-radius: 0px;
+        background: #e6e6e6;
+        color: #7b7b7b;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+        .select select::-ms-expand {
+            display: none;
+        }
+        .select select:hover,
+        .select select:focus {
+            color: #000000;
+            background: #cccccc;
+        }
+        .select select:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+ 

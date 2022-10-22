@@ -5,57 +5,62 @@
 
   <!-- sparkpy -->
   <link rel="stylesheet" href="CSS/parentStyle.css">
+  <!--main styling-->
+  <link rel="stylesheet" href="CSS/dropdowns.css">
+  <!--settings row-->
+  <link rel="stylesheet" href="CSS/settingsRow.css">
+  <!--toggle button-->
   <title>sparkpy</title>
-  
+
   <!--brython css-->
-  <link rel="stylesheet" href="brython/www/brython.css">
-  <link rel="stylesheet" href="brython/www/tests/console.css">
+  <link rel="stylesheet" href="brython/www/brython.css"> 
+  <link rel="stylesheet" href="brython/www/tests/console.css"> 
 
-  <!--brython javascript-->
-  <script type="text/javascript" src="brython/www/src/brython_builtins.js"></script>
-  <script type="text/javascript" src="brython/www/src/version_info.js"></script>
-  <script type="text/javascript" src="brython/www/src/python_tokenizer.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_ast.js"></script>
-  <script type="text/javascript" src="brython/www/src/py2js.js"></script>
-  <script type="text/javascript" src="brython/www/src/loaders.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_object.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_type.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_utils.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_sort.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_builtin_functions.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_exceptions.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_range_slice.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_bytes.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_set.js"></script>
-  <script type="text/javascript" src="brython/www/src/js_objects.js"></script>
-  <script type="text/javascript" src="brython/www/src/stdlib_paths.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_import.js"></script>
-  <script type="text/javascript" src="brython/www/src/unicode_data.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_string.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_int.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_long_int.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_float.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_complex.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_dict.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_list.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_generator.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_dom.js"></script>
-  <script type="text/javascript" src="brython/www/src/py_pattern_matching.js"></script>
-  <script type="text/javascript" src="brython/www/src/builtin_modules.js"></script>
-  <script type="text/javascript" src="brython/www/src/async.js"></script>
-  <script type="text/javascript" src="brython/www/src/ast_to_js.js"></script>
-  <script type="text/javascript" src="brython/www/src/symtable.js"></script>
-
-  <script src="brython/www/assets/header.brython.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ext-language_tools.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/theme-solarized_light.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/mode-python.min.js"></script>
+  <!--brython js includes-->
+    <!--brython javascript-->
+    <script type="text/javascript" src="brython/www/src/brython_builtins.js"></script>
+    <script type="text/javascript" src="brython/www/src/version_info.js"></script>
+    <script type="text/javascript" src="brython/www/src/python_tokenizer.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_ast.js"></script>
+    <script type="text/javascript" src="brython/www/src/py2js.js"></script>
+    <script type="text/javascript" src="brython/www/src/loaders.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_object.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_type.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_utils.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_sort.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_builtin_functions.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_exceptions.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_range_slice.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_bytes.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_set.js"></script>
+    <script type="text/javascript" src="brython/www/src/js_objects.js"></script>
+    <script type="text/javascript" src="brython/www/src/stdlib_paths.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_import.js"></script>
+    <script type="text/javascript" src="brython/www/src/unicode_data.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_string.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_int.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_long_int.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_float.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_complex.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_dict.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_list.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_generator.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_dom.js"></script>
+    <script type="text/javascript" src="brython/www/src/py_pattern_matching.js"></script>
+    <script type="text/javascript" src="brython/www/src/builtin_modules.js"></script>
+    <script type="text/javascript" src="brython/www/src/async.js"></script>
+    <script type="text/javascript" src="brython/www/src/ast_to_js.js"></script>
+    <script type="text/javascript" src="brython/www/src/symtable.js"></script>
+  
+    <script src="brython/www/assets/header.brython.js"></script>
+  
+  
+    <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/python3" id="tests_editor">
-  
-  from browser import document
+
+  from browser import document, window
   import brython.tests.editor as editor
           
   def run(ev):
@@ -66,55 +71,150 @@
 
 
   editor.reset()
+  
+
+  #samples loader
+  smp = document['samples']
+
+  document.forms['SamplesForm'].reset() #firefox ingnores selected attribute
+
+  def selectSample(ev):
+    filename = smp.value  
+
+    if(filename == ''):
+      return
+
+    fake_qs = '?foo=%s' #%time.time()
+    code = open(filename +fake_qs).read()
+    editor.editor.setValue(code)
+  
+
+  smp.bind("change", selectSample)
           
   </script>
-
-
-</head>
-
+  <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <body onload="brython({debug:1})">
-<!-- NAVBAR START !-->
-<nav class="navbar">
-  <div class="logo-title"><img src="Images/logo.png"   width="50%"></div>
-  <a href="#" class="toggle-button">
-    <span class="bar"></span>
-    <span class="bar"></span>
-    <span class="bar"></span>
-  </a>
-  <div class="navbar-links">
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a href="#">Login</a></li>
-    </ul>
-  </div>
-</nav>
-<!-- NAVBAR END-->
+  <!-- NAVBAR START !-->
+  <nav class="navbar">
+    <div class="logo-title"><img src="Images/logo.png" width="50%"></div>
+    <a href="#" class="toggle-button">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </a>
+    <div class="navbar-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- NAVBAR END-->
 
-<!-- MAIN GRID START-->
-<div class="grid-container" id="container"> 
-  <div class="grid-item grid-item-code-editor"><div id="editor" style="width:100%;"></div></div>
-  <div class="grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div> 
-  <div class="grid-item grid-item-unity">unity</div>
-</div>
-<!-- MAIN GRID END-->
+  <!-- MAIN GRID START-->
+  <div class="grid-container" id="container">
+
+    <div class="grid-item grid-item-settings">
+
+      <!-- EMBEDDED SETTINGS GRIP START -->
+      <div class="settings-grid">
+        
+        <div class="settings-play-icon">
+          <button class="play-icon" id="run" aria-label="run"></button>
+          <!--play button-->
+        </div>
+        <div class="settings-settings-icon">
+          
+          <!--<div class="toggle-container">!-->
+            <div class="toggle1-container">
+              <span class="toggle"></span>
+            </div>
+            
+        </div>
+        <div class="settings-themes-dropdown">
+          <!--themes dropdown-->
+          <div id="themes-select" class="theme-select" style="display:none;">
+            <select id="themes" style="max-width:min-content" onchange="themeSelect();">
+              <optgroup id="group-light" label="Light"></optgroup>
+              <optgroup id="group-dark" label="Dark"></optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-font-size"> 
+          <input id="font-size" class="theme-select" style="width: 40px; display:none;" 
+          type="number" min="10" max="20" value="14"  onchange="fontSizeChanged();">
+        </div>
+        <div class="settings-samples-dropdown"> 
+          <div class="theme-select">
+            <form name="SamplesForm" method="POST">
+              <select name="samples" id="samples" style="max-width:min-content;display:block">
+                <optgroup label="Basic">
+                  <option disabled  value="" selected>Samples</option>
+                  <option value="Samples/1-CreateEnvironment.py">1-Create Environment</option>
+                  <option value="Samples/2-CreateCharacter.py">2-Create Character</option>
+                  <option value="Samples/3-SetAnimation.py">3-Set Animation</option>
+                  <option value="Samples/4-ControlMode.py">4-Control Mode</option>
+                  <option value="Samples/5-Sounds.py">5-Sounds</option>
+                </optgroup>
+                <optgroup label="Special Effects">
+                  <option value="Samples/7-SimpleEffects.py">1-Simple Effect</option>
+                  <option value="Samples/8-AdvancedEffects.py">2-Advanced Effect</option>
+                </optgroup>
+                <optgroup label="Physics">
+                  <option  value="Samples/6-Collisions.py">1-Collisions</option>
+                </optgroup>
+                <optgroup label="Delays">
+                  <option  value="Samples/9-PrimitivesWithSleep.py">1-Primivitves with sleep</option>
+                </optgroup>  
+                
+              </select>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- EMBEDDED SETTINGS GRIP END -->
+    </div>
 
 
-  <!-- Need to merge with main grid-->
-  <table >
-    <tr>
-      <td>Brython version: <span id="version"></span></td>
-      <td></td>
-      <td>
-        <button id="run"> ▶ Run</button>
-      </td>
-    </tr>
-  </table>
+    <div class="grid-item grid-item-code-editor">
+      <div id="editor""></div> </div>
+      <div class=" grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div>
+      <div class="grid-item grid-item-unity">
+        <iframe src="index.html" style="width: 100%;height: 100%; border: none;">Browser not compatible.</iframe>
+      </div>
+    </div>
+    <!-- MAIN GRID END-->
 
 
-  <!--sparkpy-->
-  <script src="Scripts/parentScripts.js"></script>   
+    <!-- <input id="blerec" type="text" > !-->
+    <div id="unity_events"></div>
+
+    <!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
+    <div id="unity_return_values"></div>
+
+
+    <!-- Need to merge with main grid-->
+    <table>
+      <tr>
+        <td>Brython version: <span id="version"></span></td>
+        <td></td>
+        <td>
+        </td>
+      </tr>
+    </table>
+
+    <!--sparkpy-->
+    <script src="Scripts/parentScripts.js"></script>
+    <script src="Scripts/settingsRow.js"></script>
+    <script src="Scripts/themes.js"></script>
+    <script>
+
+      
+    </script>
 
 </body>
 

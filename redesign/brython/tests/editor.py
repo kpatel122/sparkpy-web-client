@@ -16,7 +16,6 @@ _s.style.height = '%spx' % int(_height * 0.85)
 has_ace = True
 try:
     editor = window.ace.edit("editor")
-    editor.setTheme("ace/theme/solarized_light")
     editor.session.setMode("ace/mode/python")
     editor.focus()
 
@@ -51,7 +50,7 @@ def reset_src():
         if storage is not None and "py_src" in storage:
             editor.setValue(storage["py_src"])
         else:
-            editor.setValue('for i in range(10):\n\tprint(i)')
+            editor.setValue('print(\"Hello Sparkpy\")')#editor.setValue('for i in range(10):\n\tprint(i)')
         if "py_test" in storage and 'files' in document:
             document['files'].selectedIndex = int(storage["py_test"])
     editor.scrollToRow(0)

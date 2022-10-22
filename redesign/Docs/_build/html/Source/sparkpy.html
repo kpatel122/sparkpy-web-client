@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sparkpy module &mdash; Sparkpy  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Sparkpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">sparkpy module</a><ul>
+<li><a class="reference internal" href="#sparkpy.BoundsCheckInc"><code class="docutils literal notranslate"><span class="pre">BoundsCheckInc()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Chat"><code class="docutils literal notranslate"><span class="pre">Chat()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.CreateCharacter"><code class="docutils literal notranslate"><span class="pre">CreateCharacter()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.CreateEffect"><code class="docutils literal notranslate"><span class="pre">CreateEffect()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.CreateEnvironment"><code class="docutils literal notranslate"><span class="pre">CreateEnvironment()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.CreateParentChild"><code class="docutils literal notranslate"><span class="pre">CreateParentChild()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.CreatePrimitive"><code class="docutils literal notranslate"><span class="pre">CreatePrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.DestroyPrimitive"><code class="docutils literal notranslate"><span class="pre">DestroyPrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.ErrorMsg"><code class="docutils literal notranslate"><span class="pre">ErrorMsg()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Hide"><code class="docutils literal notranslate"><span class="pre">Hide()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.HideInputBox"><code class="docutils literal notranslate"><span class="pre">HideInputBox()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.HidePrimitive"><code class="docutils literal notranslate"><span class="pre">HidePrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.LoopPrimitiveMove"><code class="docutils literal notranslate"><span class="pre">LoopPrimitiveMove()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Move"><code class="docutils literal notranslate"><span class="pre">Move()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.MovePrimitive"><code class="docutils literal notranslate"><span class="pre">MovePrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.PlayCharacterSound"><code class="docutils literal notranslate"><span class="pre">PlayCharacterSound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.PlaySceneSound"><code class="docutils literal notranslate"><span class="pre">PlaySceneSound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.ResetScene"><code class="docutils literal notranslate"><span class="pre">ResetScene()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Rotate"><code class="docutils literal notranslate"><span class="pre">Rotate()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.RotatePrimitive"><code class="docutils literal notranslate"><span class="pre">RotatePrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.ScalePrimative"><code class="docutils literal notranslate"><span class="pre">ScalePrimative()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetAnimation"><code class="docutils literal notranslate"><span class="pre">SetAnimation()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetAnimationSpeed"><code class="docutils literal notranslate"><span class="pre">SetAnimationSpeed()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetCollisionHandler"><code class="docutils literal notranslate"><span class="pre">SetCollisionHandler()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetControlMode"><code class="docutils literal notranslate"><span class="pre">SetControlMode()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetEffectColour"><code class="docutils literal notranslate"><span class="pre">SetEffectColour()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetPrimitiveColour"><code class="docutils literal notranslate"><span class="pre">SetPrimitiveColour()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Show"><code class="docutils literal notranslate"><span class="pre">Show()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.ShowInputBox"><code class="docutils literal notranslate"><span class="pre">ShowInputBox()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.ShowPrimitive"><code class="docutils literal notranslate"><span class="pre">ShowPrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.StopCharacterSound"><code class="docutils literal notranslate"><span class="pre">StopCharacterSound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.StopEffect"><code class="docutils literal notranslate"><span class="pre">StopEffect()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.StopPrimitiveMove"><code class="docutils literal notranslate"><span class="pre">StopPrimitiveMove()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.StopPrimitiveRotation"><code class="docutils literal notranslate"><span class="pre">StopPrimitiveRotation()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.StopSceneSound"><code class="docutils literal notranslate"><span class="pre">StopSceneSound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.coliisionHook"><code class="docutils literal notranslate"><span class="pre">coliisionHook()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.sleep"><code class="docutils literal notranslate"><span class="pre">sleep()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sparkpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>sparkpy module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Source/sparkpy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-sparkpy">
+<span id="sparkpy-module"></span><h1>sparkpy module<a class="headerlink" href="#module-sparkpy" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.BoundsCheckInc">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">BoundsCheckInc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.BoundsCheckInc" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Chat">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Chat" title="Permalink to this definition"></a></dt>
+<dd><p>Displays a chat box above the character with ‘text’ for ‘seconds’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterID</strong> (<em>int</em>) – The characterID to rotate</p></li>
+<li><p><strong>text</strong> (<em>string</em>) – the text for the chat box</p></li>
+<li><p><strong>seconds</strong> (<em>float</em>) – how long to show the chat bubble for in seconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>0 on failure or 1 on success</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="c1">#https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#showing-code-examples</span>
+</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.CreateCharacter">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">CreateCharacter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.CreateCharacter" title="Permalink to this definition"></a></dt>
+<dd><p>Creates an scene character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>characterName</strong> (<em>string</em>) – The name of the character to create</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>characterID (int)- unique ID of the character</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.CreateEffect">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">CreateEffect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effectName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.CreateEffect" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a special effect</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>effectName</strong> (<em>string- valid values are stored in specialEffectNames</em>) – the name of the effect</p></li>
+<li><p><strong>x</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – x position</p></li>
+<li><p><strong>y</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – y position</p></li>
+<li><p><strong>z</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – z position</p></li>
+<li><p><strong>scale</strong> (<em>float optional</em><em>, </em><em>defaults to 1</em>) – scale(size) of the effect</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int -effectID, unique ID of the effect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.CreateEnvironment">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">CreateEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environmentName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.CreateEnvironment" title="Permalink to this definition"></a></dt>
+<dd><p>Creates an scene environment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>environmentName</strong> (<em>string</em>) – The environment name to create</p></li>
+<li><p><strong>location</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>defaults to 0</em>) – The location of the environment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.CreateParentChild">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">CreateParentChild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parentID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">childID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.CreateParentChild" title="Permalink to this definition"></a></dt>
+<dd><p>creates parent-child relationship</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parentID</strong> (<em>int</em>) – the ID of the parent</p></li>
+<li><p><strong>childID</strong> (<em>int</em>) – the ID of the child</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.CreatePrimitive">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">CreatePrimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.CreatePrimitive" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a scene primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitiveType</strong> (<em>string- values can be:sphere</em><em>,</em><em>capsule</em><em>,</em><em>cylinder</em><em>,</em><em>cube</em><em>,</em><em>plane</em><em>, </em><em>quad</em>) – the type of primitive to create</p></li>
+<li><p><strong>x</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – x position</p></li>
+<li><p><strong>y</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – y position</p></li>
+<li><p><strong>z</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – z position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int primitiveID- unique ID of the primitive</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.DestroyPrimitive">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">DestroyPrimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.DestroyPrimitive" title="Permalink to this definition"></a></dt>
+<dd><p>destroys a primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ErrorMsg">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ErrorMsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ErrorMsg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Hide">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Hide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Hide" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the character to be invisible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>characterID</strong> (<em>int</em>) – The characterID to set</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.HideInputBox">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">HideInputBox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.HideInputBox" title="Permalink to this definition"></a></dt>
+<dd><p>Hides an input box</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.HidePrimitive">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">HidePrimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.HidePrimitive" title="Permalink to this definition"></a></dt>
+<dd><p>hides a primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.LoopPrimitiveMove">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">LoopPrimitiveMove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.LoopPrimitiveMove" title="Permalink to this definition"></a></dt>
+<dd><p>loop moves a primitive for ‘seconds’ at a rate of ‘speed’ in ‘direction’ and then back to its original position again</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p></li>
+<li><p><strong>seconds</strong> (<em>float</em>) – how long the primitive moves for in seconds</p></li>
+<li><p><strong>speed</strong> (<em>float</em>) – how fast to move</p></li>
+<li><p><strong>direction</strong> (<em>string</em><em>, </em><em>values#; 'up'</em><em>,</em><em>'down'</em><em>,</em><em>'left'</em><em>,</em><em>'right'</em><em>,</em><em>'forward'</em><em>,</em><em>'backward'</em>) – which direction to move the primitive</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>0 on failure or 1 on success</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Move">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Move" title="Permalink to this definition"></a></dt>
+<dd><p>moves a character forward at ‘speed’ for ‘seconds’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterID</strong> (<em>int</em>) – The characterID to rotate</p></li>
+<li><p><strong>seconds</strong> (<em>float</em>) – how long the character moves for in seconds</p></li>
+<li><p><strong>speed</strong> (<em>float</em>) – how fast to move, defaults to 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.MovePrimitive">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">MovePrimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.MovePrimitive" title="Permalink to this definition"></a></dt>
+<dd><p>moves a primitive for ‘seconds’ at a rate of ‘speed’ in ‘direction’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p></li>
+<li><p><strong>seconds</strong> (<em>float</em>) – how long the primitive moves for in seconds</p></li>
+<li><p><strong>speed</strong> (<em>float</em>) – how fast to move</p></li>
+<li><p><strong>direction</strong> (<em>string</em><em>, </em><em>values#; 'up'</em><em>,</em><em>'down'</em><em>,</em><em>'left'</em><em>,</em><em>'right'</em><em>,</em><em>'forward'</em><em>,</em><em>'backward'</em>) – which direction to move the primitive</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.PlayCharacterSound">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">PlayCharacterSound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.PlayCharacterSound" title="Permalink to this definition"></a></dt>
+<dd><p>Plays character audio clip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clipname</strong> (<em>string</em>) – name of the sound clip to play</p></li>
+<li><p><strong>volume</strong> (<em>float</em><em>, </em><em>defaults to 1</em><em> (</em><em>0-lowest 1-highest</em><em>)</em>) – the volume of the clip</p></li>
+<li><p><strong>loop</strong> (<em>bool optional</em><em>, </em><em>defaults to False</em>) – whether to loop back to the beginning of the clip when finished</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.PlaySceneSound">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">PlaySceneSound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clipname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.PlaySceneSound" title="Permalink to this definition"></a></dt>
+<dd><p>Plays Scene audio clip. Mainly used for background music</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clipname</strong> (<em>string</em>) – name of the sound clip to play</p></li>
+<li><p><strong>volume</strong> (<em>float optional</em><em>, </em><em>defaults to 1</em>) – the volume of the clip</p></li>
+<li><p><strong>loop</strong> (<em>bool optional</em><em>, </em><em>defaults to True</em>) – whether to loop back to the beginning of the clip when finished</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ResetScene">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ResetScene</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ResetScene" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the scene- removes environment and all characters</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Rotate">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cw'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Rotate" title="Permalink to this definition"></a></dt>
+<dd><p>rotates a character to degrees in seconds. direction is cw (clockwise) or ccw (counter clockwise)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterID</strong> (<em>int</em>) – The characterID to rotate</p></li>
+<li><p><strong>seconds</strong> (<em>float</em>) – how long the character rotates for in seconds</p></li>
+<li><p><strong>degrees</strong> (<em>float</em>) – how many degrees to rotate</p></li>
+<li><p><strong>direction</strong> (<em>string defaults to cw</em>) – which direction to rotate- cw or ccw</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.RotatePrimitive">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">RotatePrimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speedY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speedX</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speedZ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.RotatePrimitive" title="Permalink to this definition"></a></dt>
+<dd><p>Rotates primitive around it’s x, y z axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitiveID</strong> (<em>int</em>) – the id of the primitive to rotate</p></li>
+<li><p><strong>speedY</strong> (<em>int</em>) – how fast to rotate around the Y axis</p></li>
+<li><p><strong>speedX</strong> (<em>int optional</em><em>, </em><em>defualts to 0</em>) – how fast to rotate around the X axis</p></li>
+<li><p><strong>speedZ</strong> (<em>int optional</em><em>, </em><em>defualts to 0</em>) – how fast to rotate around the z axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ScalePrimative">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ScalePrimative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ScalePrimative" title="Permalink to this definition"></a></dt>
+<dd><p>non-uniform primative scale</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – x axis scale</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y axis scale</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z axis scale</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success,0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetAnimation">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetAnimation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animationName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resetTrigger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetAnimation" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the animation for the charcter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterID</strong> (<em>int</em>) – The characterID to set the snimation for</p></li>
+<li><p><strong>animationName</strong> (<em>string</em>) – The name of the animation</p></li>
+<li><p><strong>resetTrigger</strong> (<em>bool</em><em>, </em><em>defaults to False</em>) – unity animation trigger reset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetAnimationSpeed">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetAnimationSpeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetAnimationSpeed" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the animation speed for the charcter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterID</strong> (<em>int</em>) – The characterID to set</p></li>
+<li><p><strong>speed</strong> (<em>float</em>) – The speed of the animation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetCollisionHandler">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetCollisionHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetCollisionHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Creates assigns a function to handle collision, the function should accept two parameters which are the uids on which the collisions occured</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>handler</strong> (<em>function pointer</em>) – the function to handle the collision, signature should have two parameters for the collision uids e.g. handlerFunction(uid1,uid2)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetControlMode">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetControlMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetControlMode" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the control mode for the charcter as either ‘script’ or ‘keyboard’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterID</strong> (<em>int</em>) – The characterID to set</p></li>
+<li><p><strong>mode</strong> – ‘script’- control through move, rotate etc. ‘keyboard’- control through a,w,d,s &amp; space (3rd person control)</p></li>
+</ul>
+</dd>
+</dl>
+<p>:type mode:string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetEffectColour">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetEffectColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effectID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startColour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endColour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetEffectColour" title="Permalink to this definition"></a></dt>
+<dd><p>sets the effect colour, valid colours: ‘yellow’,’clear’,’grey’,’magenta’,’cyan’,’red’,’black’,’white’,’blue’ &amp; ‘green’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>effectID</strong> (<em>int</em>) – the ID of the effect</p></li>
+<li><p><strong>startColour</strong> (<em>string</em>) – start colour of the effect</p></li>
+<li><p><strong>endColour</strong> (<em>string optional</em><em>, </em><em>defaults to white</em>) – start colour of the effect</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetPrimitiveColour">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetPrimitiveColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">red</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetPrimitiveColour" title="Permalink to this definition"></a></dt>
+<dd><p>sets the colour of a primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p></li>
+<li><p><strong>red</strong> (<em>float</em>) – the red value of the colour (0-1)</p></li>
+<li><p><strong>green</strong> (<em>float</em>) – the green value of the colour (0-1)</p></li>
+<li><p><strong>blue</strong> – the blue value of the colour (0-1)</p></li>
+<li><p><strong>alpha</strong> – alpha(transparaency) value of the colour (0-1)</p></li>
+</ul>
+</dd>
+</dl>
+<p>:type alpha:float optional, defaults to 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Show">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Show" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the character to be visible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>characterID</strong> (<em>int</em>) – The characterID to set</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ShowInputBox">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ShowInputBox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ShowInputBox" title="Permalink to this definition"></a></dt>
+<dd><p>Shows an input box, event with enetered text will be triggered on div id ‘unity_events’. ‘unity_events.value’ will also hold the result of the text entered</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ShowPrimitive">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ShowPrimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ShowPrimitive" title="Permalink to this definition"></a></dt>
+<dd><p>shows a primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.StopCharacterSound">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopCharacterSound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopCharacterSound" title="Permalink to this definition"></a></dt>
+<dd><p>Stops the character’s sound clip playing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>characterID</strong> (<em>int</em>) – The characterID to stop audio for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.StopEffect">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopEffect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effectID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopEffect" title="Permalink to this definition"></a></dt>
+<dd><p>stops an effect</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>effectID</strong> (<em>int</em>) – effectID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.StopPrimitiveMove">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopPrimitiveMove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopPrimitiveMove" title="Permalink to this definition"></a></dt>
+<dd><p>stops a moving primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.StopPrimitiveRotation">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopPrimitiveRotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopPrimitiveRotation" title="Permalink to this definition"></a></dt>
+<dd><p>stops a rotating primitive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>primitiveID</strong> (<em>int</em>) – primitiveID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.StopSceneSound">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopSceneSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopSceneSound" title="Permalink to this definition"></a></dt>
+<dd><p>Stops the scene’s audio clip</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.coliisionHook">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">coliisionHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.coliisionHook" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.run">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.sleep">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.sleep" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, KP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
