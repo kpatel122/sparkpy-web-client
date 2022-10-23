@@ -1,4 +1,4 @@
-import sparkpylib as sparkpy
+import sparkpy
 
 #set animation example
 

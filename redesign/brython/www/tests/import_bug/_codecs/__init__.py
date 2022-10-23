@@ -1,1 +1,0 @@
-info = "_codecs info"

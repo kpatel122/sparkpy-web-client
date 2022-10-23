@@ -22,10 +22,11 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">pyspak</div>
+        <div id="unity-build-title"></div>
       </div>
     </div>
     <script>
+
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/pyspark.loader.js";
       var config = {
@@ -46,6 +47,7 @@
       var mobileWarning = document.querySelector("#unity-mobile-warning");
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        window.alert("1");
         container.className = "unity-mobile";
         config.devicePixelRatio = 1;
         mobileWarning.style.display = "block";
@@ -53,8 +55,10 @@
           mobileWarning.style.display = "none";
         }, 5000);
       } else {
+
         canvas.style.width = "960px";
         canvas.style.height = "600px";
+        mobileWarning.style.display = "none";
       }
       loadingBar.style.display = "block";
 
