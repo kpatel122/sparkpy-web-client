@@ -261,9 +261,10 @@ def SetControlMode(characterID, mode):
     :type characterID: int
     
     :param mode: 'script'- control through move, rotate etc. 'keyboard'- control through a,w,d,s & space (3rd person control)
-    :type mode:string 
+    :type mode: string 
     
     :return: 1 on success or 0 on failure
+
     '''
     methodName = "SetControlMode"
     #data type checks
@@ -503,9 +504,8 @@ def Chat(characterID, text, seconds):
     :return: 0 on failure or 1 on success
 
     .. code-block:: python
-        :linenos
-        :emphasize-lines: 1
-
+        :linenos:
+        
         #https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#showing-code-examples
         print('hello world')
     '''
@@ -1099,7 +1099,7 @@ def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
     :type alhpa: float
     
     :param alpha: alpha(transparaency) value of the colour (0-1)
-    :type alpha:float optional, defaults to 1
+    :type alpha: float optional, defaults to 1
     
     :return: 1 on success, 0 on failure
     '''

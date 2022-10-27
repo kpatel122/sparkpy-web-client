@@ -1,11 +1,10 @@
 /*COLOUR SCHEME*/
 :root {
-    --background: #ffffff; /* main page background*/
+    --background: #fefefe; /* main page background*/
     --link_hover: #555; /* navbar link hover cover */
-    --navbar_background: #3874e6; /*sparkpy logo background*/
+    --navbar_background: #fefefe; /*sparkpy logo background*/
     --navbar_text_colour: red;
-    --navbar_hamburger_button: black
-    ;
+    --navbar_hamburger_button: black;
   }
 
 /*NAVBAR*/ 
