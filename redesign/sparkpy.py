@@ -19,6 +19,8 @@ pysparkClass = "Main" #the name of the unity class that contains the lib methods
 
 CollisionHandler = None #collision function pointer
 
+#reference: https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+
 #must map to unity C# public enum  AppPrimitiveType
 PRIMITIVE_SPHERE = 0
 PRIMITIVE_CAPSULE = 1
