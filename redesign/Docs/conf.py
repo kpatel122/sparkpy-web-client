@@ -38,3 +38,6 @@ autodoc_mock_imports = ["browser"]
 
 html_theme = 'sphinx_rtd_theme' #'alabaster'
 html_static_path = ['_static']
+
+
+smart_quotes =  'no'

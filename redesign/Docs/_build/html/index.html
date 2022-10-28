@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Sparkpy’s documentation! &mdash; Sparkpy  documentation</title>
+  <title>Welcome to Sparkpy ! &mdash; Sparkpy  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -39,8 +39,22 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to Sparkpy’s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#">Welcome to Sparkpy !</a><ul>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#basics">Basics</a><ul>
+<li><a class="reference internal" href="#create-an-environment">Create an environment</a></li>
+<li><a class="reference internal" href="#create-a-character">Create a character</a></li>
+<li><a class="reference internal" href="#character-animation">Character animation</a></li>
+<li><a class="reference internal" href="#control-character-with-keyboard">Control character with keyboard</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
         </div>
@@ -57,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Welcome to Sparkpy’s documentation!</li>
+      <li>Welcome to Sparkpy !</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -67,18 +81,134 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-sparkpy-s-documentation">
-<h1>Welcome to Sparkpy’s documentation!<a class="headerlink" href="#welcome-to-sparkpy-s-documentation" title="Permalink to this heading"></a></h1>
+  <section id="welcome-to-sparkpy">
+<h1>Welcome to Sparkpy !<a class="headerlink" href="#welcome-to-sparkpy" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
-</section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li><p><a class="reference external" href="Source/sparkpy.html">Full API Reference</a></p></li>
 </ul>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h3>
+<p>Sparkpy is a platform to learn and create Python programming projects using interactive 3D graphics.</p>
+<section id="basics">
+<h4>Basics<a class="headerlink" href="#basics" title="Permalink to this heading"></a></h4>
+<section id="create-an-environment">
+<h5>Create an environment<a class="headerlink" href="#create-an-environment" title="Permalink to this heading"></a></h5>
+<p>To create a scene an environment is needed</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#create a desert enviroment</span>
+<span class="linenos">4</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;Desert&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A list of all current environments</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 19%" />
+<col style="width: 17%" />
+<col style="width: 13%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;Desert&quot;</p></td>
+<td><p>&quot;Forest&quot;</p></td>
+<td><p>&quot;AlienPlanet&quot;</p></td>
+<td><p>&quot;GasPlanet&quot;</p></td>
+<td><p>&quot;Office&quot;</p></td>
+<td><p>&quot;SciFi&quot;</p></td>
+<td><p>&quot;Default&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="create-a-character">
+<h5>Create a character<a class="headerlink" href="#create-a-character" title="Permalink to this heading"></a></h5>
+<p>To create a character, first make an environment then create the character</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#create office environment</span>
+<span class="linenos">4</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#create robot character</span>
+<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A list of all current characters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;Amy&quot;</p></td>
+<td><p>&quot;Bryce&quot;</p></td>
+<td><p>&quot;Lewis&quot;</p></td>
+<td><p>&quot;Michelle&quot;</p></td>
+<td><p>&quot;YBot&quot;</p></td>
+<td><p>&quot;XBot&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="character-animation">
+<h5>Character animation<a class="headerlink" href="#character-animation" title="Permalink to this heading"></a></h5>
+<p>Set the animation for a character using  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimation">SetAnimation</a> The speed of the animation can controlled with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimationSpeed">SetAnimationSpeed</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#set animation example</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create office environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create robot character</span>
+<span class="linenos"> 9</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot2&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#set animation to walk</span>
+<span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">#set animation speed</span>
+<span class="linenos">15</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimationSpeed</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="control-character-with-keyboard">
+<h5>Control character with keyboard<a class="headerlink" href="#control-character-with-keyboard" title="Permalink to this heading"></a></h5>
+<p>To move a character with the keyboard, use the  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetControlMode">SetControlMode</a> method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#control character with keyboard example</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create office environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create robot character</span>
+<span class="linenos"> 9</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#set control mode to keyboard</span>
+<span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
 </section>
 
 

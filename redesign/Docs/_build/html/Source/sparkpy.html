@@ -129,8 +129,8 @@
 <dd class="field-even"><p>0 on failure or 1 on success</p>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="c1">#https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#showing-code-examples</span>
-</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">#https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#showing-code-examples</span>
+<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -487,14 +487,11 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>characterID</strong> (<em>int</em>) – The characterID to set</p></li>
-<li><p><strong>mode</strong> – ‘script’- control through move, rotate etc. ‘keyboard’- control through a,w,d,s &amp; space (3rd person control)</p></li>
+<li><p><strong>mode</strong> (<em>string</em>) – ‘script’- control through move, rotate etc. ‘keyboard’- control through a,w,d,s &amp; space (3rd person control)</p></li>
 </ul>
 </dd>
-</dl>
-<p>:type mode:string</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>1 on success or 0 on failure</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
 </dd>
 </dl>
 </dd></dl>
@@ -528,14 +525,11 @@
 <li><p><strong>red</strong> (<em>float</em>) – the red value of the colour (0-1)</p></li>
 <li><p><strong>green</strong> (<em>float</em>) – the green value of the colour (0-1)</p></li>
 <li><p><strong>blue</strong> – the blue value of the colour (0-1)</p></li>
-<li><p><strong>alpha</strong> – alpha(transparaency) value of the colour (0-1)</p></li>
+<li><p><strong>alpha</strong> (<em>float optional</em><em>, </em><em>defaults to 1</em>) – alpha(transparaency) value of the colour (0-1)</p></li>
 </ul>
 </dd>
-</dl>
-<p>:type alpha:float optional, defaults to 1</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>1 on success, 0 on failure</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success, 0 on failure</p>
 </dd>
 </dl>
 </dd></dl>
