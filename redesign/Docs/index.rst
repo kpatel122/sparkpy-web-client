@@ -79,7 +79,10 @@ To create a scene an environment is needed ::
 Create a character
 """"""""""""""""""
 
-To create a character, first make an environment then create the character ::
+To create a character, first make an environment then create the character
+
+.. code-block:: python
+   :emphasize-lines: 7
    
    import sparkpy
 
@@ -100,7 +103,10 @@ To create a character, first make an environment then create the character ::
 Character animation
 """"""""""""""""""""""""""""""""
 
-Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#sparkpy.SetAnimation>`_ The speed of the animation can controlled with `SetAnimationSpeed <Source/sparkpy.html#sparkpy.SetAnimationSpeed>`_ ::
+Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#sparkpy.SetAnimation>`_ 
+
+.. code-block:: python
+   :emphasize-lines: 12,15
 
    import sparkpy
 
@@ -117,7 +123,44 @@ Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#spa
 
    #set animation speed
    sparkpy.SetAnimationSpeed(ybot, 1)
+
+.. tip:: A list of all available animation names for a given character is shown in the explorer view
+
+   .. image:: Images/animation_names.png
+      
  
+.. tip:: The speed of the animation can controlled with `SetAnimationSpeed <Source/sparkpy.html#sparkpy.SetAnimationSpeed>`_
+
+
+
+""""""""""""""""""""""""""""""""
+Character movement
+""""""""""""""""""""""""""""""""
+
+A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Method
+
+.. code-block:: python
+   :emphasize-lines: 15
+   
+   import sparkpy
+
+   #move character exaample
+
+   #create office environment
+   sparkpy.CreateEnvironment("forest")
+
+   #create robot character at position x=0 y0 z=3
+   ybot = sparkpy.CreateCharacter("xbot",0,0,3)
+
+   #set animation to walk
+   sparkpy.SetAnimation(ybot, "Walk")
+
+   #move the character for 5 seconds
+   sparkpy.Move(ybot,5)
+
+.. note:: you will notice that the character's animation continues to play after the movement ends. This is can resolved using waits [LINK NEEDED] 
+
+
 
 
 """"""""""""""""""""""""""""""""

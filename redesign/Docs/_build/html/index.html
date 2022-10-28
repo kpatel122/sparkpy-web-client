@@ -46,6 +46,7 @@
 <li><a class="reference internal" href="#create-an-environment">Create an environment</a></li>
 <li><a class="reference internal" href="#create-a-character">Create a character</a></li>
 <li><a class="reference internal" href="#character-animation">Character animation</a></li>
+<li><a class="reference internal" href="#character-movement">Character movement</a></li>
 <li><a class="reference internal" href="#control-character-with-keyboard">Control character with keyboard</a></li>
 </ul>
 </li>
@@ -140,8 +141,8 @@
 <span class="linenos">4</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 <span class="linenos">5</span>
 <span class="linenos">6</span><span class="c1">#create robot character</span>
-<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
-</pre></div>
+<span class="hll"><span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+</span></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -169,7 +170,7 @@
 </section>
 <section id="character-animation">
 <h5>Character animation<a class="headerlink" href="#character-animation" title="Permalink to this heading"></a></h5>
-<p>Set the animation for a character using  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimation">SetAnimation</a> The speed of the animation can controlled with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimationSpeed">SetAnimationSpeed</a></p>
+<p>Set the animation for a character using  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimation">SetAnimation</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1">#set animation example</span>
@@ -181,11 +182,45 @@
 <span class="linenos"> 9</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot2&quot;</span><span class="p">)</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="c1">#set animation to walk</span>
+<span class="hll"><span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+</span><span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">#set animation speed</span>
+<span class="hll"><span class="linenos">15</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimationSpeed</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A list of all available animation names for a given character is shown in the explorer view</p>
+<img alt="_images/animation_names.png" src="_images/animation_names.png" />
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The speed of the animation can controlled with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimationSpeed">SetAnimationSpeed</a></p>
+</div>
+</section>
+<section id="character-movement">
+<h5>Character movement<a class="headerlink" href="#character-movement" title="Permalink to this heading"></a></h5>
+<p>A character can be moved using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Move">Move</a> Method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#move character exaample</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create office environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create robot character at position x=0 y0 z=3</span>
+<span class="linenos"> 9</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#set animation to walk</span>
 <span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
 <span class="linenos">13</span>
-<span class="linenos">14</span><span class="c1">#set animation speed</span>
-<span class="linenos">15</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimationSpeed</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
+<span class="linenos">14</span><span class="c1">#move the character for 5 seconds</span>
+<span class="hll"><span class="linenos">15</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>you will notice that the character’s animation continues to play after the movement ends. This is can resolved using waits [LINK NEEDED]</p>
 </div>
 </section>
 <section id="control-character-with-keyboard">
