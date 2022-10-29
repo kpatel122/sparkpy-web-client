@@ -47,6 +47,9 @@
 <li><a class="reference internal" href="#create-a-character">Create a character</a></li>
 <li><a class="reference internal" href="#character-animation">Character animation</a></li>
 <li><a class="reference internal" href="#character-movement">Character movement</a></li>
+<li><a class="reference internal" href="#character-rotation">Character rotation</a></li>
+<li><a class="reference internal" href="#character-hide-and-show">Character hide and show</a></li>
+<li><a class="reference internal" href="#character-chat">Character chat</a></li>
 <li><a class="reference internal" href="#control-character-with-keyboard">Control character with keyboard</a></li>
 </ul>
 </li>
@@ -220,7 +223,65 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>you will notice that the character’s animation continues to play after the movement ends. This is can resolved using waits [LINK NEEDED]</p>
+<p>you will notice that the character’s animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED]</p>
+</div>
+</section>
+<section id="character-rotation">
+<h5>Character rotation<a class="headerlink" href="#character-rotation" title="Permalink to this heading"></a></h5>
+<p>A character can be rotated using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Rotate">Rotate</a> Method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#rotate character exaample</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create office environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create robot character at position x=0 y0 z=3</span>
+<span class="linenos"> 9</span><span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#rotate 90 degres in 2 seconds, in the counter clockwise direction</span>
+<span class="hll"><span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;ccw&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="character-hide-and-show">
+<h5>Character hide and show<a class="headerlink" href="#character-hide-and-show" title="Permalink to this heading"></a></h5>
+<p>A character can be hidden (invisible) using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Hide">Hide</a> Method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#hide character exaample</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create an environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create a character at position x=0 y0 z=3</span>
+<span class="linenos"> 9</span><span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#character exists but will not be shown in the screen</span>
+<span class="hll"><span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Hide</span><span class="p">(</span><span class="n">bryce</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A character that is hidden can be shown again using <a class="reference external" href="Source/sparkpy.html#sparkpy.Show">Show()</a></p>
+</div>
+</section>
+<section id="character-chat">
+<h5>Character chat<a class="headerlink" href="#character-chat" title="Permalink to this heading"></a></h5>
+<p>A character can create a chat box using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Hide">Chat</a> Chat</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#chat example</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create an environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create a character</span>
+<span class="linenos"> 9</span><span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#create a chat box for 5 seconds</span>
+<span class="hll"><span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span></pre></div>
 </div>
 </section>
 <section id="control-character-with-keyboard">

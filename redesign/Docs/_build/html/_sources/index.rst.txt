@@ -157,10 +157,77 @@ A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Me
 
    #move the character for 5 seconds
    sparkpy.Move(ybot,5)
+   
+.. note:: you will notice that the character's animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED] 
 
-.. note:: you will notice that the character's animation continues to play after the movement ends. This is can resolved using waits [LINK NEEDED] 
+""""""""""""""""""""""""""""""""
+Character rotation
+""""""""""""""""""""""""""""""""
+
+A character can be rotated using the `Rotate <Source/sparkpy.html#sparkpy.Rotate>`_ Method
+
+.. code-block:: python
+   :emphasize-lines: 12
+   
+   import sparkpy
+
+   #rotate character exaample
+
+   #create office environment
+   sparkpy.CreateEnvironment("home")
+
+   #create robot character at position x=0 y0 z=3
+   bryce = sparkpy.CreateCharacter("bryce",0,0,3)
+
+   #rotate 90 degres in 2 seconds, in the counter clockwise direction 
+   sparkpy.Rotate(bryce,90, 2, "ccw")
 
 
+""""""""""""""""""""""""""""""""
+Character hide and show
+""""""""""""""""""""""""""""""""
+
+A character can be hidden (invisible) using the `Hide <Source/sparkpy.html#sparkpy.Hide>`_ Method
+
+.. code-block:: python
+   :emphasize-lines: 12
+   
+   import sparkpy
+
+   #hide character exaample
+
+   #create an environment
+   sparkpy.CreateEnvironment("forest")
+
+   #create a character at position x=0 y0 z=3
+   bryce = sparkpy.CreateCharacter("bryce",0,0,3)
+
+   #character exists but will not be shown in the screen 
+   sparkpy.Hide(bryce)
+
+.. note:: A character that is hidden can be shown again using `Show() <Source/sparkpy.html#sparkpy.Show>`_ 
+
+""""""""""""""""""""""""""""""""
+Character chat
+""""""""""""""""""""""""""""""""
+
+A character can create a chat box using the `Chat <Source/sparkpy.html#sparkpy.Hide>`_ Chat
+
+.. code-block:: python
+   :emphasize-lines: 12
+   
+   import sparkpy
+
+   #chat example
+
+   #create an environment
+   sparkpy.CreateEnvironment("home")
+
+   #create a character
+   bryce = sparkpy.CreateCharacter("bryce")
+
+   #create a chat box for 5 seconds
+   sparkpy.Chat(bryce, "Hello World", 5)
 
 
 """"""""""""""""""""""""""""""""

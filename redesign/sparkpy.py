@@ -18,6 +18,7 @@ unityInstance = window.unint
 pysparkClass = "Main" #the name of the unity class that contains the lib methods
 
 CollisionHandler = None #collision function pointer
+InputHandler     = None #input bix function pointer
 
 #reference: https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
 
@@ -69,9 +70,27 @@ colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY
             "cyan": COLOUR_CYAN, "red": COLOUR_RED,"black": COLOUR_BLACK, "white": COLOUR_WHITE,
             "blue": COLOUR_BLUE, "green": COLOUR_GREEN}
 
+@bind(document["unity_events"], "InputText")
+def InputTextHook(ev):
+    #call the input text box handler
+    #check if the handler has been set
+    if(InputHandler != None):
+        InputHandler(ev.detail) #call the function handler
+
+def SetInputBoxHandler(handler):
+    '''Assigns a function to handle input box 
+    
+    :param handler: the function to handle the when input box text is entered, signature should have 1 string parameter that gets set to the input box text e.g. InputHandler(msg)
+    :type handler: function pointer
+    
+    :return: None
+    
+    '''
+    global InputHandler
+    InputHandler = handler
 
 @bind(document["unity_events"], "Collision")
-def coliisionHook(ev):
+def ColiisionHook(ev):
     if(CollisionHandler != None): #Collision handler is set with SetCollisionHandler call
         CollisionHandler(ev.detail.uid1,ev.detail.uid2) #call the user defined function handler
 
@@ -374,17 +393,18 @@ def Hide(characterID):
 
     return result 
 
-def Rotate(characterID, seconds, degrees, direction = "cw"):
+def Rotate(characterID, degrees, seconds, direction = "cw"):
+
     '''rotates a character to degrees in seconds. direction is cw (clockwise) or ccw (counter clockwise)
 
     :param characterID: The characterID to rotate
     :type characterID: int
     
-    :param seconds: how long the character rotates for in seconds
-    :type seconds: float
-    
     :param degrees: how many degrees to rotate
     :type degrees: float
+    
+    :param seconds: how long the character rotates for in seconds
+    :type seconds: float
     
     :param direction: which direction to rotate- cw or ccw
     :type direction: string defaults to cw
@@ -544,6 +564,7 @@ def Chat(characterID, text, seconds):
 
     return result
 
+#examples of input retrival can be found at samples/InputMethods.py
 def ShowInputBox():
     '''Shows an input box, event with enetered text will be triggered on div id 'unity_events'. 'unity_events.value' will also hold the result of the text entered  
     '''
