@@ -53,6 +53,21 @@
 <li><a class="reference internal" href="#control-character-with-keyboard">Control character with keyboard</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#user-input">User Input</a><ul>
+<li><a class="reference internal" href="#input-box-non-blocking">Input box (non blocking)</a></li>
+<li><a class="reference internal" href="#input-box-blocking">Input box (blocking)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#collisions">Collisions</a><ul>
+<li><a class="reference internal" href="#collision-non-blocking">Collision (non blocking)</a></li>
+<li><a class="reference internal" href="#collision-blocking">Collision (blocking)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sounds">Sounds</a><ul>
+<li><a class="reference internal" href="#environment-music">Environment music</a></li>
+<li><a class="reference internal" href="#sound-fx">Sound FX</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -286,7 +301,7 @@
 </section>
 <section id="control-character-with-keyboard">
 <h5>Control character with keyboard<a class="headerlink" href="#control-character-with-keyboard" title="Permalink to this heading"></a></h5>
-<p>To move a character with the keyboard, use the  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetControlMode">SetControlMode</a> method</p>
+<p>To move a character with the keyboard, use the  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetControlMode">SetControlMode()</a> method</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1">#control character with keyboard example</span>
@@ -298,8 +313,243 @@
 <span class="linenos"> 9</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="c1">#set control mode to keyboard</span>
-<span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+<span class="hll"><span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="user-input">
+<h4>User Input<a class="headerlink" href="#user-input" title="Permalink to this heading"></a></h4>
+<section id="input-box-non-blocking">
+<h5>Input box (non blocking)<a class="headerlink" href="#input-box-non-blocking" title="Permalink to this heading"></a></h5>
+<p>You can get input from the user using the <a class="reference external" href="Source/sparkpy.html#sparkpy.ShowInputBox">ShowInputBox()</a>
+This method accepts a function to call when input has been recieved, the function must accept one parameter which represents the text that was entered in the input box.
+You can hide an input box using <a class="reference external" href="Source/sparkpy.html#sparkpy.HideInputBox">HideInputBox()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#inputbox example</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#input box handler function</span>
+<span class="linenos"> 6</span><span class="k">def</span> <span class="nf">InputEntered</span><span class="p">(</span><span class="n">inputText</span><span class="p">):</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>   <span class="c1">#print the recieved text</span>
+<span class="linenos"> 9</span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input box recieved &quot;</span> <span class="o">+</span> <span class="n">inputText</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>   <span class="c1">#once the input has been recieved, do not show the input box anymore</span>
+<span class="linenos">12</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">#create desert environment test</span>
+<span class="linenos">15</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">#set the callback function</span>
+<span class="linenos">18</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetInputBoxHandler</span><span class="p">(</span><span class="n">InputEntered</span><span class="p">)</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">#show input box</span>
+<span class="linenos">21</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">ShowInputBox</span><span class="p">()</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="c1">#any code after ShowInputBox() continues to run regardless if text has been entered</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="Source/sparkpy.html#sparkpy.ShowInputBox">ShowInputBox()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the ShowInputBox() will continue
+to run regardless if text has been entered or not. To make input from the user <em>synchronous</em> (blocking) meaning any code <em>after</em> the ShowInputBox() can only
+be run <em>after</em> input has been entered, you can use python input(see below)- though this will block the entire application including any animations and character movement or async await for input event() [LINK NEEDED]</p>
+</div>
+</section>
+<section id="input-box-blocking">
+<h5>Input box (blocking)<a class="headerlink" href="#input-box-blocking" title="Permalink to this heading"></a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">#blocking input call</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#create desert environment test</span>
+<span class="linenos"> 4</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">#ask the user for a name, note the entire application will be paused</span>
+<span class="linenos"> 7</span><span class="c1">#until a value is entered</span>
+<span class="linenos"> 8</span><span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Please enter your name&quot;</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">#output the name to the console</span>
+<span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="collisions">
+<h4>Collisions<a class="headerlink" href="#collisions" title="Permalink to this heading"></a></h4>
+<p>Collisions can be captured between two characters or primitives, using a callback function set with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a>
+when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided</p>
+<section id="collision-non-blocking">
+<h5>Collision (non blocking)<a class="headerlink" href="#collision-non-blocking" title="Permalink to this heading"></a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#collision example</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create collision handler function, the two ids represent the ids of the objects that collided</span>
+<span class="linenos"> 6</span><span class="k">def</span> <span class="nf">collision</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="n">id2</span><span class="p">):</span>
+<span class="linenos"> 7</span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collision occured between &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id2</span><span class="p">))</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">#assign the collision handler function</span>
+<span class="linenos">10</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetCollisionHandler</span><span class="p">(</span><span class="n">collision</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">#create an office environment</span>
+<span class="linenos">13</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1">#create first character</span>
+<span class="linenos">16</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1">#create seconf character</span>
+<span class="linenos">19</span><span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1">#set control mode to keyboard</span>
+<span class="linenos">22</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the SetCollisionHandler() will continue
+to run regardless of if a collision has occured or not. To make collision detection <em>synchronous</em> (blocking) meaning any code <em>after</em> a collision can only
+be run <em>after</em> a collision has occured, use async await for collision event() [LINK NEEDED]</p>
+</div>
+</section>
+<section id="collision-blocking">
+<h5>Collision (blocking)<a class="headerlink" href="#collision-blocking" title="Permalink to this heading"></a></h5>
+<p>TODO</p>
+</section>
+</section>
+<section id="sounds">
+<h4>Sounds<a class="headerlink" href="#sounds" title="Permalink to this heading"></a></h4>
+<section id="environment-music">
+<h5>Environment music<a class="headerlink" href="#environment-music" title="Permalink to this heading"></a></h5>
+<p>The <a class="reference external" href="Source/sparkpy.html#sparkpy.PlaySceneSound">PlaySceneSound()</a> will play background music for the scene. The music will loop by default</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#create office environment</span>
+<span class="linenos"> 4</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">#create robot character at position x=0 y0 z=3</span>
+<span class="linenos"> 7</span><span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">#set animation to dancing</span>
+<span class="linenos">10</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;dancing1&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">#play background music, music will loop by default</span>
+<span class="hll"><span class="linenos">13</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">PlaySceneSound</span><span class="p">(</span><span class="s2">&quot;rockmusic1&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Scene music can be stopped with <a class="reference external" href="Source/sparkpy.html#sparkpy.StopSceneSound">StopSceneSound()</a>
+The current list of music</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 52%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;rockmusic1&quot;</p></td>
+<td><p>&quot;funkymusic1&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="sound-fx">
+<h5>Sound FX<a class="headerlink" href="#sound-fx" title="Permalink to this heading"></a></h5>
+<p>To play a sound effect for a specific character, use <a class="reference external" href="Source/sparkpy.html#sparkpy.PlayCharacterSound">PlayCharacterSound()</a>
+Sound effects do not loop by default</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#simple quiz with sound effects</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">bryceid</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">#input box handler function</span>
+<span class="linenos"> 8</span><span class="k">def</span> <span class="nf">ProcessAnswer</span><span class="p">(</span><span class="n">answer</span><span class="p">):</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>   <span class="c1">#print the recieved text</span>
+<span class="linenos">11</span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input box recieved &quot;</span> <span class="o">+</span> <span class="n">inputText</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>   <span class="c1">#make the answer case insenstive</span>
+<span class="linenos">14</span>   <span class="n">inputText</span> <span class="o">=</span> <span class="n">inputText</span><span class="o">.</span><span class="n">toLower</span><span class="p">()</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>   <span class="k">if</span><span class="p">(</span><span class="n">answer</span> <span class="o">==</span> <span class="s2">&quot;paris&quot;</span><span class="p">):</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>      <span class="c1">#play an apploause sound effect</span>
+<span class="hll"><span class="linenos">19</span>      <span class="n">sparkpy</span><span class="o">.</span><span class="n">PlayCharacterSound</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span> <span class="s2">&quot;applause1&quot;</span><span class="p">)</span>
+</span><span class="linenos">20</span>
+<span class="linenos">21</span>      <span class="c1">#let the user know their answer is correct</span>
+<span class="linenos">22</span>      <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span><span class="s2">&quot;Correct!! &quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>      <span class="c1">#do a victory dance</span>
+<span class="linenos">25</span>      <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;dancing1&quot;</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>   <span class="k">else</span><span class="p">:</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>      <span class="c1">#play a boo sound effect</span>
+<span class="hll"><span class="linenos">30</span>      <span class="n">sparkpy</span><span class="o">.</span><span class="n">PlayCharacterSound</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span> <span class="s2">&quot;boo1&quot;</span><span class="p">)</span>
+</span><span class="linenos">31</span>
+<span class="linenos">32</span>      <span class="c1">#let the user know their answer is correct</span>
+<span class="linenos">33</span>      <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span><span class="s2">&quot;Not correct&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>      <span class="c1">#play a talking animation for the character</span>
+<span class="linenos">36</span>      <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;talking2&quot;</span><span class="p">)</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>   <span class="c1">#once the input has been recieved, do not show the input box anymore</span>
+<span class="linenos">39</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="c1">#create an environment</span>
+<span class="linenos">43</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">)</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="c1">#create a character</span>
+<span class="linenos">46</span><span class="n">bryceid</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s1">&#39;bryce&#39;</span><span class="p">)</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="c1">#play a talking animation for the character</span>
+<span class="linenos">49</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;talking1&quot;</span><span class="p">)</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="c1">#ask the user a question, keep the question on the screen for 20 seconds</span>
+<span class="linenos">52</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span><span class="s2">&quot;What&#39;s the captial of france? &quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span><span class="c1">#set the input box callback function</span>
+<span class="linenos">55</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetInputBoxHandler</span><span class="p">(</span><span class="n">ProcessAnswer</span><span class="p">)</span>
+<span class="linenos">56</span>
+<span class="linenos">57</span><span class="c1">#show input box</span>
+<span class="linenos">58</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">ShowInputBox</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current list of sound effects</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;applause1&quot;</p></td>
+<td><p>&quot;beep1&quot;</p></td>
+<td><p>&quot;beep2&quot;</p></td>
+<td><p>&quot;boo1&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p>&quot;gun1&quot;</p></td>
+<td><p>&quot;gun2&quot;</p></td>
+<td><p>&quot;lose1&quot;</p></td>
+<td><p>&quot;lose2&quot;</p></td>
+</tr>
+<tr class="row-odd"><td><p>&quot;lose3&quot;</p></td>
+<td><p>&quot;swipe1&quot;</p></td>
+<td><p>&quot;swipe2&quot;</p></td>
+<td><p>&quot;transport1&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p>&quot;win1&quot;</p></td>
+<td><p>&quot;win2&quot;</p></td>
+<td><p>&quot;win3&quot;</p></td>
+<td><p>&quot;bounce1&quot;</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 </section>

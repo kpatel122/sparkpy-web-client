@@ -42,6 +42,7 @@
 <li><a class="reference internal" href="#">sparkpy module</a><ul>
 <li><a class="reference internal" href="#sparkpy.BoundsCheckInc"><code class="docutils literal notranslate"><span class="pre">BoundsCheckInc()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Chat"><code class="docutils literal notranslate"><span class="pre">Chat()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.ColiisionHook"><code class="docutils literal notranslate"><span class="pre">ColiisionHook()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.CreateCharacter"><code class="docutils literal notranslate"><span class="pre">CreateCharacter()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.CreateEffect"><code class="docutils literal notranslate"><span class="pre">CreateEffect()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.CreateEnvironment"><code class="docutils literal notranslate"><span class="pre">CreateEnvironment()</span></code></a></li>
@@ -52,6 +53,7 @@
 <li><a class="reference internal" href="#sparkpy.Hide"><code class="docutils literal notranslate"><span class="pre">Hide()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.HideInputBox"><code class="docutils literal notranslate"><span class="pre">HideInputBox()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.HidePrimitive"><code class="docutils literal notranslate"><span class="pre">HidePrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.InputTextHook"><code class="docutils literal notranslate"><span class="pre">InputTextHook()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.LoopPrimitiveMove"><code class="docutils literal notranslate"><span class="pre">LoopPrimitiveMove()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Move"><code class="docutils literal notranslate"><span class="pre">Move()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.MovePrimitive"><code class="docutils literal notranslate"><span class="pre">MovePrimitive()</span></code></a></li>
@@ -66,6 +68,7 @@
 <li><a class="reference internal" href="#sparkpy.SetCollisionHandler"><code class="docutils literal notranslate"><span class="pre">SetCollisionHandler()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetControlMode"><code class="docutils literal notranslate"><span class="pre">SetControlMode()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetEffectColour"><code class="docutils literal notranslate"><span class="pre">SetEffectColour()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetInputBoxHandler"><code class="docutils literal notranslate"><span class="pre">SetInputBoxHandler()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetPrimitiveColour"><code class="docutils literal notranslate"><span class="pre">SetPrimitiveColour()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Show"><code class="docutils literal notranslate"><span class="pre">Show()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ShowInputBox"><code class="docutils literal notranslate"><span class="pre">ShowInputBox()</span></code></a></li>
@@ -75,7 +78,6 @@
 <li><a class="reference internal" href="#sparkpy.StopPrimitiveMove"><code class="docutils literal notranslate"><span class="pre">StopPrimitiveMove()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopPrimitiveRotation"><code class="docutils literal notranslate"><span class="pre">StopPrimitiveRotation()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopSceneSound"><code class="docutils literal notranslate"><span class="pre">StopSceneSound()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.coliisionHook"><code class="docutils literal notranslate"><span class="pre">coliisionHook()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.sleep"><code class="docutils literal notranslate"><span class="pre">sleep()</span></code></a></li>
 </ul>
@@ -134,6 +136,11 @@
 </pre></div>
 </div>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ColiisionHook">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ColiisionHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ColiisionHook" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.CreateCharacter">
@@ -274,6 +281,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.InputTextHook">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">InputTextHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.InputTextHook" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.LoopPrimitiveMove">
@@ -515,6 +527,20 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetInputBoxHandler">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetInputBoxHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetInputBoxHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Assigns a function to handle input box</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>handler</strong> (<em>function pointer</em>) – the function to handle the when input box text is entered, signature should have 1 string parameter that gets set to the input box text e.g. InputHandler(msg)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.SetPrimitiveColour">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetPrimitiveColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">red</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetPrimitiveColour" title="Permalink to this definition"></a></dt>
 <dd><p>sets the colour of a primitive</p>
@@ -551,7 +577,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.ShowInputBox">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ShowInputBox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ShowInputBox" title="Permalink to this definition"></a></dt>
-<dd><p>Shows an input box, event with enetered text will be triggered on div id ‘unity_events’. ‘unity_events.value’ will also hold the result of the text entered</p>
+<dd><p>Shows an input box, event with enetered text will be triggered on div id ‘UNITY_EVENTS_DIV’. ‘UNITY_EVENTS_DIV.value’ will also hold the result of the text entered</p>
 </dd></dl>
 
 <dl class="py function">
@@ -629,11 +655,6 @@
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopSceneSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopSceneSound" title="Permalink to this definition"></a></dt>
 <dd><p>Stops the scene’s audio clip</p>
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="sparkpy.coliisionHook">
-<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">coliisionHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.coliisionHook" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.run">

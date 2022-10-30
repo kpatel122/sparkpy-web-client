@@ -230,39 +230,13 @@ A character can create a chat box using the `Chat <Source/sparkpy.html#sparkpy.H
    sparkpy.Chat(bryce, "Hello World", 5)
 
 """"""""""""""""""""""""""""""""
-Input box
-""""""""""""""""""""""""""""""""
-
-A character can create a chat box using the `Chat <Source/sparkpy.html#sparkpy.Hide>`_ Chat
-
-.. code-block:: python
-   :emphasize-lines: 12
-   
-   import sparkpy
-
-   #textbox example
-
-   #input box handler function
-   def InputEntered(msg):
-      
-      #print the recieved text
-      print("recieved " + msg)
-
-   #create desert environment test
-   sparkpy.CreateEnvironment('desert');
-   
-   #show input box
-   sparkpy.ShowInputBox()
-   
-   #set the callback function
-   sparkpy.SetInputBoxHandler(InputEntered)
-
-
-""""""""""""""""""""""""""""""""
 Control character with keyboard
 """"""""""""""""""""""""""""""""
 
-To move a character with the keyboard, use the  `SetControlMode  <Source/sparkpy.html#sparkpy.SetControlMode>`_ method ::
+To move a character with the keyboard, use the  `SetControlMode()  <Source/sparkpy.html#sparkpy.SetControlMode>`_ method
+
+.. code-block:: python
+   :emphasize-lines: 12
    
    import sparkpy
 
@@ -276,4 +250,233 @@ To move a character with the keyboard, use the  `SetControlMode  <Source/sparkpy
 
    #set control mode to keyboard
    sparkpy.SetControlMode(ybot,"keyboard")
+
+~~~~~~~~~~
+User Input
+~~~~~~~~~~
+
+""""""""""""""""""""""""
+Input box (non blocking)
+""""""""""""""""""""""""
+
+You can get input from the user using the `ShowInputBox() <Source/sparkpy.html#sparkpy.ShowInputBox>`_
+This method accepts a function to call when input has been recieved, the function must accept one parameter which represents the text that was entered in the input box.
+You can hide an input box using `HideInputBox() <Source/sparkpy.html#sparkpy.HideInputBox>`_
+
+.. code-block:: python
+ 
+   import sparkpy
+
+   #inputbox example
+
+   #input box handler function
+   def InputEntered(inputText):
+      
+      #print the recieved text
+      print("input box recieved " + inputText)
+
+      #once the input has been recieved, do not show the input box anymore
+      sparkpy.HideInputBox()
+
+   #create desert environment test
+   sparkpy.CreateEnvironment('desert');
+   
+   #set the callback function
+   sparkpy.SetInputBoxHandler(InputEntered)
+
+   #show input box
+   sparkpy.ShowInputBox()
+ 
+   #any code after ShowInputBox() continues to run regardless if text has been entered 
+   
+.. note:: `ShowInputBox() <Source/sparkpy.html#sparkpy.ShowInputBox>`_ is *asynchronous* (non-blocking) meaning any code *after* the ShowInputBox() will continue
+   to run regardless if text has been entered or not. To make input from the user *synchronous* (blocking) meaning any code *after* the ShowInputBox() can only
+   be run *after* input has been entered, you can use python input(see below)- though this will block the entire application including any animations and character movement or async await for input event() [LINK NEEDED]
+
+""""""""""""""""""""""""
+Input box (blocking)
+""""""""""""""""""""""""
+
+.. code-block:: python
+      
+   #blocking input call
+
+   #create desert environment test
+   sparkpy.CreateEnvironment('desert');
+      
+   #ask the user for a name, note the entire application will be paused 
+   #until a value is entered
+   name = input("Please enter your name")
+
+   #output the name to the console
+   print("Welcome to sparkpy " + name)
+
+~~~~~~~~~~~
+Collisions
+~~~~~~~~~~~
+
+Collisions can be captured between two characters or primitives, using a callback function set with `SetCollisionHandler() <Source/sparkpy.html#sparkpy.SetCollisionHandler>`_ 
+when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided
+
+""""""""""""""""""""""""
+Collision (non blocking)
+""""""""""""""""""""""""
+
+.. code-block:: python
+
+   import sparkpy
+
+   #collision example
+
+   #create collision handler function, the two ids represent the ids of the objects that collided
+   def collision(id1,id2):
+      print("Collision occured between " + str(id1) + "," + str(id2))
+
+   #assign the collision handler function
+   sparkpy.SetCollisionHandler(collision)
+
+   #create an office environment
+   sparkpy.CreateEnvironment("Office")
+
+   #create first character
+   ybot = sparkpy.CreateCharacter("ybot")
+
+   #create seconf character
+   xbot = sparkpy.CreateCharacter("xbot",2,0,0)
+
+   #set control mode to keyboard
+   sparkpy.SetControlMode(ybot,"keyboard")
+
+.. note:: `SetCollisionHandler() <Source/sparkpy.html#sparkpy.SetCollisionHandler>`_ is *asynchronous* (non-blocking) meaning any code *after* the SetCollisionHandler() will continue
+   to run regardless of if a collision has occured or not. To make collision detection *synchronous* (blocking) meaning any code *after* a collision can only
+   be run *after* a collision has occured, use async await for collision event() [LINK NEEDED]
+
+
+""""""""""""""""""""
+Collision (blocking)
+""""""""""""""""""""
+
+TODO
+
+~~~~~~
+Sounds
+~~~~~~
+
+"""""""""""""""""
+Environment music
+"""""""""""""""""
+
+The `PlaySceneSound() <Source/sparkpy.html#sparkpy.PlaySceneSound>`_ will play background music for the scene. The music will loop by default
+
+.. code-block:: python
+   :emphasize-lines: 13
+   
+   import sparkpy
+
+   #create office environment
+   sparkpy.CreateEnvironment("home")
+
+   #create robot character at position x=0 y0 z=3
+   ybot = sparkpy.CreateCharacter("xbot",0,0,3)
+
+   #set animation to dancing
+   sparkpy.SetAnimation(ybot, "dancing1")
+
+   #play background music, music will loop by default
+   sparkpy.PlaySceneSound("rockmusic1")
+
+.. note::
+   
+   Scene music can be stopped with `StopSceneSound() <Source/sparkpy.html#sparkpy.StopSceneSound>`_  
+   The current list of music
+
+   ============== ===============
+   \"rockmusic1\" \"funkymusic1\"   
+   ============== ===============
+
+""""""""
+Sound FX
+""""""""
+
+To play a sound effect for a specific character, use `PlayCharacterSound() <Source/sparkpy.html#sparkpy.PlayCharacterSound>`_ 
+Sound effects do not loop by default
+
+.. code-block:: python
+   :emphasize-lines: 19,30
+ 
+   import sparkpy
+
+   #simple quiz with sound effects
+
+   bryceid = 0
+
+   #input box handler function
+   def ProcessAnswer(answer):
+      
+      #print the recieved text
+      print("input box recieved " + inputText)
+
+      #make the answer case insenstive
+      inputText = inputText.toLower()
+
+      if(answer == "paris"):
+         
+         #play an apploause sound effect
+         sparkpy.PlayCharacterSound(bryceid, "applause1")
+
+         #let the user know their answer is correct 
+         sparkpy.Chat(bryce,"Correct!! ",10)
+         
+         #do a victory dance
+         sparkpy.SetAnimation("dancing1")
+      
+      else:
+
+         #play a boo sound effect
+         sparkpy.PlayCharacterSound(bryceid, "boo1")
+
+         #let the user know their answer is correct 
+         sparkpy.Chat(bryce,"Not correct",10)
+      
+         #play a talking animation for the character
+         sparkpy.SetAnimation(bryceid,"talking2")
+      
+      #once the input has been recieved, do not show the input box anymore
+      sparkpy.HideInputBox()
+         
+
+   #create an environment
+   sparkpy.CreateEnvironment('home')
+
+   #create a character
+   bryceid = sparkpy.CreateCharacter('bryce')
+
+   #play a talking animation for the character
+   sparkpy.SetAnimation(bryceid,"talking1")
+   
+   #ask the user a question, keep the question on the screen for 20 seconds
+   sparkpy.Chat(bryce,"What's the captial of france? ",20)
+
+   #set the input box callback function
+   sparkpy.SetInputBoxHandler(ProcessAnswer)
+
+   #show input box
+   sparkpy.ShowInputBox()
+
+.. note::
+    
+   The current list of sound effects
+
+   +-------------+----------+----------+--------------+
+   |\"applause1\"|\"beep1\" |\"beep2\" |\"boo1\"      |
+   +-------------+----------+----------+--------------+
+   |\"gun1\"     |\"gun2\"  |\"lose1\" |\"lose2\"     |
+   +-------------+----------+----------+--------------+
+   |\"lose3\"    |\"swipe1\"|\"swipe2\"|\"transport1\"|
+   +-------------+----------+----------+--------------+
+   |\"win1\"     |\"win2\"  |\"win3\"  |\"bounce1\"   |
+   +-------------+----------+----------+--------------+
+
+
+
 

@@ -1,3 +1,5 @@
+#reference: https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+
 from browser import document,window,bind,aio
 import traceback
 
@@ -20,7 +22,13 @@ pysparkClass = "Main" #the name of the unity class that contains the lib methods
 CollisionHandler = None #collision function pointer
 InputHandler     = None #input bix function pointer
 
-#reference: https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+#unity events div name
+SPARKPY_EVENT = "unity_events"
+
+#event names set in Unity Plugins/pyslib.jslib
+EVENT_COLLISION = "Collision"
+EVENT_INPUT = "InputText"
+
 
 #must map to unity C# public enum  AppPrimitiveType
 PRIMITIVE_SPHERE = 0
@@ -70,7 +78,7 @@ colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY
             "cyan": COLOUR_CYAN, "red": COLOUR_RED,"black": COLOUR_BLACK, "white": COLOUR_WHITE,
             "blue": COLOUR_BLUE, "green": COLOUR_GREEN}
 
-@bind(document["unity_events"], "InputText")
+@bind(document[SPARKPY_EVENT], EVENT_INPUT)
 def InputTextHook(ev):
     #call the input text box handler
     #check if the handler has been set
@@ -89,7 +97,7 @@ def SetInputBoxHandler(handler):
     global InputHandler
     InputHandler = handler
 
-@bind(document["unity_events"], "Collision")
+@bind(document[SPARKPY_EVENT], EVENT_COLLISION)
 def ColiisionHook(ev):
     if(CollisionHandler != None): #Collision handler is set with SetCollisionHandler call
         CollisionHandler(ev.detail.uid1,ev.detail.uid2) #call the user defined function handler
@@ -509,6 +517,8 @@ def Move(characterID, seconds, speed=1):
 
     return result
 
+#TODO add hide chat
+
 def Chat(characterID, text, seconds):
     '''Displays a chat box above the character with 'text' for 'seconds'
 
@@ -566,7 +576,7 @@ def Chat(characterID, text, seconds):
 
 #examples of input retrival can be found at samples/InputMethods.py
 def ShowInputBox():
-    '''Shows an input box, event with enetered text will be triggered on div id 'unity_events'. 'unity_events.value' will also hold the result of the text entered  
+    '''Shows an input box, event with enetered text will be triggered on div id 'UNITY_EVENTS_DIV'. 'UNITY_EVENTS_DIV.value' will also hold the result of the text entered  
     '''
     unityInstance.SendMessage(pysparkClass, "ShowInputBox")
 
