@@ -50,6 +50,7 @@
 <li><a class="reference internal" href="#sparkpy.CreatePrimitive"><code class="docutils literal notranslate"><span class="pre">CreatePrimitive()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.DestroyPrimitive"><code class="docutils literal notranslate"><span class="pre">DestroyPrimitive()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ErrorMsg"><code class="docutils literal notranslate"><span class="pre">ErrorMsg()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.GetInputBoxValue"><code class="docutils literal notranslate"><span class="pre">GetInputBoxValue()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Hide"><code class="docutils literal notranslate"><span class="pre">Hide()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.HideInputBox"><code class="docutils literal notranslate"><span class="pre">HideInputBox()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.HidePrimitive"><code class="docutils literal notranslate"><span class="pre">HidePrimitive()</span></code></a></li>
@@ -62,6 +63,7 @@
 <li><a class="reference internal" href="#sparkpy.ResetScene"><code class="docutils literal notranslate"><span class="pre">ResetScene()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Rotate"><code class="docutils literal notranslate"><span class="pre">Rotate()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.RotatePrimitive"><code class="docutils literal notranslate"><span class="pre">RotatePrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Run"><code class="docutils literal notranslate"><span class="pre">Run()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ScalePrimative"><code class="docutils literal notranslate"><span class="pre">ScalePrimative()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetAnimation"><code class="docutils literal notranslate"><span class="pre">SetAnimation()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetAnimationSpeed"><code class="docutils literal notranslate"><span class="pre">SetAnimationSpeed()</span></code></a></li>
@@ -73,13 +75,12 @@
 <li><a class="reference internal" href="#sparkpy.Show"><code class="docutils literal notranslate"><span class="pre">Show()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ShowInputBox"><code class="docutils literal notranslate"><span class="pre">ShowInputBox()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ShowPrimitive"><code class="docutils literal notranslate"><span class="pre">ShowPrimitive()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Sleep"><code class="docutils literal notranslate"><span class="pre">Sleep()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopCharacterSound"><code class="docutils literal notranslate"><span class="pre">StopCharacterSound()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopEffect"><code class="docutils literal notranslate"><span class="pre">StopEffect()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopPrimitiveMove"><code class="docutils literal notranslate"><span class="pre">StopPrimitiveMove()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopPrimitiveRotation"><code class="docutils literal notranslate"><span class="pre">StopPrimitiveRotation()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.StopSceneSound"><code class="docutils literal notranslate"><span class="pre">StopSceneSound()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.sleep"><code class="docutils literal notranslate"><span class="pre">sleep()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -247,6 +248,13 @@
 <dt class="sig sig-object py" id="sparkpy.ErrorMsg">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ErrorMsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ErrorMsg" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.GetInputBoxValue">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">GetInputBoxValue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.GetInputBoxValue" title="Permalink to this definition"></a></dt>
+<dd><p>Retrurns the text of an input box, should only be used after <em>await aio.event(SPARKPY_EVENT, EVENT_INPUT)</em> 
+:return: text of input box</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.Hide">
@@ -424,6 +432,20 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Run">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs an async function which allows waits to be used</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>async function</em>) – the async function to run</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.ScalePrimative">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ScalePrimative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primitiveID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ScalePrimative" title="Permalink to this definition"></a></dt>
 <dd><p>non-uniform primative scale</p>
@@ -595,6 +617,11 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.Sleep">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Sleep" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.StopCharacterSound">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopCharacterSound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopCharacterSound" title="Permalink to this definition"></a></dt>
 <dd><p>Stops the character’s sound clip playing</p>
@@ -655,16 +682,6 @@
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">StopSceneSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.StopSceneSound" title="Permalink to this definition"></a></dt>
 <dd><p>Stops the scene’s audio clip</p>
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="sparkpy.run">
-<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="sparkpy.sleep">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.sleep" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </section>
 

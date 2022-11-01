@@ -580,6 +580,12 @@ def ShowInputBox():
     '''
     unityInstance.SendMessage(pysparkClass, "ShowInputBox")
 
+def GetInputBoxValue():
+    ''' Retrurns the text of an input box, should only be used after *await aio.event(SPARKPY_EVENT, EVENT_INPUT)* 
+     :return: text of input box 
+    '''
+    return document[SPARKPY_EVENT].value
+
 def HideInputBox():
     '''Hides an input box 
     '''
@@ -1450,11 +1456,20 @@ def CreateParentChild(parentID, childID):
 
     return result
 
-async def sleep(t):
+async def Sleep(t):
   await aio.sleep(t)
 
 
-def run(func):
+def Run(func):
+    ''' 
+    Runs an async function which allows waits to be used
+
+    :param func: the async function to run
+    :type func: async function
+
+    :return: None
+
+    '''
     aio.run(func())
 
 

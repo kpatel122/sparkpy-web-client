@@ -72,6 +72,12 @@
 <li><a class="reference internal" href="#creating-effects">Creating effects</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#wait">Wait</a><ul>
+<li><a class="reference internal" href="#wait-for-seconds">Wait for seconds</a></li>
+<li><a class="reference internal" href="#wait-for-collision">Wait for collision</a></li>
+<li><a class="reference internal" href="#wait-for-input">Wait for input</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#primitives">Primitives</a><ul>
 <li><a class="reference internal" href="#create-primitive">Create Primitive</a></li>
 <li><a class="reference internal" href="#set-primitive-colour">Set Primitive Colour</a></li>
@@ -626,6 +632,131 @@ An effecct can be stopped with <a class="reference external" href="Source/sparkp
 </tr>
 </tbody>
 </table>
+</div>
+</section>
+</section>
+<section id="wait">
+<h4>Wait<a class="headerlink" href="#wait" title="Permalink to this heading"></a></h4>
+<section id="wait-for-seconds">
+<h5>Wait for seconds<a class="headerlink" href="#wait-for-seconds" title="Permalink to this heading"></a></h5>
+<p>To pause your program for a specific amount of time, use <em>aio.sleep</em> (see line 22 of the example)
+In order to use aio.sleep your program must be written in an <em>async</em> function (see line 7 of the example), this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see line 28 of the example). Waits are performed using <em>await aio.sleep()</em> which is available after an import of the aio module from browser(see line 4 of the example)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#must import aio for await to work</span>
+<span class="hll"><span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+</span><span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">#programs with sleep with be written inside an async function</span>
+<span class="hll"><span class="linenos"> 7</span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class="linenos"> 8</span>
+<span class="linenos"> 9</span>   <span class="c1">#create office environment</span>
+<span class="linenos">10</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>   <span class="c1">#create robot character at position x=0 y0 z=3</span>
+<span class="linenos">13</span>   <span class="n">xbotid</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>   <span class="c1">#set animation to walk</span>
+<span class="linenos">16</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">xbotid</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>   <span class="c1">#move the character for 3 seconds</span>
+<span class="linenos">19</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="n">xbotid</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>   <span class="c1">#sleep for 3 seconds</span>
+<span class="hll"><span class="linenos">22</span>   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class="linenos">23</span>
+<span class="linenos">24</span>   <span class="c1">#set the animation back to idle</span>
+<span class="linenos">25</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">xbotid</span><span class="p">,</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="c1">#run the async function</span>
+<span class="hll"><span class="linenos">28</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="wait-for-collision">
+<h5>Wait for collision<a class="headerlink" href="#wait-for-collision" title="Permalink to this heading"></a></h5>
+<p>To pause your program until a collision has occured use <em>await aio.event(SPARKPY_EVENT, EVENT_COLLISION)</em> (see line 30 of the example)
+In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function (see line 13 of the example), this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see line 35 of the example).  <em>await aio.event</em> is available after the aio module is imported from browser (see line 4 of the example)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#must import aio for await to work</span>
+<span class="hll"><span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+</span><span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">#collision example</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create collision handler function, the two ids represent the ids of the objects that collided</span>
+<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">collision</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="n">id2</span><span class="p">):</span>
+<span class="linenos">10</span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collision occured between &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id2</span><span class="p">))</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">#programs with await must be written inside an async function</span>
+<span class="hll"><span class="linenos">13</span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class="linenos">14</span>   <span class="c1">#assign the collision handler function</span>
+<span class="linenos">15</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetCollisionHandler</span><span class="p">(</span><span class="n">collision</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>   <span class="c1">#create an office environment</span>
+<span class="linenos">18</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>   <span class="c1">#create first character</span>
+<span class="linenos">21</span>   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>   <span class="c1">#create seconf character</span>
+<span class="linenos">24</span>   <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>   <span class="c1">#set control mode to keyboard</span>
+<span class="linenos">27</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>   <span class="c1">#wait for the collision to occur, no code below this will run until a collision happens</span>
+<span class="hll"><span class="linenos">30</span>   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">SPARKPY_EVENT</span><span class="p">,</span> <span class="n">EVENT_COLLISION</span><span class="p">)</span>
+</span><span class="linenos">31</span>
+<span class="linenos">32</span>   <span class="c1">#this can only run after a collsion event has happened</span>
+<span class="linenos">33</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;I have collided!&quot;</span><span class="p">)</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span><span class="c1">#run the async function</span>
+<span class="hll"><span class="linenos">36</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="wait-for-input">
+<h5>Wait for input<a class="headerlink" href="#wait-for-input" title="Permalink to this heading"></a></h5>
+<p>To pause your program until user has entered text use <em>await aio.event(SPARKPY_EVENT, EVENT_INPUT)</em> (see line 21 of the example)
+In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function (see line 7 of the example), this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see line 33 of the example).  <em>await aio.event</em> is available after the aio module is imported from browser (see line 4 of the example)
+Text entered into the input box can be retrieved using <a class="reference external" href="Source/sparkpy.html#sparkpy.GetInputBoxValue">GetInputBoxValue()</a> (see line 24 of the example).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#must import aio for await to work</span>
+<span class="hll"><span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+</span><span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">#programs with await must be written inside an async function</span>
+<span class="hll"><span class="linenos"> 7</span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class="linenos"> 8</span>   <span class="c1">#create desert environment test</span>
+<span class="linenos"> 9</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>   <span class="c1">#create first character</span>
+<span class="linenos">12</span>   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>   <span class="c1">#ask the user a question</span>
+<span class="linenos">15</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Hi, What&#39;s your name ? &quot;</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>   <span class="c1">#show an input box, for the user to enter an answer</span>
+<span class="linenos">18</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">ShowInputBox</span><span class="p">()</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>   <span class="c1">#wait until text has been entered. Code below this line will not execute until text is entered</span>
+<span class="hll"><span class="linenos">21</span>   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">SPARKPY_EVENT</span><span class="p">,</span> <span class="n">EVENT_INPUT</span><span class="p">)</span>
+</span><span class="linenos">22</span>
+<span class="linenos">23</span>   <span class="c1">#text has been entered, retrieve the value that was entered</span>
+<span class="hll"><span class="linenos">24</span>   <span class="n">name</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">GetInputBoxValue</span><span class="p">()</span>
+</span><span class="linenos">25</span>
+<span class="linenos">26</span>   <span class="c1">#out message to user, with the value they entered</span>
+<span class="linenos">27</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>   <span class="c1">#hide the input box</span>
+<span class="linenos">30</span>   <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="c1">#run the async function</span>
+<span class="hll"><span class="linenos">33</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</span></pre></div>
 </div>
 </section>
 </section>

@@ -491,7 +491,6 @@ The colour of the effect can be set with `SetEffectColour() <Source/sparkpy.html
 An effecct can be stopped with `StopEffect() <Source/sparkpy.html#sparkpy.StopEffect>`_
 
 .. code-block:: python
-   
 
    import sparkpy
 
@@ -523,6 +522,145 @@ An effecct can be stopped with `StopEffect() <Source/sparkpy.html#sparkpy.StopEf
    +-------------+----------+----------+-----------+
    |\"blue\"     |\"green\" |          |           |
    +-------------+----------+----------+-----------+
+
+~~~~~
+Wait
+~~~~~
+
+""""""""""""""""""
+Wait for seconds
+""""""""""""""""""
+To pause your program for a specific amount of time, use *aio.sleep* (see line 22 of the example)
+In order to use aio.sleep your program must be written in an *async* function (see line 7 of the example), this function should be called with 
+`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see line 28 of the example). Waits are performed using *await aio.sleep()* which is available after an import of the aio module from browser(see line 4 of the example)
+
+
+.. code-block:: python
+   :emphasize-lines: 4,7,22,28
+   
+   import sparkpy
+
+   #must import aio for await to work
+   from browser import aio
+
+   #programs with sleep with be written inside an async function 
+   async def main():
+
+      #create office environment
+      sparkpy.CreateEnvironment("forest")
+
+      #create robot character at position x=0 y0 z=3
+      xbotid = sparkpy.CreateCharacter("xbot",0,0,3)
+
+      #set animation to walk
+      sparkpy.SetAnimation(xbotid, "Walk")
+
+      #move the character for 3 seconds
+      sparkpy.Move(xbotid,3)
+
+      #sleep for 3 seconds
+      await aio.sleep(3)
+
+      #set the animation back to idle 
+      sparkpy.SetAnimation(xbotid,"idle")
+   
+   #run the async function
+   sparkpy.Run(main)
+
+
+""""""""""""""""""""
+Wait for collision
+""""""""""""""""""""
+
+To pause your program until a collision has occured use *await aio.event(SPARKPY_EVENT, EVENT_COLLISION)* (see line 30 of the example)
+In order to use *await aio.event* your program must be written in an *async* function (see line 13 of the example), this function should be called with 
+`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see line 35 of the example).  *await aio.event* is available after the aio module is imported from browser (see line 4 of the example)
+
+.. code-block:: python
+   :emphasize-lines: 4,13,30,36
+   
+   import sparkpy
+   
+   #must import aio for await to work
+   from browser import aio
+
+   #collision example
+
+   #create collision handler function, the two ids represent the ids of the objects that collided
+   def collision(id1,id2):
+      print("Collision occured between " + str(id1) + "," + str(id2))
+
+   #programs with await must be written inside an async function 
+   async def main():
+      #assign the collision handler function
+      sparkpy.SetCollisionHandler(collision)
+
+      #create an office environment
+      sparkpy.CreateEnvironment("Office")
+
+      #create first character
+      ybot = sparkpy.CreateCharacter("ybot")
+
+      #create seconf character
+      xbot = sparkpy.CreateCharacter("xbot",2,0,0)
+
+      #set control mode to keyboard
+      sparkpy.SetControlMode(ybot,"keyboard")
+
+      #wait for the collision to occur, no code below this will run until a collision happens
+      await aio.event(SPARKPY_EVENT, EVENT_COLLISION)
+
+      #this can only run after a collsion event has happened 
+      sparkpy.Chat(ybot, "I have collided!")
+   
+   #run the async function
+   sparkpy.Run(main)
+
+""""""""""""""""""""
+Wait for input
+""""""""""""""""""""
+
+To pause your program until user has entered text use *await aio.event(SPARKPY_EVENT, EVENT_INPUT)* (see line 21 of the example)
+In order to use *await aio.event* your program must be written in an *async* function (see line 7 of the example), this function should be called with 
+`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see line 33 of the example).  *await aio.event* is available after the aio module is imported from browser (see line 4 of the example)
+Text entered into the input box can be retrieved using `GetInputBoxValue() <Source/sparkpy.html#sparkpy.GetInputBoxValue>`_ (see line 24 of the example). 
+
+.. code-block:: python
+   :emphasize-lines: 4,7,21,24, 33
+
+   import sparkpy
+   
+   #must import aio for await to work
+   from browser import aio
+
+   #programs with await must be written inside an async function 
+   async def main():
+      #create desert environment test
+      sparkpy.CreateEnvironment('desert');
+         
+      #create first character
+      ybot = sparkpy.CreateCharacter("ybot")
+
+      #ask the user a question
+      sparkpy.Chat(ybot, "Hi, What's your name ? ")
+
+      #show an input box, for the user to enter an answer
+      sparkpy.ShowInputBox()
+
+      #wait until text has been entered. Code below this line will not execute until text is entered
+      await aio.event(SPARKPY_EVENT, EVENT_INPUT)
+
+      #text has been entered, retrieve the value that was entered 
+      name = sparkpy.GetInputBoxValue()
+
+      #out message to user, with the value they entered
+      sparkpy.Chat(ybot, "Welcome to sparkpy " + name)
+
+      #hide the input box
+      sparkpy.HideInputBox()
+
+   #run the async function
+   sparkpy.Run(main)
 
 ~~~~~~~~~~
 Primitives
