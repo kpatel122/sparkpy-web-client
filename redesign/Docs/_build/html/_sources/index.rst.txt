@@ -479,4 +479,202 @@ Sound effects do not loop by default
 
 
 
+~~~~~~~~
+Effects
+~~~~~~~~
+""""""""""""""""
+Creating effects
+""""""""""""""""
+
+The `CreateEffect() <Source/sparkpy.html#sparkpy.CreateEffect>`_ will create a special effect, it's default position is 0
+The colour of the effect can be set with `SetEffectColour() <Source/sparkpy.html#sparkpy.SetEffectColour>`_
+An effecct can be stopped with `StopEffect() <Source/sparkpy.html#sparkpy.StopEffect>`_
+
+.. code-block:: python
+   
+
+   import sparkpy
+
+   #special effects example
+
+   #create office environment
+   sparkpy.CreateEnvironment("office")
+
+   #create a portal effect
+   eid=sparkpy.CreateEffect("portal")
+
+   #set colour to red from default
+   sparkpy.SetEffectColour(eid,"red")
+
+.. note::
+    
+   The current list of effects:
+
+   +-------------+
+   |\"portal\"   |
+   +-------------+
+
+   The current list of colours:
+
+   +-------------+----------+----------+-----------+
+   |\"yellow\"   |\"clear\" |\"grey\"  |\"magenta\"|
+   +-------------+----------+----------+-----------+
+   |\"cyan\"     |\"red\"   |\"black\" |\"white\"  |
+   +-------------+----------+----------+-----------+
+   |\"blue\"     |\"green\" |          |           |
+   +-------------+----------+----------+-----------+
+
+~~~~~~~~~~
+Primitives
+~~~~~~~~~~
+
+""""""""""""""""""""
+Create Primitive
+""""""""""""""""""""
+Primitives are simple shapes that have no animations attached to them.
+To create a primitive use the `CreatePrimitive() <Source/sparkpy.html#sparkpy.CreatePrimitive>`_ method
+
+.. code-block:: python
+   
+
+   import sparkpy
+
+   #make a cube at position x=0 , y=1, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+    
+.. note:: The current list of primitive:
+
+   +-------------+-----------+------------+
+   |\"sphere\"   |\"capsule\"|\"cylinder\"|
+   +-------------+-----------+------------+
+   |\"plane\"    |\"quad\"   |\"cube\"    |
+   +-------------+-----------+------------+
+   
+   To hide a created primitive, use the `HidePrimitive() <Source/sparkpy.html#sparkpy.HidePrimitive>`_ method
+   To show a previously hidden primitive, use the `ShowPrimitive() <Source/sparkpy.html#sparkpy.ShowPrimitive>`_ method
+
+""""""""""""""""""""
+Set Primitive Colour
+""""""""""""""""""""
+To set the colour of a primitive, use the `SetPrimitiveColour() <Source/sparkpy.html#sparkpy.SetPrimitiveColour>`_ method.
+The method accepts the levels of red, green and blue was values between 0-1. The transparancy of a primitive can also be set as a avlue between 0 (fully invisible) to 1 (fully opaque)
+
+.. code-block:: python
+   
+
+   import sparkpy
+
+   #make a cube at position x=0 , y=1, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   
+   #set the colour to red 
+   sparkpy.SetPrimitiveColour(1,0,0)
+
+
+""""""""""""""""""""
+Destroy Primitive
+""""""""""""""""""""
+If a primitive is no longer needed in the program `DestroyPrimitive() <Source/sparkpy.html#sparkpy.DestroyPrimitive>`_
+will remove the primitive completely
+
+.. code-block:: python
+   
+
+   import sparkpy
+
+   #make a cube at position x=0 , y=1, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+
+   #the cube is no longer needed, remove it
+   sparkpy.DestroyPrimitive(cubeID)
+
+""""""""""""""""""""""""""
+Scale Primative
+""""""""""""""""""""""""""
+   
+To make a primitive bigger or smaller, use the
+`ScalePrimative() <Source/sparkpy.html#sparkpy.ScalePrimative>`_ method
+
+.. code-block:: python
+   
+   import sparkpy
+
+   #make a cube at position x=0 , y=1, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+
+   #double the size of the cube
+   sparkpy.ScalePrimative(cubeID, 2)
+
+.. note:: 
+   to scale in a specific direction (non-uniform scale), provide the sizes
+   of the x,y,z scale when using ScalePrimative() <Source/sparkpy.html#sparkpy.ScalePrimative>`_
+   
+   .. code-block:: python
+
+      import sparkpy
+
+      #make a cube at position x=0 , y=1, z=0
+      cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+
+      #double the size of the cube, along the x and z axis
+      sparkpy.ScalePrimative(cubeID, 2,1,2)
+
+""""""""""""""""""""
+Rotate Primitive
+""""""""""""""""""""
+To rotate a primitive, use the `RotatePrimitive() <Source/sparkpy.html#sparkpy.RotatePrimitive>`_ 
+by default primitives are rotated around their y (up) axis
+
+.. code-block:: python
+
+      import sparkpy
+
+      #make a cube at position x=0 , y=1, z=0
+      cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+
+      #rotate the cube at a speed of 90 degrees per second
+      sparkpy.RotatePrimitive(cubeID, 90)
+
+""""""""""""""""""""
+Move Primitive
+""""""""""""""""""""
+To move a primitive, use the `MovePrimitive() <Source/sparkpy.html#sparkpy.MovePrimitive>`_ method.
+
+.. code-block:: python
+
+      import sparkpy
+
+      #make a cube at position x=0 , y=1, z=0
+      cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+
+      #move the cube to right at a speed of 10 for 2 seconds 
+      cubeID = sparkpy.MovePrimitive(cubeID, 2, 10, "right")
+    
+.. note:: direction values can be:
+
+   +------+--------+--------+---------+
+   |\"up\"|\"down\"|\"left\"|\"right\"|
+   +------+--------+--------+---------+
+    
+
+""""""""""""""""""""
+Loop Primitive Move
+""""""""""""""""""""
+To make a primitive continuously move between two points, use the `LoopPrimitiveMove() <Source/sparkpy.html#sparkpy.LoopPrimitiveMove>`_ 
+
+.. code-block:: python
+
+   #make a cube
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+    
+   #loop move from right to left and back again for 2 seconds at a speed of 1. 
+   sparkpy.LoopPrimitiveMove(cubeID, 2, 1, "right")
+ 
+
+
+
+
+   
+
+    
 

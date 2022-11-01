@@ -68,6 +68,20 @@
 <li><a class="reference internal" href="#sound-fx">Sound FX</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#effects">Effects</a><ul>
+<li><a class="reference internal" href="#creating-effects">Creating effects</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#primitives">Primitives</a><ul>
+<li><a class="reference internal" href="#create-primitive">Create Primitive</a></li>
+<li><a class="reference internal" href="#set-primitive-colour">Set Primitive Colour</a></li>
+<li><a class="reference internal" href="#destroy-primitive">Destroy Primitive</a></li>
+<li><a class="reference internal" href="#scale-primative">Scale Primative</a></li>
+<li><a class="reference internal" href="#rotate-primitive">Rotate Primitive</a></li>
+<li><a class="reference internal" href="#move-primitive">Move Primitive</a></li>
+<li><a class="reference internal" href="#loop-primitive-move">Loop Primitive Move</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -550,6 +564,218 @@ Sound effects do not loop by default</p>
 </tr>
 </tbody>
 </table>
+</div>
+</section>
+</section>
+<section id="effects">
+<h4>Effects<a class="headerlink" href="#effects" title="Permalink to this heading"></a></h4>
+<section id="creating-effects">
+<h5>Creating effects<a class="headerlink" href="#creating-effects" title="Permalink to this heading"></a></h5>
+<p>The <a class="reference external" href="Source/sparkpy.html#sparkpy.CreateEffect">CreateEffect()</a> will create a special effect, it’s default position is 0
+The colour of the effect can be set with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetEffectColour">SetEffectColour()</a>
+An effecct can be stopped with <a class="reference external" href="Source/sparkpy.html#sparkpy.StopEffect">StopEffect()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">#special effects example</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">#create office environment</span>
+<span class="linenos"> 6</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;office&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">#create a portal effect</span>
+<span class="linenos"> 9</span><span class="n">eid</span><span class="o">=</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEffect</span><span class="p">(</span><span class="s2">&quot;portal&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">#set colour to red from default</span>
+<span class="linenos">12</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetEffectColour</span><span class="p">(</span><span class="n">eid</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current list of effects:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;portal&quot;</p></td>
+</tr>
+</tbody>
+</table>
+<p>The current list of colours:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;yellow&quot;</p></td>
+<td><p>&quot;clear&quot;</p></td>
+<td><p>&quot;grey&quot;</p></td>
+<td><p>&quot;magenta&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p>&quot;cyan&quot;</p></td>
+<td><p>&quot;red&quot;</p></td>
+<td><p>&quot;black&quot;</p></td>
+<td><p>&quot;white&quot;</p></td>
+</tr>
+<tr class="row-odd"><td><p>&quot;blue&quot;</p></td>
+<td><p>&quot;green&quot;</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="primitives">
+<h4>Primitives<a class="headerlink" href="#primitives" title="Permalink to this heading"></a></h4>
+<section id="create-primitive">
+<h5>Create Primitive<a class="headerlink" href="#create-primitive" title="Permalink to this heading"></a></h5>
+<p>Primitives are simple shapes that have no animations attached to them.
+To create a primitive use the <a class="reference external" href="Source/sparkpy.html#sparkpy.CreatePrimitive">CreatePrimitive()</a> method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current list of primitive:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 31%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;sphere&quot;</p></td>
+<td><p>&quot;capsule&quot;</p></td>
+<td><p>&quot;cylinder&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p>&quot;plane&quot;</p></td>
+<td><p>&quot;quad&quot;</p></td>
+<td><p>&quot;cube&quot;</p></td>
+</tr>
+</tbody>
+</table>
+<p>To hide a created primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.HidePrimitive">HidePrimitive()</a> method
+To show a previously hidden primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.ShowPrimitive">ShowPrimitive()</a> method</p>
+</div>
+</section>
+<section id="set-primitive-colour">
+<h5>Set Primitive Colour<a class="headerlink" href="#set-primitive-colour" title="Permalink to this heading"></a></h5>
+<p>To set the colour of a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.SetPrimitiveColour">SetPrimitiveColour()</a> method.
+The method accepts the levels of red, green and blue was values between 0-1. The transparancy of a primitive can also be set as a avlue between 0 (fully invisible) to 1 (fully opaque)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#set the colour to red</span>
+<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetPrimitiveColour</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="destroy-primitive">
+<h5>Destroy Primitive<a class="headerlink" href="#destroy-primitive" title="Permalink to this heading"></a></h5>
+<p>If a primitive is no longer needed in the program <a class="reference external" href="Source/sparkpy.html#sparkpy.DestroyPrimitive">DestroyPrimitive()</a>
+will remove the primitive completely</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#the cube is no longer needed, remove it</span>
+<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">DestroyPrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scale-primative">
+<h5>Scale Primative<a class="headerlink" href="#scale-primative" title="Permalink to this heading"></a></h5>
+<p>To make a primitive bigger or smaller, use the
+<a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimative">ScalePrimative()</a> method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#double the size of the cube</span>
+<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimative</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>to scale in a specific direction (non-uniform scale), provide the sizes
+of the x,y,z scale when using ScalePrimative() &lt;Source/sparkpy.html#sparkpy.ScalePrimative&gt;`_</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#double the size of the cube, along the x and z axis</span>
+<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimative</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="rotate-primitive">
+<h5>Rotate Primitive<a class="headerlink" href="#rotate-primitive" title="Permalink to this heading"></a></h5>
+<p>To rotate a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.RotatePrimitive">RotatePrimitive()</a>
+by default primitives are rotated around their y (up) axis</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#rotate the cube at a speed of 90 degrees per second</span>
+<span class="linenos">7</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">RotatePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="move-primitive">
+<h5>Move Primitive<a class="headerlink" href="#move-primitive" title="Permalink to this heading"></a></h5>
+<p>To move a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.MovePrimitive">MovePrimitive()</a> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">sparkpy</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="linenos">4</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#move the cube to right at a speed of 10 for 2 seconds</span>
+<span class="linenos">7</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">MovePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>direction values can be:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;up&quot;</p></td>
+<td><p>&quot;down&quot;</p></td>
+<td><p>&quot;left&quot;</p></td>
+<td><p>&quot;right&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="loop-primitive-move">
+<h5>Loop Primitive Move<a class="headerlink" href="#loop-primitive-move" title="Permalink to this heading"></a></h5>
+<p>To make a primitive continuously move between two points, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.LoopPrimitiveMove">LoopPrimitiveMove()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">#make a cube</span>
+<span class="linenos">2</span><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="c1">#loop move from right to left and back again for 2 seconds at a speed of 1.</span>
+<span class="linenos">5</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">LoopPrimitiveMove</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 </section>
 </section>
