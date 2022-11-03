@@ -147,7 +147,7 @@ def CreateEnvironment(environmentName, location=0):
     try:
         environmentNameString = str(environmentName)
         environmentName = environmentName.lower() #make case insensitive
-        
+
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter environment name was not a string. environmentName=" +environmentName)
         return 0
@@ -537,11 +537,6 @@ def Chat(characterID, text, seconds):
 
     :return: 0 on failure or 1 on success
 
-    .. code-block:: python
-        :linenos:
-        
-        #https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#showing-code-examples
-        print('hello world')
     '''
 
     methodName = "ChatBubble" #used for error messages
@@ -1105,9 +1100,6 @@ def DestroyPrimitive(primitiveID):
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter primitiveID was not a int. primitiveID=\'"+ str(primitiveID) + "\'")
         return 0
-
-
-    print("Destroy called")
 
     #call the unity function
     unityInstance.SendMessage(pysparkClass, "DestroyPrimitive",primitiveID)

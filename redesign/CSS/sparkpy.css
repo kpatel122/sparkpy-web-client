@@ -17,6 +17,12 @@
     color: var(--navbar_text_colour);
 }
 
+.sparkpy-fonts{
+
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+
+}
+
 .logo-title{
     
     margin: .5rem auto;
