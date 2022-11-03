@@ -142,10 +142,12 @@ def CreateEnvironment(environmentName, location=0):
     :return: None
     '''
     methodName = "CreateEnvironment" #used for error messages
-    
+
     #data type checks
     try:
         environmentNameString = str(environmentName)
+        environmentName = environmentName.lower() #make case insensitive
+        
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter environment name was not a string. environmentName=" +environmentName)
         return 0
@@ -177,6 +179,8 @@ def CreateCharacter(characterName,x=0,y=0,z=0):
     
     :return: characterID (int)- unique ID of the character
     '''
+    characterName = characterName.lower() #make case insensitive
+
     #create parameter string
     params = characterName + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)
     
