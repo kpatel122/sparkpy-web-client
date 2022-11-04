@@ -1203,7 +1203,8 @@ def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
 
     return result
 
-def ScalePrimative(primitiveID,size):
+ 
+def ScalePrimitive(primitiveID,size):
     '''uniform primative scale
 
     :param primitiveID: primitiveID  
@@ -1214,14 +1215,14 @@ def ScalePrimative(primitiveID,size):
     
     '''
     #wrapper call
-    result = ScalePrimative(primitiveID,size,size,size)
+    result = ScalePrimitiveNonUniform(primitiveID,size,size,size)
     return result
 
 
-
-def ScalePrimative(primitiveID,x,y,z):
+ 
+def ScalePrimitiveNonUniform(primitiveID,x,y,z):
     '''non-uniform primative scale
-    
+
     :param primitiveID: primitiveID  
     :type primitiveID: int
     
@@ -1237,7 +1238,7 @@ def ScalePrimative(primitiveID,x,y,z):
     :return: 1 on success,0 on failure
     '''
 
-    methodName = "ScalePrimative"
+    methodName = "ScalePrimitive"
     
     #data type checks
     try:

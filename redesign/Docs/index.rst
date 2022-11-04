@@ -45,9 +45,10 @@ Indices and tables
 
 
 * `Full API Reference <Source/sparkpy.html>`_  
- 
+
+.. to get line numbers back change :linenothreshold: 1 
 .. highlight:: python 
-   :linenothreshold: 1
+   :linenothreshold: 99 
 
 -------------
 Introduction
@@ -687,9 +688,12 @@ Primitives are simple shapes that have no animations attached to them.
 To create a primitive use the `CreatePrimitive() <Source/sparkpy.html#sparkpy.CreatePrimitive>`_ method
 
 .. code-block:: python
+   :emphasize-lines: 7
    
-
    import sparkpy
+
+   #create an environment
+   sparkpy.CreateEnvironment('forest')
 
    #make a cube at position x=0 , y=1, z=0
    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
@@ -712,15 +716,18 @@ To set the colour of a primitive, use the `SetPrimitiveColour() <Source/sparkpy.
 The method accepts the levels of red, green and blue was values between 0-1. The transparancy of a primitive can also be set as a avlue between 0 (fully invisible) to 1 (fully opaque)
 
 .. code-block:: python
+   :emphasize-lines: 10
    
-
    import sparkpy
+
+   #create an environment
+   sparkpy.CreateEnvironment('forest')
 
    #make a cube at position x=0 , y=1, z=0
    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
    
    #set the colour to red 
-   sparkpy.SetPrimitiveColour(1,0,0)
+   sparkpy.SetPrimitiveColour(cubeID,1,0,0)
 
 
 """"""""""""""""""""
@@ -730,9 +737,12 @@ If a primitive is no longer needed in the program `DestroyPrimitive() <Source/sp
 will remove the primitive completely
 
 .. code-block:: python
-   
+   :emphasize-lines: 10
 
    import sparkpy
+
+   #create an environment
+   sparkpy.CreateEnvironment('forest')
 
    #make a cube at position x=0 , y=1, z=0
    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
@@ -741,15 +751,19 @@ will remove the primitive completely
    sparkpy.DestroyPrimitive(cubeID)
 
 """"""""""""""""""""""""""
-Scale Primative
+Scale Primitive
 """"""""""""""""""""""""""
    
 To make a primitive bigger or smaller, use the
 `ScalePrimative() <Source/sparkpy.html#sparkpy.ScalePrimative>`_ method
 
 .. code-block:: python
+   :emphasize-lines: 10
    
    import sparkpy
+
+   #create an environment
+   sparkpy.CreateEnvironment('forest')
 
    #make a cube at position x=0 , y=1, z=0
    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
@@ -759,7 +773,7 @@ To make a primitive bigger or smaller, use the
 
 .. note:: 
    to scale in a specific direction (non-uniform scale), provide the sizes
-   of the x,y,z scale when using ScalePrimative() <Source/sparkpy.html#sparkpy.ScalePrimative>`_
+   of the x,y,z scale when using `ScalePrimitive() <Source/sparkpy.html#sparkpy.ScalePrimative>`_
    
    .. code-block:: python
 
