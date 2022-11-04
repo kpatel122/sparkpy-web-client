@@ -146,7 +146,7 @@ def CreateEnvironment(environmentName, location=0):
     #data type checks
     try:
         environmentNameString = str(environmentName)
-        environmentName = environmentName.lower() #make case insensitive
+        environmentNameString = environmentNameString.lower() #make case insensitive
 
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter environment name was not a string. environmentName=" +environmentName)
