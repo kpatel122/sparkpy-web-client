@@ -3,7 +3,7 @@ import sparkpy
 #create environmeny and character example
 
 #create office environment
-sparkpy.CreateEnvironment("Office")
+sparkpy.CreateEnvironment("office")
 
 #create robot character
-sparkpy.CreateCharacter("YBot2")
+sparkpy.CreateCharacter("YBot")

@@ -116,7 +116,7 @@ Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#spa
    sparkpy.CreateEnvironment("Office")
 
    #create robot character
-   ybot = sparkpy.CreateCharacter("YBot2")
+   ybot = sparkpy.CreateCharacter("YBot")
 
    #set animation to walk
    sparkpy.SetAnimation(ybot, "Walk")
@@ -150,13 +150,13 @@ A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Me
    sparkpy.CreateEnvironment("forest")
 
    #create robot character at position x=0 y0 z=3
-   ybot = sparkpy.CreateCharacter("xbot",0,0,3)
+   xbot = sparkpy.CreateCharacter("xbot",0,0,3)
 
    #set animation to walk
-   sparkpy.SetAnimation(ybot, "Walk")
+   sparkpy.SetAnimation(xbot, "Walk")
 
    #move the character for 5 seconds
-   sparkpy.Move(ybot,5)
+   sparkpy.Move(xbot,10)
    
 .. note:: you will notice that the character's animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED] 
 
@@ -176,8 +176,8 @@ A character can be rotated using the `Rotate <Source/sparkpy.html#sparkpy.Rotate
    #create office environment
    sparkpy.CreateEnvironment("home")
 
-   #create robot character at position x=0 y0 z=3
-   bryce = sparkpy.CreateCharacter("bryce",0,0,3)
+   #create a character at position 0,0,1
+   bryce = sparkpy.CreateCharacter("bryce")
 
    #rotate 90 degres in 2 seconds, in the counter clockwise direction 
    sparkpy.Rotate(bryce,90, 2, "ccw")
@@ -211,7 +211,7 @@ A character can be hidden (invisible) using the `Hide <Source/sparkpy.html#spark
 Character chat
 """"""""""""""""""""""""""""""""
 
-A character can create a chat box using the `Chat <Source/sparkpy.html#sparkpy.Hide>`_ Chat
+A character can create a chat box using the `Chat() <Source/sparkpy.html#sparkpy.Chat>`_
 
 .. code-block:: python
    :emphasize-lines: 12
@@ -278,8 +278,14 @@ You can hide an input box using `HideInputBox() <Source/sparkpy.html#sparkpy.Hid
       #once the input has been recieved, do not show the input box anymore
       sparkpy.HideInputBox()
 
+      #set the chat box text to the input
+      sparkpy.Chat(michelle, "You said " + inputText)
+
    #create desert environment test
    sparkpy.CreateEnvironment('desert');
+
+   #create a character
+   michelle = sparkpy.CreateCharacter("michelle")
    
    #set the callback function
    sparkpy.SetInputBoxHandler(InputEntered)
@@ -298,11 +304,16 @@ Input box (blocking)
 """"""""""""""""""""""""
 
 .. code-block:: python
+   
+   import sparkpy
       
    #blocking input call
 
    #create desert environment test
-   sparkpy.CreateEnvironment('desert');
+   sparkpy.CreateEnvironment('desert')
+
+   #create a character
+   lewis = sparkpy.CreateCharacter("lewis")
       
    #ask the user for a name, note the entire application will be paused 
    #until a value is entered
@@ -310,6 +321,9 @@ Input box (blocking)
 
    #output the name to the console
    print("Welcome to sparkpy " + name)
+
+   #create a chat box with the entered text
+   sparkpy.Chat(lewis,"Welcome to sparkpy " + name)
 
 ~~~~~~~~~~~
 Collisions
@@ -376,14 +390,14 @@ The `PlaySceneSound() <Source/sparkpy.html#sparkpy.PlaySceneSound>`_ will play b
    #create office environment
    sparkpy.CreateEnvironment("home")
 
-   #create robot character at position x=0 y0 z=3
-   ybot = sparkpy.CreateCharacter("xbot",0,0,3)
+   #create robot character
+   xbot = sparkpy.CreateCharacter("xbot")
 
    #set animation to dancing
-   sparkpy.SetAnimation(ybot, "dancing1")
+   sparkpy.SetAnimation(xbot, "dancing1")
 
    #play background music, music will loop by default
-   sparkpy.PlaySceneSound("rockmusic1")
+   sparkpy.PlaySceneSound("funkymusic1")
 
 .. note::
    
@@ -402,8 +416,8 @@ To play a sound effect for a specific character, use `PlayCharacterSound() <Sour
 Sound effects do not loop by default
 
 .. code-block:: python
-   :emphasize-lines: 19,30
- 
+   :emphasize-lines: 20,31
+
    import sparkpy
 
    #simple quiz with sound effects
@@ -412,38 +426,39 @@ Sound effects do not loop by default
 
    #input box handler function
    def ProcessAnswer(answer):
-      
+
       #print the recieved text
-      print("input box recieved " + inputText)
+      print("input box recieved " + answer)
 
       #make the answer case insenstive
-      inputText = inputText.toLower()
-
+      answer = answer.lower()
+      
+      #check if the answer is correct
       if(answer == "paris"):
-         
+
          #play an apploause sound effect
          sparkpy.PlayCharacterSound(bryceid, "applause1")
 
-         #let the user know their answer is correct 
-         sparkpy.Chat(bryce,"Correct!! ",10)
-         
+         #let the user know their answer is correct
+         sparkpy.Chat(bryceid,"Correct!! ",10)
+
          #do a victory dance
-         sparkpy.SetAnimation("dancing1")
-      
+         sparkpy.SetAnimation(bryceid,"celebration")
+
       else:
 
          #play a boo sound effect
          sparkpy.PlayCharacterSound(bryceid, "boo1")
 
-         #let the user know their answer is correct 
-         sparkpy.Chat(bryce,"Not correct",10)
-      
+         #let the user know their answer is correct
+         sparkpy.Chat(bryceid,"Not correct",10)
+
          #play a talking animation for the character
          sparkpy.SetAnimation(bryceid,"talking2")
-      
+
       #once the input has been recieved, do not show the input box anymore
       sparkpy.HideInputBox()
-         
+
 
    #create an environment
    sparkpy.CreateEnvironment('home')
@@ -453,9 +468,9 @@ Sound effects do not loop by default
 
    #play a talking animation for the character
    sparkpy.SetAnimation(bryceid,"talking1")
-   
+
    #ask the user a question, keep the question on the screen for 20 seconds
-   sparkpy.Chat(bryce,"What's the captial of france? ",20)
+   sparkpy.Chat(bryceid,"What's the captial of france? ",20)
 
    #set the input box callback function
    sparkpy.SetInputBoxHandler(ProcessAnswer)

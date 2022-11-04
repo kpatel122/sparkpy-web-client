@@ -3,4 +3,4 @@ import sparkpy
 #Create environment example
 
 #create desert environment test
-sparkpy.CreateEnvironment('Desert');
+sparkpy.CreateEnvironment('desert');

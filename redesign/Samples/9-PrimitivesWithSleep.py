@@ -35,4 +35,4 @@ async def main():
  
    
 #functions with sleep must be called through run   
-sparkpy.run(main)
+sparkpy.Run(main)

@@ -5,19 +5,22 @@ import traceback
 
 PARAM_DELIMINATOR = '|' #unity SendMessage only accepts one parameter so pack multiple params with this deliminator, unity uses the same character to unpack the values
 
-#enviroment return
+#enviroment return *must match unity values*
 VALID_ENVIROMENT = 1
 INVALID_ENVIROMENT = 0
 
-#character returns
+#character returns *must match unity values*
 INVALID_CHARACTER = 0
 
-#sound returns
+#sound returns *must match unity values*
 FAILURE = 0
 NO_SOUND_CLIP = 2
 
+#animation returns *must match unity values*
+NO_ANIM_SEQUENCE = 5
+
 unityInstance = window.unint
-pysparkClass = "Main" #the name of the unity class that contains the lib methods
+sparkpyClass = "Main" #the name of the unity class that contains the lib methods
 
 CollisionHandler = None #collision function pointer
 InputHandler     = None #input bix function pointer
@@ -128,7 +131,8 @@ def ResetScene():
     CollisionHandler = None 
     
     #call unity function
-    unityInstance.SendMessage(pysparkClass, "ResetScene")
+    unityInstance.SendMessage(sparkpyClass, "ResetScene")
+    
 
 def CreateEnvironment(environmentName, location=0):
     '''Creates an scene environment
@@ -161,7 +165,7 @@ def CreateEnvironment(environmentName, location=0):
     params = environmentNameString + PARAM_DELIMINATOR + str(locationInt)
     
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "CreateEnvironment",params)
+    unityInstance.SendMessage(sparkpyClass, "CreateEnvironment",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -185,7 +189,7 @@ def CreateCharacter(characterName,x=0,y=0,z=0):
     params = characterName + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)
     
     #call unity function
-    unityInstance.SendMessage(pysparkClass, "CreateSceneObject",params)
+    unityInstance.SendMessage(sparkpyClass, "CreateSceneObject",params)
 
     #get the return value from the unity function
     result = int(document["unity_return_values"].value)
@@ -225,7 +229,7 @@ def SetAnimationSpeed(characterID, speed):
     params = str(characterID) + PARAM_DELIMINATOR + str(animSpeed)
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "SetAnimationSpeed",params)
+    unityInstance.SendMessage(sparkpyClass, "SetAnimationSpeed",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -261,6 +265,7 @@ def SetAnimation(characterID, animationName, resetTrigger = False):
         return 0
     try:
         animation = str(animationName)
+        animationName = animationName.lower()
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter animationName was not a string. animationName=\'"+ animationName + "\'")
         return 0
@@ -274,7 +279,7 @@ def SetAnimation(characterID, animationName, resetTrigger = False):
     params = str(characterID) + PARAM_DELIMINATOR + str(animationName) + PARAM_DELIMINATOR + str(resetTrigger)
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "SetAnimation",params)
+    unityInstance.SendMessage(sparkpyClass, "SetAnimation",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -282,6 +287,8 @@ def SetAnimation(characterID, animationName, resetTrigger = False):
     #check if the character was valid
     if(result == INVALID_CHARACTER):
         ErrorMsg(methodName,"Invalid characterID. characterID=\'"+ str(characterID) + "\'")
+    elif(result == NO_ANIM_SEQUENCE):
+        ErrorMsg(methodName,"No animation called \'"+ animationName + "\'" + " for character ID " + str(characterID))
 
     return result
 
@@ -329,7 +336,7 @@ def SetControlMode(characterID, mode):
     params = str(characterID) + PARAM_DELIMINATOR + str(modeEnum)
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "SetControlMode",params)
+    unityInstance.SendMessage(sparkpyClass, "SetControlMode",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -361,7 +368,7 @@ def Show(characterID):
     params = str(characterID)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "Show",params)
+    unityInstance.SendMessage(sparkpyClass, "Show",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -389,12 +396,12 @@ def Hide(characterID):
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter characterID was not an int. characterID=\'"+ str(characterID) + "\'")
         return 0
-     
+
     #create parameter string
     params = str(characterID)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "Hide",params)
+    unityInstance.SendMessage(sparkpyClass, "Hide",uid) #pass the int version of the characterID
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -462,7 +469,7 @@ def Rotate(characterID, degrees, seconds, direction = "cw"):
     params = str(characterID) + PARAM_DELIMINATOR + str(secondsToReachTarget) + PARAM_DELIMINATOR + str(targetDegrees) + PARAM_DELIMINATOR+ str(dirEnum)
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "Rotate",params)
+    unityInstance.SendMessage(sparkpyClass, "Rotate",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -510,7 +517,7 @@ def Move(characterID, seconds, speed=1):
     params = str(characterID) + PARAM_DELIMINATOR + str(secondsToReachTarget) + PARAM_DELIMINATOR + str(moveSpeed)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "Move",params)
+    unityInstance.SendMessage(sparkpyClass, "Move",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -523,17 +530,17 @@ def Move(characterID, seconds, speed=1):
 
 #TODO add hide chat
 
-def Chat(characterID, text, seconds):
+def Chat(characterID, text, seconds = -1):
     '''Displays a chat box above the character with 'text' for 'seconds'
 
-    :param characterID: The characterID to rotate
+    :param characterID: The characterID to display that chat box
     :type characterID: int
 
     :param text: the text for the chat box
     :type text: string
 
-    :param seconds: how long to show the chat bubble for in seconds
-    :type seconds: float
+    :param seconds: how long to show the chat bubble for in seconds, -1 to display indefinitely
+    :type seconds: float optional, defaults to -1
 
     :return: 0 on failure or 1 on success
 
@@ -562,7 +569,7 @@ def Chat(characterID, text, seconds):
     params = str(characterID) + PARAM_DELIMINATOR + str(textToShow) + PARAM_DELIMINATOR + str(secondsToShow)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "ChatBubble",params)
+    unityInstance.SendMessage(sparkpyClass, "ChatBubble",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -577,7 +584,7 @@ def Chat(characterID, text, seconds):
 def ShowInputBox():
     '''Shows an input box, event with enetered text will be triggered on div id 'UNITY_EVENTS_DIV'. 'UNITY_EVENTS_DIV.value' will also hold the result of the text entered  
     '''
-    unityInstance.SendMessage(pysparkClass, "ShowInputBox")
+    unityInstance.SendMessage(sparkpyClass, "ShowInputBox")
 
 def GetInputBoxValue():
     ''' Retrurns the text of an input box, should only be used after *await aio.event(SPARKPY_EVENT, EVENT_INPUT)* 
@@ -588,7 +595,7 @@ def GetInputBoxValue():
 def HideInputBox():
     '''Hides an input box 
     '''
-    unityInstance.SendMessage(pysparkClass, "HideInputBox")
+    unityInstance.SendMessage(sparkpyClass, "HideInputBox")
 
 def PlaySceneSound(clipname, volume = 1.0 ,loop = True):
     '''Plays Scene audio clip. Mainly used for background music 
@@ -628,7 +635,7 @@ def PlaySceneSound(clipname, volume = 1.0 ,loop = True):
     params = str(clip) + PARAM_DELIMINATOR + str(vol) + PARAM_DELIMINATOR + str(looped)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "PlayBackgroundSound",params)
+    unityInstance.SendMessage(sparkpyClass, "PlayBackgroundSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -643,7 +650,7 @@ def StopSceneSound():
     '''Stops the scene's audio clip
     '''
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "StopBackgroundSound")
+    unityInstance.SendMessage(sparkpyClass, "StopBackgroundSound")
     
 def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     '''Plays character audio clip.   
@@ -688,7 +695,7 @@ def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     params = str(characterID) + PARAM_DELIMINATOR + str(clip) + PARAM_DELIMINATOR + str(vol) + PARAM_DELIMINATOR + str(looped)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "PlayCharacterSound",params)
+    unityInstance.SendMessage(sparkpyClass, "PlayCharacterSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -723,7 +730,7 @@ def StopCharacterSound(characterID):
     params = str(characterID)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "StopCharacterSound",params)
+    unityInstance.SendMessage(sparkpyClass, "StopCharacterSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -784,7 +791,7 @@ def CreatePrimitive(primitiveType, x=0, y=0, z=0):
     params = str(primitiveType) + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z) 
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "CreatePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "CreatePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -837,7 +844,7 @@ def RotatePrimitive(primitiveID,speedY, speedX=0,speedZ=0):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(speedX) + PARAM_DELIMINATOR + str(speedY) + PARAM_DELIMINATOR + str(speedZ)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "RotatePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "RotatePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -895,7 +902,7 @@ def MovePrimitive(primitiveID, seconds, speed, direction):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(seconds) + PARAM_DELIMINATOR + str(speed) + PARAM_DELIMINATOR + str(directionMap[direction]) 
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "MovePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "MovePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -953,7 +960,7 @@ def LoopPrimitiveMove(primitiveID, seconds, speed, direction):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(seconds) + PARAM_DELIMINATOR + str(speed) + PARAM_DELIMINATOR + str(directionMap[direction]) 
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "LoopPrimitiveMove",params)
+    unityInstance.SendMessage(sparkpyClass, "LoopPrimitiveMove",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -985,7 +992,7 @@ def StopPrimitiveRotation(primitiveID):
         return 0
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "StopPrimitiveRotation",primitiveID)
+    unityInstance.SendMessage(sparkpyClass, "StopPrimitiveRotation",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1015,7 +1022,7 @@ def StopPrimitiveMove(primitiveID):
         return 0
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "StopPrimitiveMove",int(primitiveID))
+    unityInstance.SendMessage(sparkpyClass, "StopPrimitiveMove",int(primitiveID))
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1044,7 +1051,7 @@ def HidePrimitive(primitiveID):
         return 0
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "HidePrimitive",primitiveID)
+    unityInstance.SendMessage(sparkpyClass, "HidePrimitive",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1073,7 +1080,7 @@ def ShowPrimitive(primitiveID):
         return 0
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "ShowPrimitive",primitiveID)
+    unityInstance.SendMessage(sparkpyClass, "ShowPrimitive",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1102,7 +1109,7 @@ def DestroyPrimitive(primitiveID):
         return 0
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "DestroyPrimitive",primitiveID)
+    unityInstance.SendMessage(sparkpyClass, "DestroyPrimitive",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1184,7 +1191,7 @@ def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(red) + PARAM_DELIMINATOR + str(green) + PARAM_DELIMINATOR + str(blue) + PARAM_DELIMINATOR + str(alpha) 
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "SetPrimitiveColour",params)
+    unityInstance.SendMessage(sparkpyClass, "SetPrimitiveColour",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1257,7 +1264,7 @@ def ScalePrimative(primitiveID,x,y,z):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "ScalePrimative",params)
+    unityInstance.SendMessage(sparkpyClass, "ScalePrimative",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1323,7 +1330,7 @@ def CreateEffect(effectName, x=0, y=0, z=0,scale=1):
     params = effectName + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z) + PARAM_DELIMINATOR + str(scale)
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "CreateEffect",params)
+    unityInstance.SendMessage(sparkpyClass, "CreateEffect",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1348,7 +1355,7 @@ def StopEffect(effectID):
         return 0
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "StopEffect",effectID)
+    unityInstance.SendMessage(sparkpyClass, "StopEffect",effectID)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1408,7 +1415,7 @@ def SetEffectColour(effectID, startColour,endColour="white"):
     params = str(effectID) + PARAM_DELIMINATOR + startColourString + PARAM_DELIMINATOR + endColourString 
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "SetEffectColour",params)
+    unityInstance.SendMessage(sparkpyClass, "SetEffectColour",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)
@@ -1445,7 +1452,7 @@ def CreateParentChild(parentID, childID):
     params = str(parentID) + PARAM_DELIMINATOR + str(childID)  
 
     #call the unity function
-    unityInstance.SendMessage(pysparkClass, "CreateParentChild",params)
+    unityInstance.SendMessage(sparkpyClass, "CreateParentChild",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document["unity_return_values"].value)

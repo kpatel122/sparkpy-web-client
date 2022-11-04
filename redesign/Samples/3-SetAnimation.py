@@ -3,10 +3,10 @@ import sparkpy
 #set animation example
 
 #create office environment
-sparkpy.CreateEnvironment("Office")
+sparkpy.CreateEnvironment("office")
 
 #create robot character
-ybot = sparkpy.CreateCharacter("YBot2")
+ybot = sparkpy.CreateCharacter("YBot")
 
 #set animation to walk
 sparkpy.SetAnimation(ybot, "Walk")

@@ -13,10 +13,10 @@ sparkpy.SetCollisionHandler(collision)
 sparkpy.CreateEnvironment("Office")
 
 #create first character
-uid = sparkpy.CreateCharacter("YBot2")
+uid = sparkpy.CreateCharacter("YBot")
 
 #create seconf character
-uid2 = sparkpy.CreateCharacter("XBot2",2,0,0)
+uid2 = sparkpy.CreateCharacter("XBot",2,0,0)
 
 #control character by keyboard
 sparkpy.SetControlMode(uid,"keyboard")
