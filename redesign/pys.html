@@ -185,14 +185,14 @@
 
 
     <div class="grid-item grid-item-code-editor">
-      <div id="editor""></div> </div>
+      <div id="editor"></div> </div>
       <div class=" grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div>
       <div class="grid-item grid-item-unity">
-        <iframe src="index.html" style="width: 100%;height: 100%; border: none; margin-top: 50px;">Browser not
+        <iframe id="unityiframe" src="index.html" style="width: 100%;height: 100%; border: none; margin-top: 50px;">Browser not
           compatible.</iframe>
       </div>
     </div>
-    <!-- MAIN GRID END-->
+    <!-- MAIN GRID END -->
 
 
     <!-- <input id="blerec" type="text" > !-->
@@ -222,7 +222,11 @@
 
       function unityRestScene() 
       {
+        //reset the scene
         unint.SendMessage('Main', "ResetScene");
+        
+        //set focus on unity
+        document.getElementById("unityiframe").focus();
       }
 
       //one of these for each type of event
