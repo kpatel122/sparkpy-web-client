@@ -595,7 +595,7 @@ In order to use *await aio.event* your program must be written in an *async* fun
    :emphasize-lines: 4,13,30,36
    
    import sparkpy
-   
+
    #must import aio for await to work
    from browser import aio
 
@@ -605,7 +605,7 @@ In order to use *await aio.event* your program must be written in an *async* fun
    def collision(id1,id2):
       print("Collision occured between " + str(id1) + "," + str(id2))
 
-   #programs with await must be written inside an async function 
+   #programs with await must be written inside an async function
    async def main():
       #assign the collision handler function
       sparkpy.SetCollisionHandler(collision)
@@ -623,12 +623,11 @@ In order to use *await aio.event* your program must be written in an *async* fun
       sparkpy.SetControlMode(ybot,"keyboard")
 
       #wait for the collision to occur, no code below this will run until a collision happens
-      await aio.event(SPARKPY_EVENT, EVENT_COLLISION)
+      await aio.event(sparkpy.EVENT, sparkpy.EVENT_COLLISION)
 
-      #this can only run after a collsion event has happened 
+      #this can only run after a collsion event has happened
       sparkpy.Chat(ybot, "I have collided!")
-   
-   #run the async function
+      
    sparkpy.Run(main)
 
 """"""""""""""""""""
@@ -663,7 +662,7 @@ Text entered into the input box can be retrieved using `GetInputBoxValue() <Sour
       sparkpy.ShowInputBox()
 
       #wait until text has been entered. Code below this line will not execute until text is entered
-      await aio.event(SPARKPY_EVENT, EVENT_INPUT)
+      await aio.event(sparkpy.EVENT, sparkpy.EVENT_INPUT)
 
       #text has been entered, retrieve the value that was entered 
       name = sparkpy.GetInputBoxValue()

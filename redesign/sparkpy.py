@@ -26,7 +26,8 @@ CollisionHandler = None #collision function pointer
 InputHandler     = None #input bix function pointer
 
 #unity events div name
-SPARKPY_EVENT = "unity_events"
+SPARKPY_EVENT_DIV = "unity_events"
+EVENT = document[SPARKPY_EVENT_DIV]
 
 #event names set in Unity Plugins/pyslib.jslib
 EVENT_COLLISION = "Collision"
@@ -81,7 +82,7 @@ colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY
             "cyan": COLOUR_CYAN, "red": COLOUR_RED,"black": COLOUR_BLACK, "white": COLOUR_WHITE,
             "blue": COLOUR_BLUE, "green": COLOUR_GREEN}
 
-@bind(document[SPARKPY_EVENT], EVENT_INPUT)
+@bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)
 def InputTextHook(ev):
     #call the input text box handler
     #check if the handler has been set
@@ -100,7 +101,7 @@ def SetInputBoxHandler(handler):
     global InputHandler
     InputHandler = handler
 
-@bind(document[SPARKPY_EVENT], EVENT_COLLISION)
+@bind(document[SPARKPY_EVENT_DIV], EVENT_COLLISION)
 def ColiisionHook(ev):
     if(CollisionHandler != None): #Collision handler is set with SetCollisionHandler call
         CollisionHandler(ev.detail.uid1,ev.detail.uid2) #call the user defined function handler
@@ -590,7 +591,7 @@ def GetInputBoxValue():
     ''' Retrurns the text of an input box, should only be used after *await aio.event(SPARKPY_EVENT, EVENT_INPUT)* 
      :return: text of input box 
     '''
-    return document[SPARKPY_EVENT].value
+    return document[SPARKPY_EVENT_DIV].value
 
 def HideInputBox():
     '''Hides an input box 
