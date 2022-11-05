@@ -755,7 +755,7 @@ Scale Primitive
 """"""""""""""""""""""""""
    
 To make a primitive bigger or smaller, use the
-`ScalePrimative() <Source/sparkpy.html#sparkpy.ScalePrimative>`_ method
+`ScalePrimitive() <Source/sparkpy.html#sparkpy.ScalePrimitive>`_ method
 
 .. code-block:: python
    :emphasize-lines: 10
@@ -769,21 +769,25 @@ To make a primitive bigger or smaller, use the
    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
 
    #double the size of the cube
-   sparkpy.ScalePrimative(cubeID, 2)
+   sparkpy.ScalePrimitive(cubeID, 2)
 
 .. note:: 
    to scale in a specific direction (non-uniform scale), provide the sizes
-   of the x,y,z scale when using `ScalePrimitive() <Source/sparkpy.html#sparkpy.ScalePrimative>`_
+   of the x,y,z and use `ScalePrimitiveNonUniform() <Source/sparkpy.html#sparkpy.ScalePrimitiveNonUniform>`_
    
    .. code-block:: python
+      :emphasize-lines: 10
 
       import sparkpy
+
+      #create an environment
+      sparkpy.CreateEnvironment('forest')
 
       #make a cube at position x=0 , y=1, z=0
       cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
 
       #double the size of the cube, along the x and z axis
-      sparkpy.ScalePrimative(cubeID, 2,1,2)
+      sparkpy.ScalePrimitive(cubeID, 2,1,2)
 
 """"""""""""""""""""
 Rotate Primitive
@@ -792,14 +796,18 @@ To rotate a primitive, use the `RotatePrimitive() <Source/sparkpy.html#sparkpy.R
 by default primitives are rotated around their y (up) axis
 
 .. code-block:: python
+   :emphasize-lines: 10
 
-      import sparkpy
+   import sparkpy
+      
+   #create an environment
+   sparkpy.CreateEnvironment('office')
 
-      #make a cube at position x=0 , y=1, z=0
-      cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   #make a cube at position x=0 , y=1, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
 
-      #rotate the cube at a speed of 90 degrees per second
-      sparkpy.RotatePrimitive(cubeID, 90)
+   #rotate the cube at a speed of 90 degrees per second
+   sparkpy.RotatePrimitive(cubeID, 90)
 
 """"""""""""""""""""
 Move Primitive
@@ -807,14 +815,18 @@ Move Primitive
 To move a primitive, use the `MovePrimitive() <Source/sparkpy.html#sparkpy.MovePrimitive>`_ method.
 
 .. code-block:: python
+   :emphasize-lines: 10
 
-      import sparkpy
+   import sparkpy
 
-      #make a cube at position x=0 , y=1, z=0
-      cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   #create an environment
+   sparkpy.CreateEnvironment('office')
 
-      #move the cube to right at a speed of 10 for 2 seconds 
-      cubeID = sparkpy.MovePrimitive(cubeID, 2, 10, "right")
+   #make a cube at position x=0 , y=1, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+
+   #move the cube to right at a speed of 4 for 1 seconds
+   sparkpy.MovePrimitive(cubeID, 1, 4, "right")
     
 .. note:: direction values can be:
 
@@ -829,6 +841,12 @@ Loop Primitive Move
 To make a primitive continuously move between two points, use the `LoopPrimitiveMove() <Source/sparkpy.html#sparkpy.LoopPrimitiveMove>`_ 
 
 .. code-block:: python
+   :emphasize-lines: 10
+
+   import sparkpy
+
+   #create an environment
+   sparkpy.CreateEnvironment('office')
 
    #make a cube
    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)

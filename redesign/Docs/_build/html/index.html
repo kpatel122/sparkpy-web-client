@@ -853,7 +853,7 @@ will remove the primitive completely</p>
 <section id="scale-primitive">
 <h5>Scale Primitive<a class="headerlink" href="#scale-primitive" title="Permalink to this heading"></a></h5>
 <p>To make a primitive bigger or smaller, use the
-<a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimative">ScalePrimative()</a> method</p>
+<a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimitive">ScalePrimitive()</a> method</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
@@ -863,21 +863,24 @@ will remove the primitive completely</p>
 <span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#double the size of the cube</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimative</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>to scale in a specific direction (non-uniform scale), provide the sizes
-of the x,y,z scale when using <a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimative">ScalePrimitive()</a></p>
+of the x,y,z and use <a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimitiveNonUniform">ScalePrimitiveNonUniform()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
 <span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#double the size of the cube, along the x and z axis</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimative</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</span></pre></div>
 </div>
 </div>
 </section>
@@ -887,12 +890,15 @@ of the x,y,z scale when using <a class="reference external" href="Source/sparkpy
 by default primitives are rotated around their y (up) axis</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
 <span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#rotate the cube at a speed of 90 degrees per second</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">RotatePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
-</pre></div>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">RotatePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+</span></pre></div>
 </div>
 </section>
 <section id="move-primitive">
@@ -900,12 +906,15 @@ by default primitives are rotated around their y (up) axis</p>
 <p>To move a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.MovePrimitive">MovePrimitive()</a> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
 <span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="c1">#move the cube to right at a speed of 10 for 2 seconds</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">MovePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
-</pre></div>
+<span class="c1">#move the cube to right at a speed of 4 for 1 seconds</span>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">MovePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</span></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -930,12 +939,17 @@ by default primitives are rotated around their y (up) axis</p>
 <section id="loop-primitive-move">
 <h5>Loop Primitive Move<a class="headerlink" href="#loop-primitive-move" title="Permalink to this heading"></a></h5>
 <p>To make a primitive continuously move between two points, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.LoopPrimitiveMove">LoopPrimitiveMove()</a></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#make a cube</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube</span>
 <span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#loop move from right to left and back again for 2 seconds at a speed of 1.</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">LoopPrimitiveMove</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
-</pre></div>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">LoopPrimitiveMove</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</span></pre></div>
 </div>
 </section>
 </section>

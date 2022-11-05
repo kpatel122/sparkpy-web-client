@@ -27,6 +27,7 @@ InputHandler     = None #input bix function pointer
 
 #unity events div name
 SPARKPY_EVENT_DIV = "unity_events"
+SPARKPY_RETURN_VALUE_DIV = "unity_return_values" #unity sparkpy return value div
 EVENT = document[SPARKPY_EVENT_DIV]
 
 #event names set in Unity Plugins/pyslib.jslib
@@ -169,7 +170,7 @@ def CreateEnvironment(environmentName, location=0):
     unityInstance.SendMessage(sparkpyClass, "CreateEnvironment",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     if(result!=VALID_ENVIROMENT):
         ErrorMsg(methodName, "\'" + environmentName + "\' does not exist")
@@ -193,7 +194,7 @@ def CreateCharacter(characterName,x=0,y=0,z=0):
     unityInstance.SendMessage(sparkpyClass, "CreateSceneObject",params)
 
     #get the return value from the unity function
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check success or failure
     if(result == INVALID_CHARACTER):
@@ -233,7 +234,7 @@ def SetAnimationSpeed(characterID, speed):
     unityInstance.SendMessage(sparkpyClass, "SetAnimationSpeed",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -283,7 +284,7 @@ def SetAnimation(characterID, animationName, resetTrigger = False):
     unityInstance.SendMessage(sparkpyClass, "SetAnimation",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -340,7 +341,7 @@ def SetControlMode(characterID, mode):
     unityInstance.SendMessage(sparkpyClass, "SetControlMode",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -372,7 +373,7 @@ def Show(characterID):
     unityInstance.SendMessage(sparkpyClass, "Show",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -405,7 +406,7 @@ def Hide(characterID):
     unityInstance.SendMessage(sparkpyClass, "Hide",uid) #pass the int version of the characterID
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -473,7 +474,7 @@ def Rotate(characterID, degrees, seconds, direction = "cw"):
     unityInstance.SendMessage(sparkpyClass, "Rotate",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -521,7 +522,7 @@ def Move(characterID, seconds, speed=1):
     unityInstance.SendMessage(sparkpyClass, "Move",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -573,7 +574,7 @@ def Chat(characterID, text, seconds = -1):
     unityInstance.SendMessage(sparkpyClass, "ChatBubble",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -639,7 +640,7 @@ def PlaySceneSound(clipname, volume = 1.0 ,loop = True):
     unityInstance.SendMessage(sparkpyClass, "PlayBackgroundSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == FAILURE):
@@ -699,7 +700,7 @@ def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     unityInstance.SendMessage(sparkpyClass, "PlayCharacterSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == NO_SOUND_CLIP):
@@ -734,7 +735,7 @@ def StopCharacterSound(characterID):
     unityInstance.SendMessage(sparkpyClass, "StopCharacterSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_CHARACTER):
@@ -795,7 +796,7 @@ def CreatePrimitive(primitiveType, x=0, y=0, z=0):
     unityInstance.SendMessage(sparkpyClass, "CreatePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     return result
 
@@ -848,7 +849,7 @@ def RotatePrimitive(primitiveID,speedY, speedX=0,speedZ=0):
     unityInstance.SendMessage(sparkpyClass, "RotatePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check if the character was valid
     if(result == INVALID_PRIMITIVE):
@@ -906,7 +907,7 @@ def MovePrimitive(primitiveID, seconds, speed, direction):
     unityInstance.SendMessage(sparkpyClass, "MovePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -964,7 +965,7 @@ def LoopPrimitiveMove(primitiveID, seconds, speed, direction):
     unityInstance.SendMessage(sparkpyClass, "LoopPrimitiveMove",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -996,7 +997,7 @@ def StopPrimitiveRotation(primitiveID):
     unityInstance.SendMessage(sparkpyClass, "StopPrimitiveRotation",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1026,7 +1027,7 @@ def StopPrimitiveMove(primitiveID):
     unityInstance.SendMessage(sparkpyClass, "StopPrimitiveMove",int(primitiveID))
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1055,7 +1056,7 @@ def HidePrimitive(primitiveID):
     unityInstance.SendMessage(sparkpyClass, "HidePrimitive",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1084,7 +1085,7 @@ def ShowPrimitive(primitiveID):
     unityInstance.SendMessage(sparkpyClass, "ShowPrimitive",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1113,7 +1114,7 @@ def DestroyPrimitive(primitiveID):
     unityInstance.SendMessage(sparkpyClass, "DestroyPrimitive",primitiveID)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1195,7 +1196,7 @@ def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
     unityInstance.SendMessage(sparkpyClass, "SetPrimitiveColour",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1266,10 +1267,10 @@ def ScalePrimitiveNonUniform(primitiveID,x,y,z):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "ScalePrimative",params)
+    unityInstance.SendMessage(sparkpyClass, "ScalePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1335,7 +1336,7 @@ def CreateEffect(effectName, x=0, y=0, z=0,scale=1):
     unityInstance.SendMessage(sparkpyClass, "CreateEffect",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     return result
 
@@ -1360,7 +1361,7 @@ def StopEffect(effectID):
     unityInstance.SendMessage(sparkpyClass, "StopEffect",effectID)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     #check result
     if(result == INVALID_PRIMITIVE):
@@ -1420,7 +1421,7 @@ def SetEffectColour(effectID, startColour,endColour="white"):
     unityInstance.SendMessage(sparkpyClass, "SetEffectColour",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     return result
 
@@ -1457,7 +1458,7 @@ def CreateParentChild(parentID, childID):
     unityInstance.SendMessage(sparkpyClass, "CreateParentChild",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
-    result = int(document["unity_return_values"].value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
 
     return result
 
