@@ -168,20 +168,22 @@
               </select>
             </form>
           </div>
-
-
         </div>
         <!--Load icon/Font size when load is shown fonts select is hidden and vice versa-->
         <div class="settings-load-icon">
-          <button class="load-icon" id="load" aria-label="load"></button>
+          
+          
+          <button class="load-icon" id="load" aria-label="load" onclick="loadFile()"></button> <!--loadFile() defined in sparkpy.js-->
+          <input type="file" accept=".py" onchange="getFileFromUser()" id="loadFileId" style="display: none;" /><!-- hide this field because of its default looks, linked by loadFile() !-->
+          
           <input id="font-size" class="theme-select" style="width: 40px; padding-top: 2px; display:none;" type="number" min="10" max="20"
-            value="14" onchange="fontSizeChanged();">
+            value="14" onchange="fontSizeChanged();"> <!--fontSizeChanged() defined in settingsRow.js-->
             
         </div>
         <!--Save icon-->
         <!-- <div class="settings-save-icon"> !-->
         <div class="settings-save-icon"> 
-            <button class="save-icon" id="save" aria-label="save"></button>
+            <button class="save-icon" id="save" aria-label="save" onclick="saveFile()"></button> <!--saveFile() defined in sparkpy.js-->
         </div>
       </div>
       <!-- EMBEDDED SETTINGS GRIP END -->
