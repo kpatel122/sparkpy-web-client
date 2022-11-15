@@ -13,9 +13,7 @@
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  
-
-  
+    
    /*https://webcache.googleusercontent.com/search?q=cache:u4amIqEusRAJ:https://stackoverflow.com/questions/5439782/i-want-to-vertical-align-text-in-select-box&cd=1&hl=en&ct=clnk&gl=uk&client=ubuntu*/
     
 }    .theme-select select {

@@ -1,25 +1,48 @@
 
-const btn1_ctn = document.getElementsByClassName("toggle1-container")[0];
-const toggle = document.getElementsByClassName("toggle")[0];
+//get the settings elements
+const toggleContainer = document.getElementById("settings-toggle-container");
+const toggle = document.getElementById("toggle-switch");
+
+
 var themesSelect = document.getElementById("themes-select");
 var fontSize = document.getElementById("font-size");
 var samplesSelect = document.getElementById("samples");
+var loadIcon = document.getElementById("load");
+var saveIcon = document.getElementById("save");  
 
-btn1_ctn.addEventListener("click", () => {
-  toggle.classList.toggle("inactive1");
+function toggleSettings()
+{
+  //toggle will switch between samples select, load and save icons and themes, font size
 
+  //toggle the icon switch from red to green or vice versa 
+  toggle.classList.toggle("toggle-active");
+
+  //check if themes is hidden, if it is then show it and font size
   if (themesSelect.style.display === "none") {
+
+    //display themes and font size select
     themesSelect.style.display = "block";
     fontSize.style.display = "block";
-    samplesSelect.style.display = "none"
+
+    //hide samples select, load and save icons
+    samplesSelect.style.display = "none";
+    loadIcon.style.display = "none";
+    saveIcon.style.display = "none";
+    
   }
   else {
+
+    //display samples select, load and save icons
+    samplesSelect.style.display = "block";
+    loadIcon.style.display = "block";
+    saveIcon.style.display = "block";
+
+    //hide themes and font select
     themesSelect.style.display = "none";
     fontSize.style.display = "none";
-    samplesSelect.style.display = "block"
   }
 
-});
+}
 
 function fontSizeChanged() {
   size = parseInt(document.getElementById("font-size").value);

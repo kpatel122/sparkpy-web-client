@@ -99,12 +99,12 @@
   <!-- NAVBAR START !-->
   <nav class="navbar">
     <div class="logo-title"><img src="Images/logo.png" width="70%" height="70%"></div>
-    <a href="#" class="toggle-button">
+    <a href="#" class="navmenu-hamburger" onclick="navMenuClick();"> <!-- navMenuClick() defined in sparkpy.js-->
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
     </a>
-    <div class="navbar-links sparkpy-fonts">
+    <div class="navbar-links sparkpy-fonts" id="navbar-links-id">
       <ul>
         <li><a href="pys.html">Home</a></li>
         <li><a href="Docs\_build\html\index.html">Help</a></li>
@@ -124,25 +124,25 @@
       <div class="settings-grid">
 
         <div class="settings-play-icon">
-          <button class="play-icon" id="run" aria-label="run" onclick="unityRestScene()"></button>
+          <button class="play-icon" id="run" aria-label="run" onclick="unityRestScene()"></button> <!--unityRestScene() defined in pys.html-->
           <!--play button-->
         </div>
         <div class="settings-settings-icon">
 
-          <!--<div class="toggle-container">!-->
-          <div class="toggle1-container">
-            <span class="toggle"></span>
+          <div class="toggle-container" id="settings-toggle-container" onclick="toggleSettings()"> <!--toggleSettings() defined in settingsRow.js-->
+            <span class="toggle" id="toggle-switch"></span>
           </div>
 
         </div>
         <div class="settings-themes-dropdown">
           <!--themes dropdown-->
           <div id="themes-select" class="theme-select" style="display:none;">
-            <select id="themes" style="max-width:min-content" onchange="themeSelect();">
+            <select id="themes" style="max-width:min-content" onchange="themeSelect();">  <!--themeSelect() defined in themes.js-->
               <optgroup id="group-light" label="Light"></optgroup>
               <optgroup id="group-dark" label="Dark"></optgroup>
             </select>
           </div>
+          <!--samples dropdown-->
           <div class="theme-select">
             <form name="SamplesForm" method="POST">
               <select name="samples" id="samples" style="max-width:min-content;display:block">
@@ -171,13 +171,16 @@
 
 
         </div>
-
-        <div class="settings-font-size">
-          <input id="font-size" class="theme-select" style="width: 40px; display:none;" type="number" min="10" max="20"
+        <!--Load icon/Font size when load is shown fonts select is hidden and vice versa-->
+        <div class="settings-load-icon">
+          <button class="load-icon" id="load" aria-label="load"></button>
+          <input id="font-size" class="theme-select" style="width: 40px; padding-top: 2px; display:none;" type="number" min="10" max="20"
             value="14" onchange="fontSizeChanged();">
-            <button class="load-icon" id="load" aria-label="load"></button>
+            
         </div>
-        <div class="settings-samples-dropdown">
+        <!--Save icon-->
+        <!-- <div class="settings-save-icon"> !-->
+        <div class="settings-save-icon"> 
             <button class="save-icon" id="save" aria-label="save"></button>
         </div>
       </div>

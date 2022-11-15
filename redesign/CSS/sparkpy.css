@@ -57,7 +57,7 @@
     background-color: var(--link_hover);
 }
 
-.toggle-button {
+.navmenu-hamburger {
     position: absolute;
     top: 2rem;
     right: 1rem;
@@ -68,7 +68,7 @@
     height: 21px;
 }
 
-.toggle-button .bar {
+.navmenu-hamburger .bar {
     height: 3px;
     width: 100%;
     background-color: var(--navbar_hamburger_button);
@@ -100,7 +100,11 @@
 .settings-grid {
     display: grid;
     /* grid-template-columns: min-content min-content min-content min-content 1fr; */
-    grid-template-columns: min-content min-content auto auto auto;
+    
+    /*grid-template-columns: min-content min-content auto auto auto;*/
+    
+    /* size of the coloumns */
+    grid-template-columns: min-content min-content min-content min-content auto; /*play, settings toggle, samples/themes, laod/font size, save*/
     grid-template-rows: 1fr;
     column-gap: 5px;
     row-gap: 0px;
@@ -109,13 +113,13 @@
 
     .settings-play-icon { grid-area: 1 / 1 / 2 / 2; }
     .settings-settings-icon { grid-area: 1 / 2 / 2 / 3; }
-    .settings-themes-dropdown { grid-area: 1 / 3 / 2 / 4; 
+    .settings-themes-dropdown { grid-area: 1 / 3 / 2 / 4;  /* also the editor theme when settings toggle is active*/
          
         overflow: hidden;  /* NEW */
         min-width: 0;      /* NEW; needed for Firefox */
         justify-self: start;}
-    .settings-font-size { grid-area: 1 / 4 / 2 / 5; }
-    .settings-samples-dropdown { grid-area: 1 / 5 / 2 / 6; justify-self: end;} 
+    .settings-load-icon { grid-area: 1 / 4 / 2 / 5;  justify-self: end;} /* also the font size when settings toggle is active*/
+    .settings-save-icon { grid-area: 1 / 5 / 2 / 6; justify-self: start;} 
 
 
 .play-icon {
@@ -170,7 +174,7 @@
         align-items: flex-start;
     }
 
-    .toggle-button {
+    .navmenu-hamburger {
         display: flex;
     }
 
@@ -196,7 +200,6 @@
         display: flex;
     }
 
-    
         .grid-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -209,12 +212,6 @@
             .grid-item-code-editor { grid-area: 2 / 1 / 3 / 2; }
             .grid-item-unity { grid-area: 3 / 1 / 4 / 2; }
             .grid-item-shell { grid-area: 4 / 1 / 5 / 2; } 
-      
-        
-        
-    
-
-
 }
 
 
