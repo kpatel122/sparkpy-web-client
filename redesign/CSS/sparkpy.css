@@ -15,6 +15,7 @@
     align-items: center;
     background-color: var(--navbar_background);
     color: var(--navbar_text_colour);
+     
 }
 
 .sparkpy-fonts{
@@ -103,6 +104,7 @@
     grid-template-rows: 1fr;
     column-gap: 5px;
     row-gap: 0px;
+    
     }
 
     .settings-play-icon { grid-area: 1 / 1 / 2 / 2; }
@@ -124,6 +126,28 @@
     cursor: pointer;
     float: left;
     padding-right: 40px;
+  }
+
+.load-icon {
+    width: 3em;
+    height: 3em;
+    background: url("/Images/icons/load_icon.svg")  no-repeat;
+    border: none;
+    cursor: pointer;
+    float: left;
+    padding-right: 40px;
+    transform: scale(0.8);
+  }
+
+  .save-icon {
+    width: 3em;
+    height: 3em;
+    background: url("/Images/icons/save_icon.svg")  no-repeat;
+    border: none;
+    cursor: pointer;
+    float: left;
+    padding-right: 40px;
+    transform: scale(0.8);
   }
 
   .settings-icon {

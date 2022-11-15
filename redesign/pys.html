@@ -175,9 +175,10 @@
         <div class="settings-font-size">
           <input id="font-size" class="theme-select" style="width: 40px; display:none;" type="number" min="10" max="20"
             value="14" onchange="fontSizeChanged();">
+            <button class="load-icon" id="load" aria-label="load"></button>
         </div>
         <div class="settings-samples-dropdown">
-
+            <button class="save-icon" id="save" aria-label="save"></button>
         </div>
       </div>
       <!-- EMBEDDED SETTINGS GRIP END -->
@@ -195,7 +196,7 @@
     <!-- MAIN GRID END -->
 
 
-    <!-- <input id="blerec" type="text" > !-->
+    <!-- bridge div for linking unity application events with website e.g. collisions, input: Assets/pyslib  !-->
     <div id="unity_events"></div>
 
     <!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
