@@ -16,7 +16,6 @@ function loadFile()
 
 function getFileFromUser() {
 
-  //const [file] = document.querySelector('input[type=file]').files;
   const [file] = document.getElementById("loadFileId").files;
  
   const reader = new FileReader();
@@ -35,7 +34,6 @@ function saveFile()
 {
   codeToSave = codeEditor.getValue();
   download("spark.py", codeToSave);
-  
 }
 
 function download(filename, text) {
@@ -43,14 +41,4 @@ function download(filename, text) {
   pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
   pom.setAttribute('download', filename);
   pom.click();
-/*
-  if (document.createEvent) {
-      var event = document.createEvent('MouseEvents');
-      event.initEvent('click', true, true);
-      pom.dispatchEvent(event);
-  }
-  else {
-      pom.click();
-  }
-  */
 }
