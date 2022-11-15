@@ -167,7 +167,7 @@ def CreateEnvironment(environmentName, location=0):
     params = environmentNameString + PARAM_DELIMINATOR + str(locationInt)
     
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "CreateEnvironment",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_CreateEnvironment",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -191,7 +191,7 @@ def CreateCharacter(characterName,x=0,y=0,z=0):
     params = characterName + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)
     
     #call unity function
-    unityInstance.SendMessage(sparkpyClass, "CreateSceneObject",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_CreateSceneObject",params)
 
     #get the return value from the unity function
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -231,7 +231,7 @@ def SetAnimationSpeed(characterID, speed):
     params = str(characterID) + PARAM_DELIMINATOR + str(animSpeed)
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "SetAnimationSpeed",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_SetAnimationSpeed",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -281,7 +281,7 @@ def SetAnimation(characterID, animationName, resetTrigger = False):
     params = str(characterID) + PARAM_DELIMINATOR + str(animationName) + PARAM_DELIMINATOR + str(resetTrigger)
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "SetAnimation",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_SetAnimation",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -338,7 +338,7 @@ def SetControlMode(characterID, mode):
     params = str(characterID) + PARAM_DELIMINATOR + str(modeEnum)
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "SetControlMode",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_SetControlMode",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -471,7 +471,7 @@ def Rotate(characterID, degrees, seconds, direction = "cw"):
     params = str(characterID) + PARAM_DELIMINATOR + str(secondsToReachTarget) + PARAM_DELIMINATOR + str(targetDegrees) + PARAM_DELIMINATOR+ str(dirEnum)
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "Rotate",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_Rotate",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -519,7 +519,7 @@ def Move(characterID, seconds, speed=1):
     params = str(characterID) + PARAM_DELIMINATOR + str(secondsToReachTarget) + PARAM_DELIMINATOR + str(moveSpeed)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "Move",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_Move",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -571,7 +571,7 @@ def Chat(characterID, text, seconds = -1):
     params = str(characterID) + PARAM_DELIMINATOR + str(textToShow) + PARAM_DELIMINATOR + str(secondsToShow)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "ChatBubble",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_Chat",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -637,7 +637,7 @@ def PlaySceneSound(clipname, volume = 1.0 ,loop = True):
     params = str(clip) + PARAM_DELIMINATOR + str(vol) + PARAM_DELIMINATOR + str(looped)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "PlayBackgroundSound",params)
+    unityInstance.SendMessage(sparkpyClass, "PlaySceneSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -652,7 +652,7 @@ def StopSceneSound():
     '''Stops the scene's audio clip
     '''
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "StopBackgroundSound")
+    unityInstance.SendMessage(sparkpyClass, "StopSceneSound")
     
 def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     '''Plays character audio clip.   
@@ -697,7 +697,7 @@ def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     params = str(characterID) + PARAM_DELIMINATOR + str(clip) + PARAM_DELIMINATOR + str(vol) + PARAM_DELIMINATOR + str(looped)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "PlayCharacterSound",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_PlayCharacterSound",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -793,7 +793,7 @@ def CreatePrimitive(primitiveType, x=0, y=0, z=0):
     params = str(primitiveType) + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z) 
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "CreatePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_CreatePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -846,7 +846,7 @@ def RotatePrimitive(primitiveID,speedY, speedX=0,speedZ=0):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(speedX) + PARAM_DELIMINATOR + str(speedY) + PARAM_DELIMINATOR + str(speedZ)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "RotatePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_RotatePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -904,7 +904,7 @@ def MovePrimitive(primitiveID, seconds, speed, direction):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(seconds) + PARAM_DELIMINATOR + str(speed) + PARAM_DELIMINATOR + str(directionMap[direction]) 
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "MovePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_MovePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -962,7 +962,7 @@ def LoopPrimitiveMove(primitiveID, seconds, speed, direction):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(seconds) + PARAM_DELIMINATOR + str(speed) + PARAM_DELIMINATOR + str(directionMap[direction]) 
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "LoopPrimitiveMove",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_LoopPrimitiveMove",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -1193,7 +1193,7 @@ def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(red) + PARAM_DELIMINATOR + str(green) + PARAM_DELIMINATOR + str(blue) + PARAM_DELIMINATOR + str(alpha) 
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "SetPrimitiveColour",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_SetPrimitiveColour",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -1267,7 +1267,7 @@ def ScalePrimitiveNonUniform(primitiveID,x,y,z):
     params = str(primitiveID) + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "ScalePrimitive",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_ScalePrimitive",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -1333,7 +1333,7 @@ def CreateEffect(effectName, x=0, y=0, z=0,scale=1):
     params = effectName + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z) + PARAM_DELIMINATOR + str(scale)
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "CreateEffect",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_CreateEffect",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -1418,7 +1418,7 @@ def SetEffectColour(effectID, startColour,endColour="white"):
     params = str(effectID) + PARAM_DELIMINATOR + startColourString + PARAM_DELIMINATOR + endColourString 
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "SetEffectColour",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_SetEffectColour",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -1455,7 +1455,7 @@ def CreateParentChild(parentID, childID):
     params = str(parentID) + PARAM_DELIMINATOR + str(childID)  
 
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "CreateParentChild",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_CreateParentChild",params)
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
