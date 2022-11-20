@@ -191,7 +191,7 @@ def CreateCharacter(characterName,x=0,y=0,z=0):
     params = characterName + PARAM_DELIMINATOR + str(x) + PARAM_DELIMINATOR + str(y) + PARAM_DELIMINATOR + str(z)
     
     #call unity function
-    unityInstance.SendMessage(sparkpyClass, "Wrap_CreateSceneObject",params)
+    unityInstance.SendMessage(sparkpyClass, "Wrap_CreateCharacter",params)
 
     #get the return value from the unity function
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -300,7 +300,7 @@ def SetControlMode(characterID, mode):
     :param characterID: The characterID to set
     :type characterID: int
     
-    :param mode: 'script'- control through move, rotate etc. 'keyboard'- control through a,w,d,s & space (3rd person control)
+    :param mode: 'script'- control through move, rotate etc. 'keyboard'- control through a,w,d,s & space (3rd person control) 'third_person'- control with mouse and keyboard
     :type mode: string 
     
     :return: 1 on success or 0 on failure
@@ -314,7 +314,7 @@ def SetControlMode(characterID, mode):
         ErrorMsg(methodName,"parameter characterID was not an int. characterID=\'"+ str(characterID) + "\'")
         return 0
     try:
-        animation = str(mode)
+        modeCheck = str(mode)
     except (ValueError, TypeError):
         ErrorMsg(methodName,"parameter mode was not a string. mode=\'"+ mode + "\'")
         return 0
@@ -324,14 +324,17 @@ def SetControlMode(characterID, mode):
     #map the string to the unity enum value
     SCRIPT = 0
     KEYBOARD = 1
+    THIRD_PERSON = 2
     modeEnum = 0 
 
     if mode == "keyboard":
         modeEnum = KEYBOARD
     elif mode == "script":
         modeEnum = SCRIPT
+    elif mode == "third_person":
+        modeEnum = THIRD_PERSON
     else:
-        ErrorMsg(methodName,"parameter mode has invalid value mode=\'"+ mode + "\'. Valid values are \'script\' or \'keyboard\'")
+        ErrorMsg(methodName,"parameter mode has invalid value mode=\'"+ mode + "\'. Valid values are \'script\' , \'keyboard\' or \'third_person\'")
         return 0
 
     #create parameter string

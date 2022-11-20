@@ -150,14 +150,14 @@ A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Me
    #create office environment
    sparkpy.CreateEnvironment("forest")
 
-   #create robot character at position x=0 y0 z=3
-   xbot = sparkpy.CreateCharacter("xbot",0,0,3)
+   #create robot character at position x=0 y0 z=5
+   xbot = sparkpy.CreateCharacter("xbot",0,0,5)
 
    #set animation to walk
    sparkpy.SetAnimation(xbot, "Walk")
 
    #move the character for 5 seconds
-   sparkpy.Move(xbot,10)
+   sparkpy.Move(xbot,5)
    
 .. note:: you will notice that the character's animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED] 
 
@@ -235,6 +235,7 @@ Control character with keyboard
 """"""""""""""""""""""""""""""""
 
 To move a character with the keyboard, use the  `SetControlMode()  <Source/sparkpy.html#sparkpy.SetControlMode>`_ method
+A character can be controlled in third person mode using 'third_person' as the SetControlMode parameter
 
 .. code-block:: python
    :emphasize-lines: 12
@@ -251,6 +252,8 @@ To move a character with the keyboard, use the  `SetControlMode()  <Source/spark
 
    #set control mode to keyboard
    sparkpy.SetControlMode(ybot,"keyboard")
+
+
 
 ~~~~~~~~~~
 User Input
@@ -513,13 +516,18 @@ An effecct can be stopped with `StopEffect() <Source/sparkpy.html#sparkpy.StopEf
    #special effects example
 
    #create office environment
-   sparkpy.CreateEnvironment("office")
+   sparkpy.CreateEnvironment("Office")
+
+   x = 0 #x position 
+   y = -1 #y position
+   z= 0 #z position
 
    #create a portal effect
-   eid=sparkpy.CreateEffect("portal")
+   eid=sparkpy.CreateEffect("portal",x,y,z)
 
    #set colour to red from default
    sparkpy.SetEffectColour(eid,"red")
+
 
 .. note::
     
@@ -693,10 +701,10 @@ To create a primitive use the `CreatePrimitive() <Source/sparkpy.html#sparkpy.Cr
    import sparkpy
 
    #create an environment
-   sparkpy.CreateEnvironment('forest')
+   sparkpy.CreateEnvironment('office')
 
-   #make a cube at position x=0 , y=1, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   #make a cube at position x=0 , y=0, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,0,0)
     
 .. note:: The current list of primitive:
 
@@ -723,11 +731,11 @@ The method accepts the levels of red, green and blue was values between 0-1. The
    #create an environment
    sparkpy.CreateEnvironment('forest')
 
-   #make a cube at position x=0 , y=1, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   #make a cube at position x=0 , y=0, z=0
+   cubeID = sparkpy.CreatePrimitive('cube',0,0,0)
    
-   #set the colour to red 
-   sparkpy.SetPrimitiveColour(cubeID,1,0,0)
+   #set the colour to red (1=Red, 0=Blue, 0=Green)
+   sparkpy.SetPrimitiveColour(cubeID,1,0,0) #1=Red, 0=Blue, 0=Green
 
 
 """"""""""""""""""""

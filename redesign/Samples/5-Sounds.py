@@ -2,14 +2,14 @@ import sparkpy
 
 #play sound example
 
-#create a office backgroung
-sparkpy.CreateEnvironment("office")
+#create office environment
+sparkpy.CreateEnvironment("home")
 
-#play background music
-sparkpy.PlaySceneSound("rockmusic1");
+#create robot character
+xbot = sparkpy.CreateCharacter("xbot")
 
-#create a scene character
-uid = sparkpy.CreateCharacter("YBot")
+#set animation to dancing
+sparkpy.SetAnimation(xbot, "dancing1")
 
-#play a sound clip
-sparkpy.PlayCharacterSound(uid,"applause1")
+#play background music, music will loop by default
+sparkpy.PlaySceneSound("funkymusic1")

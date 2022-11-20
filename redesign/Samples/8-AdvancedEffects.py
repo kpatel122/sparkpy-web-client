@@ -7,7 +7,7 @@ sparkpy.CreateEnvironment("Office")
 
 #cube position
 x=0
-y=0
+y=-1 #move to the floor
 z=0
 scale = 2 # make the portal twice as normal
 

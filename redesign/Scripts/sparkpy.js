@@ -11,11 +11,13 @@ function navMenuClick()
 //ace editor reference: https://ajaxorg.github.io/ace-api-docs/classes/Ace.Editor.html
 function loadFile()
 {
-  document.getElementById('loadFileId').click();
+  document.getElementById('loadFileId').click(); //this element is hidden so manually click it
 }
 
-function getFileFromUser() {
 
+//https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsText
+function getFileFromUser() {
+  //read the file contents into the webpage editor element
   const [file] = document.getElementById("loadFileId").files;
  
   const reader = new FileReader();
