@@ -9,29 +9,29 @@ from browser import aio
 async def main():
     
     #create environment
-    sparkpy.CreateEnvironment('Office')
+    sparkpy.Environment('Office')
     
     #make a cube
-    cubeID = sparkpy._CreatePrimitive('cube',0,1,0)
+    cube = sparkpy.Primitive('cube',0,1,0)
     
     #set it's colour to red
-    sparkpy._SetPrimitiveColour(cubeID,1,0,0)
+    cube.SetColour(1,0,0)
     
     #rotate around y axis
-    sparkpy._RotatePrimitive(cubeID,100)
+    cube.Rotate(100)
     
     #loop move from left to right
-    sparkpy._LoopPrimitiveMove(cubeID, 2, 2, "right")
+    cube.LoopMove(2, 2, "right")
     
     #wait for 4 seconds
     await aio.sleep(4)
     
     #stop moving the cube
-    sparkpy._StopPrimitiveMove(cubeID)
+    cube.StopMove()
     
     
     #change the colour to blue
-    sparkpy._SetPrimitiveColour(cubeID,0,0,1)
+    cube.SetColour(0,0,1)
  
    
 #functions with sleep must be called through run   

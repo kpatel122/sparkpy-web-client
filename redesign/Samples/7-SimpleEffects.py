@@ -3,14 +3,14 @@ import sparkpy
 #special effects example
 
 #create office environment
-sparkpy.CreateEnvironment("Office")
+sparkpy.Environment("Office")
 
 x = 0 #x position 
 y = -1 #y position
 z= 0 #z position
 
 #create a portal effect
-eid=sparkpy._CreateEffect("portal",x,y,z)
+portalEffect=sparkpy.Effect("portal",x,y,z)
 
 #set colour to red from default
-sparkpy._SetEffectColour(eid,"red")
+portalEffect.SetColour("red")

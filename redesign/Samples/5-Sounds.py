@@ -3,13 +3,13 @@ import sparkpy
 #play sound example
 
 #create office environment
-sparkpy.CreateEnvironment("home")
+environment = sparkpy.Environment("home")
 
 #create robot character
-xbot = sparkpy.CreateCharacter("xbot")
+robot = sparkpy.Character("xbot")
 
 #set animation to dancing
-sparkpy._SetAnimation(xbot, "dancing1")
+robot.SetAnimation("dancing1")
 
 #play background music, music will loop by default
-sparkpy._PlaySceneSound("funkymusic1")
+environment.PlaySound("funkymusic1")

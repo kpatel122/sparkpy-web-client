@@ -82,9 +82,12 @@ COLOUR_GREEN = 9
 colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY, "magenta": COLOUR_MAGENTA,
             "cyan": COLOUR_CYAN, "red": COLOUR_RED,"black": COLOUR_BLACK, "white": COLOUR_WHITE,
             "blue": COLOUR_BLUE, "green": COLOUR_GREEN}
+characterIDMap = {} #maps a character id to character class 
 
+def GetCharacterFromID(characterID):
+    return characterIDMap[characterID]
 
-class Evironment:
+class Environment:
     '''Creates an scene environment
 
     :param environmentName: The environment name to create
@@ -129,7 +132,6 @@ class Evironment:
         if(self._valid):
             return _StopSceneSound()
         
-
 class Character:
     '''Creates an scene character
 
@@ -156,6 +158,7 @@ class Character:
             ErrorMsg("Character()","Could not create " + name)
         else:
             self._valid = True
+            characterIDMap[self._characterID] = self
 
     def __str__(self) -> str:
         return str(self.id)
@@ -480,7 +483,7 @@ class Effect:
         self._valid = False
         self._effectID = 0
 
-        self._effectID = _CreateEffect(effectName, x=0, y=0, z=0,scale=1)
+        self._effectID = _CreateEffect(effectName, x, y, z,scale)
         if(self._effectID != FAILURE):
             self._valid = True
 
@@ -507,7 +510,7 @@ class Effect:
         :return: 1 on success, 0 on failure
         '''
         if(self._valid):
-            return _SetEffectColour(self.effectID, startColour,endColour)
+            return _SetEffectColour(self._effectID, startColour,endColour)
 
 @bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)
 def InputTextHook(ev):

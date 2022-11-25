@@ -3,10 +3,10 @@ import sparkpy
 #control character with keyboard example
 
 #create office environment
-sparkpy.CreateEnvironment("office")
+sparkpy.Environment("office")
 
 #create robot character
-ybot = sparkpy.CreateCharacter("YBot")
+robot = sparkpy.Character("YBot")
 
 #set control mode to keyboard
-sparkpy._SetControlMode(ybot,"keyboard")
+robot.ControlMode("keyboard")

@@ -3,7 +3,7 @@ import sparkpy
 #advanced special effects
 
 #create environment
-sparkpy.CreateEnvironment("Office")
+sparkpy.Environment("Office")
 
 #cube position
 x=0
@@ -12,7 +12,7 @@ z=0
 scale = 2 # make the portal twice as normal
 
 #create portal effect
-eid=sparkpy._CreateEffect("portal",x,y,z,scale)
+bigPortal=sparkpy.Effect("portal",x,y,z,scale)
 
 #set the colour
-sparkpy._SetEffectColour(eid,"green","white")
+bigPortal.SetColour("green","white")
