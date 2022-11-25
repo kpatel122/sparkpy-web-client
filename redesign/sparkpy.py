@@ -85,6 +85,13 @@ colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY
 characterIDMap = {} #maps a character id to character class 
 
 def GetCharacterFromID(characterID):
+    '''returns a Character object from an id
+
+    :param characterID: the characterID to retrieve
+    :type characterID: int
+    
+    :return: Character Object or None if not found
+    '''
     return characterIDMap[characterID]
 
 class Environment:
@@ -126,7 +133,7 @@ class Environment:
         if(self._valid):
            return  _PlaySceneSound(clipname, volume ,loop)
     
-    def _StopSound(self):
+    def StopSound(self):
         '''Stops the scene's audio clip
         '''
         if(self._valid):
@@ -251,7 +258,7 @@ class Character:
         :return: 1 on success or 0 on failure
         '''
         if(self._valid):
-           return  _PlayCharacterSound(self._characterID, volume, loop)
+           return  _PlayCharacterSound(self._characterID,clipname, volume, loop)
 
     def StopSound(self):
         '''Stops the character's sound clip playing

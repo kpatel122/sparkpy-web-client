@@ -62,12 +62,12 @@ Basics
 """""""""""""""""""""
 Create an environment
 """""""""""""""""""""
-To create a scene an environment is needed ::
+To create a scene an `Environment() <Source/sparkpy.html#sparkpy.Environment>`_ object is needed ::
    
    import sparkpy
 
    #create a desert enviroment
-   sparkpy.CreateEnvironment('Desert')
+   sparkpy.Environment('desert')
 
 .. note::
    A list of all current environments  
@@ -80,7 +80,7 @@ To create a scene an environment is needed ::
 Create a character
 """"""""""""""""""
 
-To create a character, first make an environment then create the character
+To create a character, first make an environment then create a `Character() <Source/sparkpy.html#sparkpy.Character>`_ object
 
 .. code-block:: python
    :emphasize-lines: 7
@@ -88,10 +88,10 @@ To create a character, first make an environment then create the character
    import sparkpy
 
    #create office environment
-   sparkpy.CreateEnvironment("Office")
+   sparkpy.Environment("Office")
 
    #create robot character
-   sparkpy.CreateCharacter("YBot")
+   sparkpy.Character("YBot")
 
 .. note::
    A list of all current characters  
@@ -104,7 +104,7 @@ To create a character, first make an environment then create the character
 Character animation
 """"""""""""""""""""""""""""""""
 
-Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#sparkpy.SetAnimation>`_ 
+Set the animation for a character using  `SetAnimation()  <Source/sparkpy.html#sparkpy.Character.SetAnimation>`_ 
 
 .. code-block:: python
    :emphasize-lines: 12,15
@@ -114,23 +114,23 @@ Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#spa
    #set animation example
 
    #create office environment
-   sparkpy.CreateEnvironment("Office")
+   sparkpy.Environment("Office")
 
    #create robot character
-   ybot = sparkpy.CreateCharacter("YBot")
+   robot = sparkpy.Character("YBot")
 
    #set animation to walk
-   sparkpy.SetAnimation(ybot, "Walk")
+   robot.SetAnimation("Walk")
 
    #set animation speed
-   sparkpy.SetAnimationSpeed(ybot, 1)
+   robot.SetAnimationSpeed(1)
 
 .. tip:: A list of all available animation names for a given character is shown in the explorer view
 
    .. image:: Images/animation_names.png
       
  
-.. tip:: The speed of the animation can controlled with `SetAnimationSpeed <Source/sparkpy.html#sparkpy.SetAnimationSpeed>`_
+.. tip:: The speed of the animation can controlled with `SetAnimationSpeed() <Source/sparkpy.html#sparkpy.Character.SetAnimationSpeed>`_
 
 
 
@@ -138,7 +138,7 @@ Set the animation for a character using  `SetAnimation  <Source/sparkpy.html#spa
 Character movement
 """"""""""""""""""""""""""""""""
 
-A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Method
+A character can be moved using the `Move() <Source/sparkpy.html#sparkpy.Character.Move>`_ Method
 
 .. code-block:: python
    :emphasize-lines: 15
@@ -148,16 +148,16 @@ A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Me
    #move character exaample
 
    #create office environment
-   sparkpy.CreateEnvironment("forest")
+   sparkpy.Environment("forest")
 
    #create robot character at position x=0 y0 z=5
-   xbot = sparkpy.CreateCharacter("xbot",0,0,5)
+   robot = sparkpy.Character("xbot",0,0,5)
 
    #set animation to walk
-   sparkpy.SetAnimation(xbot, "Walk")
+   robot.SetAnimation("Walk")
 
-   #move the character for 5 seconds
-   sparkpy.Move(xbot,5)
+   #move the robot for 5 seconds
+   robot.Move(5)
    
 .. note:: you will notice that the character's animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED] 
 
@@ -165,7 +165,7 @@ A character can be moved using the `Move <Source/sparkpy.html#sparkpy.Move>`_ Me
 Character rotation
 """"""""""""""""""""""""""""""""
 
-A character can be rotated using the `Rotate <Source/sparkpy.html#sparkpy.Rotate>`_ Method
+A character can be rotated using the `Rotate() <Source/sparkpy.html#sparkpy.Character.Rotate>`_ Method
 
 .. code-block:: python
    :emphasize-lines: 12
@@ -175,20 +175,20 @@ A character can be rotated using the `Rotate <Source/sparkpy.html#sparkpy.Rotate
    #rotate character exaample
 
    #create office environment
-   sparkpy.CreateEnvironment("home")
+   sparkpy.Environment("home")
 
    #create a character at position 0,0,1
-   bryce = sparkpy.CreateCharacter("bryce")
+   bryce = sparkpy.Character("bryce")
 
    #rotate 90 degres in 2 seconds, in the counter clockwise direction 
-   sparkpy.Rotate(bryce,90, 2, "ccw")
+   bryce.Rotate(90, 2, "ccw")
 
 
 """"""""""""""""""""""""""""""""
 Character hide and show
 """"""""""""""""""""""""""""""""
 
-A character can be hidden (invisible) using the `Hide <Source/sparkpy.html#sparkpy.Hide>`_ Method
+A character can be hidden (invisible) using the `Hide() <Source/sparkpy.html#sparkpy.Character.Hide>`_ Method
 
 .. code-block:: python
    :emphasize-lines: 12
@@ -198,21 +198,21 @@ A character can be hidden (invisible) using the `Hide <Source/sparkpy.html#spark
    #hide character exaample
 
    #create an environment
-   sparkpy.CreateEnvironment("forest")
+   sparkpy.Environment("forest")
 
    #create a character at position x=0 y0 z=3
-   bryce = sparkpy.CreateCharacter("bryce",0,0,3)
+   bryce = sparkpy.Character("bryce",0,0,3)
 
    #character exists but will not be shown in the screen 
-   sparkpy.Hide(bryce)
+   bryce.Hide()
 
-.. note:: A character that is hidden can be shown again using `Show() <Source/sparkpy.html#sparkpy.Show>`_ 
+.. note:: A character that is hidden can be shown again using `Show() <Source/sparkpy.html#sparkpy.Character.Show>`_ 
 
 """"""""""""""""""""""""""""""""
 Character chat
 """"""""""""""""""""""""""""""""
 
-A character can create a chat box using the `Chat() <Source/sparkpy.html#sparkpy.Chat>`_
+A character can create a chat box using the `Chat() <Source/sparkpy.html#sparkpy.Character.Chat>`_
 
 .. code-block:: python
    :emphasize-lines: 12
@@ -222,19 +222,19 @@ A character can create a chat box using the `Chat() <Source/sparkpy.html#sparkpy
    #chat example
 
    #create an environment
-   sparkpy.CreateEnvironment("home")
+   sparkpy.Environment("home")
 
    #create a character
-   bryce = sparkpy.CreateCharacter("bryce")
+   bryce = sparkpy.Character("bryce")
 
    #create a chat box for 5 seconds
-   sparkpy.Chat(bryce, "Hello World", 5)
+   bryce.Chat("Hello World", 5)
 
 """"""""""""""""""""""""""""""""
 Control character with keyboard
 """"""""""""""""""""""""""""""""
 
-To move a character with the keyboard, use the  `SetControlMode()  <Source/sparkpy.html#sparkpy.SetControlMode>`_ method
+To move a character with the keyboard, use the  `ControlMode()  <Source/sparkpy.html#sparkpy.Character.ControlMode>`_ method
 A character can be controlled in third person mode using 'third_person' as the SetControlMode parameter
 
 .. code-block:: python
@@ -245,13 +245,13 @@ A character can be controlled in third person mode using 'third_person' as the S
    #control character with keyboard example
 
    #create office environment
-   sparkpy.CreateEnvironment("Office")
+   sparkpy.Environment("Office")
 
    #create robot character
-   ybot = sparkpy.CreateCharacter("YBot")
+   robot = sparkpy.Character("YBot")
 
    #set control mode to keyboard
-   sparkpy.SetControlMode(ybot,"keyboard")
+   robot.ControlMode("keyboard")
 
 
 
@@ -283,13 +283,13 @@ You can hide an input box using `HideInputBox() <Source/sparkpy.html#sparkpy.Hid
       sparkpy.HideInputBox()
 
       #set the chat box text to the input
-      sparkpy.Chat(michelle, "You said " + inputText)
+      michelle.Chat("You said " + inputText)
 
    #create desert environment test
-   sparkpy.CreateEnvironment('desert');
+   sparkpy.Environment('desert')
 
    #create a character
-   michelle = sparkpy.CreateCharacter("michelle")
+   michelle = sparkpy.Character("michelle")
    
    #set the callback function
    sparkpy.SetInputBoxHandler(InputEntered)
@@ -314,10 +314,10 @@ Input box (blocking)
    #blocking input call
 
    #create desert environment test
-   sparkpy.CreateEnvironment('desert')
+   sparkpy.Environment('desert')
 
    #create a character
-   lewis = sparkpy.CreateCharacter("lewis")
+   lewis = sparkpy.Character("lewis")
       
    #ask the user for a name, note the entire application will be paused 
    #until a value is entered
@@ -327,14 +327,15 @@ Input box (blocking)
    print("Welcome to sparkpy " + name)
 
    #create a chat box with the entered text
-   sparkpy.Chat(lewis,"Welcome to sparkpy " + name)
+   lewis.Chat("Welcome to sparkpy " + name)
 
 ~~~~~~~~~~~
 Collisions
 ~~~~~~~~~~~
 
 Collisions can be captured between two characters or primitives, using a callback function set with `SetCollisionHandler() <Source/sparkpy.html#sparkpy.SetCollisionHandler>`_ 
-when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided
+when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided.
+To retrieve a character object from the ids, use `GetCharacterFromID() <Source/sparkpy.html#sparkpy.GetCharacterFromID>`_
 
 """"""""""""""""""""""""
 Collision (non blocking)
@@ -344,28 +345,33 @@ Collision (non blocking)
 
    import sparkpy
 
+   import sparkpy
+
    #collision example
 
-   #create collision handler function, the two ids represent the ids of the objects that collided
+   #create collision handler function
    def collision(id1,id2):
-      print("Collision occured between " + str(id1) + "," + str(id2))
+      print("Handled " + str(id1) + "," + str(id2))
+      collidedCharacter = sparkpy.GetCharacterFromID(id1)
+      collidedCharacter.Chat("I collided")
 
    #assign the collision handler function
    sparkpy.SetCollisionHandler(collision)
 
    #create an office environment
-   sparkpy.CreateEnvironment("Office")
+   sparkpy.Environment("Office")
 
    #create first character
-   ybot = sparkpy.CreateCharacter("ybot")
+   robot1 = sparkpy.Character("YBot")
+   
 
    #create seconf character
-   xbot = sparkpy.CreateCharacter("xbot",2,0,0)
+   robot2 = sparkpy.Character("XBot",2,0,0)
 
-   #set control mode to keyboard
-   sparkpy.SetControlMode(ybot,"keyboard")
+   #control character by keyboard
+   robot1.ControlMode("keyboard")
 
-.. note:: `SetCollisionHandler() <Source/sparkpy.html#sparkpy.SetCollisionHandler>`_ is *asynchronous* (non-blocking) meaning any code *after* the SetCollisionHandler() will continue
+.. note:: `SetCollisionHandler() <Source/sparkpy.html#sparkpy.SetCollisionHandler>`_ is *asynchronous* (non-blocking) meaning any code *after* the SetCollisionHandler will continue
    to run regardless of if a collision has occured or not. To make collision detection *synchronous* (blocking) meaning any code *after* a collision can only
    be run *after* a collision has occured, use async await for collision event() [LINK NEEDED]
 
@@ -383,8 +389,8 @@ Sounds
 """""""""""""""""
 Environment music
 """""""""""""""""
-
-The `PlaySceneSound() <Source/sparkpy.html#sparkpy.PlaySceneSound>`_ will play background music for the scene. The music will loop by default
+ 
+The `PlaySound() <Source/sparkpy.html#sparkpy.Environment.PlaySound>`_ will play background music for the scene environment. The music will loop by default
 
 .. code-block:: python
    :emphasize-lines: 13
@@ -392,20 +398,20 @@ The `PlaySceneSound() <Source/sparkpy.html#sparkpy.PlaySceneSound>`_ will play b
    import sparkpy
 
    #create office environment
-   sparkpy.CreateEnvironment("home")
+   environment = sparkpy.Environment("home")
 
    #create robot character
    xbot = sparkpy.CreateCharacter("xbot")
 
    #set animation to dancing
-   sparkpy.SetAnimation(xbot, "dancing1")
+   xbot.SetAnimation("dancing1")
 
    #play background music, music will loop by default
-   sparkpy.PlaySceneSound("funkymusic1")
+   environment.PlaySound("funkymusic1")
 
 .. note::
    
-   Scene music can be stopped with `StopSceneSound() <Source/sparkpy.html#sparkpy.StopSceneSound>`_  
+   Scene music can be stopped with `StopSound() <Source/sparkpy.html#sparkpy.Environment.StopSound>`_  
    The current list of music
 
    ============== ===============
@@ -415,18 +421,17 @@ The `PlaySceneSound() <Source/sparkpy.html#sparkpy.PlaySceneSound>`_ will play b
 """"""""
 Sound FX
 """"""""
-
-To play a sound effect for a specific character, use `PlayCharacterSound() <Source/sparkpy.html#sparkpy.PlayCharacterSound>`_ 
+ 
+To play a sound effect for a specific character, use `PlaySound() <Source/sparkpy.html#sparkpy.Character.PlaySound>`_ 
 Sound effects do not loop by default
 
 .. code-block:: python
-   :emphasize-lines: 20,31
+   :emphasize-lines: 19,30
 
    import sparkpy
 
    #simple quiz with sound effects
-
-   bryceid = 0
+   bryce = None
 
    #input box handler function
    def ProcessAnswer(answer):
@@ -441,40 +446,39 @@ Sound effects do not loop by default
       if(answer == "paris"):
 
          #play an apploause sound effect
-         sparkpy.PlayCharacterSound(bryceid, "applause1")
+         bryce.PlaySound("applause1")
 
          #let the user know their answer is correct
-         sparkpy.Chat(bryceid,"Correct!! ",10)
+         bryce.Chat("Correct!! ",10)
 
          #do a victory dance
-         sparkpy.SetAnimation(bryceid,"celebration")
+         bryce.SetAnimation("celebration")
 
       else:
 
          #play a boo sound effect
-         sparkpy.PlayCharacterSound(bryceid, "boo1")
+         bryce.PlaySound("boo1")
 
          #let the user know their answer is correct
-         sparkpy.Chat(bryceid,"Not correct",10)
+         bryce.Chat("Not correct",10)
 
          #play a talking animation for the character
-         sparkpy.SetAnimation(bryceid,"talking2")
+         bryce.SetAnimation("talking2")
 
       #once the input has been recieved, do not show the input box anymore
       sparkpy.HideInputBox()
 
-
    #create an environment
-   sparkpy.CreateEnvironment('home')
+   sparkpy.Environment('home')
 
    #create a character
-   bryceid = sparkpy.CreateCharacter('bryce')
+   bryce = sparkpy.Character('bryce')
 
    #play a talking animation for the character
-   sparkpy.SetAnimation(bryceid,"talking1")
+   bryce.SetAnimation("talking1")
 
    #ask the user a question, keep the question on the screen for 20 seconds
-   sparkpy.Chat(bryceid,"What's the captial of france? ",20)
+   bryce.Chat("What's the captial of france? ",20)
 
    #set the input box callback function
    sparkpy.SetInputBoxHandler(ProcessAnswer)
@@ -504,10 +508,10 @@ Effects
 """"""""""""""""
 Creating effects
 """"""""""""""""
-
-The `CreateEffect() <Source/sparkpy.html#sparkpy.CreateEffect>`_ will create a special effect, it's default position is 0
-The colour of the effect can be set with `SetEffectColour() <Source/sparkpy.html#sparkpy.SetEffectColour>`_
-An effecct can be stopped with `StopEffect() <Source/sparkpy.html#sparkpy.StopEffect>`_
+ 
+The `Effect() <Source/sparkpy.html#sparkpy.Effect>`_ object will create a special effect, it's default position is 0
+The colour of the effect can be set with `SetColour() <Source/sparkpy.html#sparkpy.Effect.SetColour>`_
+An effect can be stopped with `Stop() <Source/sparkpy.html#sparkpy.Effect.Stop>`_
 
 .. code-block:: python
 
@@ -516,17 +520,17 @@ An effecct can be stopped with `StopEffect() <Source/sparkpy.html#sparkpy.StopEf
    #special effects example
 
    #create office environment
-   sparkpy.CreateEnvironment("Office")
+   sparkpy.Environment("Office")
 
    x = 0 #x position 
    y = -1 #y position
    z= 0 #z position
 
    #create a portal effect
-   eid=sparkpy.CreateEffect("portal",x,y,z)
+   portal=sparkpy.Effect("portal",x,y,z)
 
    #set colour to red from default
-   sparkpy.SetEffectColour(eid,"red")
+   portal.SetColour("red")
 
 
 .. note::
@@ -554,9 +558,9 @@ Wait
 """"""""""""""""""
 Wait for seconds
 """"""""""""""""""
-To pause your program for a specific amount of time, use *aio.sleep* (see line 22 of the example)
-In order to use aio.sleep your program must be written in an *async* function (see line 7 of the example), this function should be called with 
-`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see line 28 of the example). Waits are performed using *await aio.sleep()* which is available after an import of the aio module from browser(see line 4 of the example)
+To pause your program for a specific amount of time, use *aio.sleep* 
+In order to use aio.sleep your program must be written in an *async* function, this function should be called with 
+`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see last line of example). Waits are performed using *await aio.sleep()* which is available after an import of the aio module from browser
 
 
 .. code-block:: python
@@ -571,22 +575,22 @@ In order to use aio.sleep your program must be written in an *async* function (s
    async def main():
 
       #create office environment
-      sparkpy.CreateEnvironment("forest")
+      sparkpy.Environment("forest")
 
       #create robot character at position x=0 y0 z=3
-      xbotid = sparkpy.CreateCharacter("xbot",0,0,3)
+      xbot = sparkpy.Character("xbot",0,0,3)
 
       #set animation to walk
-      sparkpy.SetAnimation(xbotid, "Walk")
+      xbot.SetAnimation("Walk")
 
       #move the character for 3 seconds
-      sparkpy.Move(xbotid,3)
+      xbot.Move(3)
 
       #sleep for 3 seconds
       await aio.sleep(3)
 
       #set the animation back to idle 
-      sparkpy.SetAnimation(xbotid,"idle")
+      xbot.SetAnimation("idle")
    
    #run the async function
    sparkpy.Run(main)
@@ -596,9 +600,9 @@ In order to use aio.sleep your program must be written in an *async* function (s
 Wait for collision
 """"""""""""""""""""
 
-To pause your program until a collision has occured use *await aio.event(SPARKPY_EVENT, EVENT_COLLISION)* (see line 30 of the example)
-In order to use *await aio.event* your program must be written in an *async* function (see line 13 of the example), this function should be called with 
-`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see line 35 of the example).  *await aio.event* is available after the aio module is imported from browser (see line 4 of the example)
+To pause your program until a collision has occured use *await aio.event(SPARKPY_EVENT, EVENT_COLLISION)* 
+In order to use *await aio.event* your program must be written in an *async* function , this function should be called with 
+`Run() <Source/sparkpy.html#sparkpy.Run>`_ .  *await aio.event* is available after the aio module is imported from browser 
 
 .. code-block:: python
    :emphasize-lines: 4,13,30,36
@@ -620,22 +624,22 @@ In order to use *await aio.event* your program must be written in an *async* fun
       sparkpy.SetCollisionHandler(collision)
 
       #create an office environment
-      sparkpy.CreateEnvironment("Office")
+      sparkpy.Environment("Office")
 
       #create first character
-      ybot = sparkpy.CreateCharacter("ybot")
+      ybot = sparkpy.Character("ybot")
 
       #create seconf character
-      xbot = sparkpy.CreateCharacter("xbot",2,0,0)
+      xbot = sparkpy.Character("xbot",2,0,0)
 
       #set control mode to keyboard
-      sparkpy.SetControlMode(ybot,"keyboard")
+      ybot.ControlMode(ybot,"keyboard")
 
       #wait for the collision to occur, no code below this will run until a collision happens
       await aio.event(sparkpy.EVENT, sparkpy.EVENT_COLLISION)
 
       #this can only run after a collsion event has happened
-      sparkpy.Chat(ybot, "I have collided!")
+      ybot.Chat("I have collided!")
       
    sparkpy.Run(main)
 
@@ -643,10 +647,10 @@ In order to use *await aio.event* your program must be written in an *async* fun
 Wait for input
 """"""""""""""""""""
 
-To pause your program until user has entered text use *await aio.event(SPARKPY_EVENT, EVENT_INPUT)* (see line 21 of the example)
-In order to use *await aio.event* your program must be written in an *async* function (see line 7 of the example), this function should be called with 
-`Run() <Source/sparkpy.html#sparkpy.Run>`_ (see line 33 of the example).  *await aio.event* is available after the aio module is imported from browser (see line 4 of the example)
-Text entered into the input box can be retrieved using `GetInputBoxValue() <Source/sparkpy.html#sparkpy.GetInputBoxValue>`_ (see line 24 of the example). 
+To pause your program until user has entered text use *await aio.event(SPARKPY_EVENT, EVENT_INPUT)* 
+In order to use *await aio.event* your program must be written in an *async* function , this function should be called with 
+`Run() <Source/sparkpy.html#sparkpy.Run>`_ .  *await aio.event* is available after the aio module is imported from browser
+Text entered into the input box can be retrieved using `GetInputBoxValue() <Source/sparkpy.html#sparkpy.GetInputBoxValue>`_ . 
 
 .. code-block:: python
    :emphasize-lines: 4,7,21,24, 33
@@ -659,13 +663,13 @@ Text entered into the input box can be retrieved using `GetInputBoxValue() <Sour
    #programs with await must be written inside an async function 
    async def main():
       #create desert environment test
-      sparkpy.CreateEnvironment('desert');
+      sparkpy.Environment('desert');
          
       #create first character
-      ybot = sparkpy.CreateCharacter("ybot")
+      ybot = sparkpy.Character("ybot")
 
       #ask the user a question
-      sparkpy.Chat(ybot, "Hi, What's your name ? ")
+      ybot.Chat("Hi, What's your name ? ")
 
       #show an input box, for the user to enter an answer
       sparkpy.ShowInputBox()
@@ -677,7 +681,7 @@ Text entered into the input box can be retrieved using `GetInputBoxValue() <Sour
       name = sparkpy.GetInputBoxValue()
 
       #out message to user, with the value they entered
-      sparkpy.Chat(ybot, "Welcome to sparkpy " + name)
+      ybot.Chat("Welcome to sparkpy " + name)
 
       #hide the input box
       sparkpy.HideInputBox()
@@ -693,7 +697,7 @@ Primitives
 Create Primitive
 """"""""""""""""""""
 Primitives are simple shapes that have no animations attached to them.
-To create a primitive use the `CreatePrimitive() <Source/sparkpy.html#sparkpy.CreatePrimitive>`_ method
+To create a primitive use the `Primitive() <Source/sparkpy.html#sparkpy.Primitive>`_ object
 
 .. code-block:: python
    :emphasize-lines: 7
@@ -701,10 +705,10 @@ To create a primitive use the `CreatePrimitive() <Source/sparkpy.html#sparkpy.Cr
    import sparkpy
 
    #create an environment
-   sparkpy.CreateEnvironment('office')
+   sparkpy.Environment('office')
 
    #make a cube at position x=0 , y=0, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,0,0)
+   cube = sparkpy.Primitive('cube',0,0,0)
     
 .. note:: The current list of primitive:
 
@@ -714,13 +718,13 @@ To create a primitive use the `CreatePrimitive() <Source/sparkpy.html#sparkpy.Cr
    |\"plane\"    |\"quad\"   |\"cube\"    |
    +-------------+-----------+------------+
    
-   To hide a created primitive, use the `HidePrimitive() <Source/sparkpy.html#sparkpy.HidePrimitive>`_ method
-   To show a previously hidden primitive, use the `ShowPrimitive() <Source/sparkpy.html#sparkpy.ShowPrimitive>`_ method
+   To hide a created primitive, use the `Hide() <Source/sparkpy.html#sparkpy.Primitive.Hide>`_ method
+   To show a previously hidden primitive, use the `Show() <Source/sparkpy.html#sparkpy.Primitive.Show>`_ method
 
 """"""""""""""""""""
 Set Primitive Colour
 """"""""""""""""""""
-To set the colour of a primitive, use the `SetPrimitiveColour() <Source/sparkpy.html#sparkpy.SetPrimitiveColour>`_ method.
+To set the colour of a primitive, use the `SetColour() <Source/sparkpy.html#sparkpy.Primitive.SetColour>`_ method.
 The method accepts the levels of red, green and blue was values between 0-1. The transparancy of a primitive can also be set as a avlue between 0 (fully invisible) to 1 (fully opaque)
 
 .. code-block:: python
@@ -732,16 +736,16 @@ The method accepts the levels of red, green and blue was values between 0-1. The
    sparkpy.CreateEnvironment('forest')
 
    #make a cube at position x=0 , y=0, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,0,0)
+   cube = sparkpy.Primitive('cube',0,0,0)
    
    #set the colour to red (1=Red, 0=Blue, 0=Green)
-   sparkpy.SetPrimitiveColour(cubeID,1,0,0) #1=Red, 0=Blue, 0=Green
+   cube.SetColour(1,0,0) #1=Red, 0=Blue, 0=Green
 
 
 """"""""""""""""""""
 Destroy Primitive
 """"""""""""""""""""
-If a primitive is no longer needed in the program `DestroyPrimitive() <Source/sparkpy.html#sparkpy.DestroyPrimitive>`_
+If a primitive is no longer needed in the program `Destroy() <Source/sparkpy.html#sparkpy.Primitive.Destroy>`_
 will remove the primitive completely
 
 .. code-block:: python
@@ -749,21 +753,33 @@ will remove the primitive completely
 
    import sparkpy
 
-   #create an environment
-   sparkpy.CreateEnvironment('forest')
+   #must import aio for await to work
+   from browser import aio
 
-   #make a cube at position x=0 , y=1, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   #programs with await with be written inside an async function 
+   async def main():
 
-   #the cube is no longer needed, remove it
-   sparkpy.DestroyPrimitive(cubeID)
+      #create an environment
+      sparkpy.Environment('forest')
+
+      #make a cube at position x=0 , y=1, z=0
+      cube = sparkpy.Primitive('cube',0,1,0)
+
+      #sleep for 3 seconds
+      await aio.sleep(3)
+
+      #the cube is no longer needed, remove it
+      sparkpy.Destroy()
+
+   #run main
+   sparkpy.Run(main)
 
 """"""""""""""""""""""""""
 Scale Primitive
 """"""""""""""""""""""""""
    
 To make a primitive bigger or smaller, use the
-`ScalePrimitive() <Source/sparkpy.html#sparkpy.ScalePrimitive>`_ method
+`Scale() <Source/sparkpy.html#sparkpy.Primitive.Scale>`_ method
 
 .. code-block:: python
    :emphasize-lines: 10
@@ -771,17 +787,17 @@ To make a primitive bigger or smaller, use the
    import sparkpy
 
    #create an environment
-   sparkpy.CreateEnvironment('forest')
+   sparkpy.Environment('forest')
 
    #make a cube at position x=0 , y=1, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   cube = sparkpy.Primitive('cube',0,1,0)
 
    #double the size of the cube
-   sparkpy.ScalePrimitive(cubeID, 2)
+   cube.Scale(2)
 
 .. note:: 
    to scale in a specific direction (non-uniform scale), provide the sizes
-   of the x,y,z and use `ScalePrimitiveNonUniform() <Source/sparkpy.html#sparkpy.ScalePrimitiveNonUniform>`_
+   of the x,y,z when using `Scale() <Source/sparkpy.html#sparkpy.Primitive.Scale>`_
    
    .. code-block:: python
       :emphasize-lines: 10
@@ -789,18 +805,18 @@ To make a primitive bigger or smaller, use the
       import sparkpy
 
       #create an environment
-      sparkpy.CreateEnvironment('forest')
+      sparkpy.Environment('forest')
 
       #make a cube at position x=0 , y=1, z=0
-      cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+      cube = sparkpy.Primitive('cube',0,1,0)
 
       #double the size of the cube, along the x and z axis
-      sparkpy.ScalePrimitive(cubeID, 2,1,2)
+      cube.Scale(2,1,2)
 
 """"""""""""""""""""
 Rotate Primitive
 """"""""""""""""""""
-To rotate a primitive, use the `RotatePrimitive() <Source/sparkpy.html#sparkpy.RotatePrimitive>`_ 
+To rotate a primitive, use the `Rotate() <Source/sparkpy.html#sparkpy.Primitive.Rotate>`_ 
 by default primitives are rotated around their y (up) axis
 
 .. code-block:: python
@@ -809,18 +825,18 @@ by default primitives are rotated around their y (up) axis
    import sparkpy
       
    #create an environment
-   sparkpy.CreateEnvironment('office')
+   sparkpy.Environment('office')
 
    #make a cube at position x=0 , y=1, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   cube = sparkpy.Primitive('cube',0,1,0)
 
    #rotate the cube at a speed of 90 degrees per second
-   sparkpy.RotatePrimitive(cubeID, 90)
+   cube.Rotate(90)
 
 """"""""""""""""""""
 Move Primitive
 """"""""""""""""""""
-To move a primitive, use the `MovePrimitive() <Source/sparkpy.html#sparkpy.MovePrimitive>`_ method.
+To move a primitive, use the `Move() <Source/sparkpy.html#sparkpy.Primitive.Move>`_ method.
 
 .. code-block:: python
    :emphasize-lines: 10
@@ -828,13 +844,13 @@ To move a primitive, use the `MovePrimitive() <Source/sparkpy.html#sparkpy.MoveP
    import sparkpy
 
    #create an environment
-   sparkpy.CreateEnvironment('office')
+   sparkpy.Environment('office')
 
    #make a cube at position x=0 , y=1, z=0
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   cube = sparkpy.Primitive('cube',0,1,0)
 
    #move the cube to right at a speed of 4 for 1 seconds
-   sparkpy.MovePrimitive(cubeID, 1, 4, "right")
+   cube.Move(1, 4, "right")
     
 .. note:: direction values can be:
 
@@ -846,7 +862,7 @@ To move a primitive, use the `MovePrimitive() <Source/sparkpy.html#sparkpy.MoveP
 """"""""""""""""""""
 Loop Primitive Move
 """"""""""""""""""""
-To make a primitive continuously move between two points, use the `LoopPrimitiveMove() <Source/sparkpy.html#sparkpy.LoopPrimitiveMove>`_ 
+To make a primitive continuously move between two points, use the `LoopMove() <Source/sparkpy.html#sparkpy.Primitive.LoopMove>`_ 
 
 .. code-block:: python
    :emphasize-lines: 10
@@ -854,13 +870,13 @@ To make a primitive continuously move between two points, use the `LoopPrimitive
    import sparkpy
 
    #create an environment
-   sparkpy.CreateEnvironment('office')
+   sparkpy.Environment('office')
 
    #make a cube
-   cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+   cube = sparkpy.Primitive('cube',0,1,0)
     
    #loop move from right to left and back again for 2 seconds at a speed of 1. 
-   sparkpy.LoopPrimitiveMove(cubeID, 2, 1, "right")
+   cube.LoopMove(2, 1, "right")
  
 
 

@@ -140,11 +140,11 @@
 <h4>Basics<a class="headerlink" href="#basics" title="Permalink to this heading"></a></h4>
 <section id="create-an-environment">
 <h5>Create an environment<a class="headerlink" href="#create-an-environment" title="Permalink to this heading"></a></h5>
-<p>To create a scene an environment is needed</p>
+<p>To create a scene an <a class="reference external" href="Source/sparkpy.html#sparkpy.Environment">Environment()</a> object is needed</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create a desert enviroment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;Desert&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -175,14 +175,14 @@
 </section>
 <section id="create-a-character">
 <h5>Create a character<a class="headerlink" href="#create-a-character" title="Permalink to this heading"></a></h5>
-<p>To create a character, first make an environment then create the character</p>
+<p>To create a character, first make an environment then create a <a class="reference external" href="Source/sparkpy.html#sparkpy.Character">Character()</a> object</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 
 <span class="c1">#create robot character</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
@@ -211,22 +211,22 @@
 </section>
 <section id="character-animation">
 <h5>Character animation<a class="headerlink" href="#character-animation" title="Permalink to this heading"></a></h5>
-<p>Set the animation for a character using  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimation">SetAnimation</a></p>
+<p>Set the animation for a character using  <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.SetAnimation">SetAnimation()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#set animation example</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 
 <span class="c1">#create robot character</span>
-<span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+<span class="n">robot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
 
 <span class="c1">#set animation to walk</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">robot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
 </span>
 <span class="c1">#set animation speed</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimationSpeed</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="hll"><span class="n">robot</span><span class="o">.</span><span class="n">SetAnimationSpeed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition tip">
@@ -236,27 +236,27 @@
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The speed of the animation can controlled with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetAnimationSpeed">SetAnimationSpeed</a></p>
+<p>The speed of the animation can controlled with <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.SetAnimationSpeed">SetAnimationSpeed()</a></p>
 </div>
 </section>
 <section id="character-movement">
 <h5>Character movement<a class="headerlink" href="#character-movement" title="Permalink to this heading"></a></h5>
-<p>A character can be moved using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Move">Move</a> Method</p>
+<p>A character can be moved using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.Move">Move()</a> Method</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#move character exaample</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
 
 <span class="c1">#create robot character at position x=0 y0 z=5</span>
-<span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">robot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="c1">#set animation to walk</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">xbot</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+<span class="n">robot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
 
-<span class="c1">#move the character for 5 seconds</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="n">xbot</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1">#move the robot for 5 seconds</span>
+<span class="hll"><span class="n">robot</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
@@ -266,78 +266,78 @@
 </section>
 <section id="character-rotation">
 <h5>Character rotation<a class="headerlink" href="#character-rotation" title="Permalink to this heading"></a></h5>
-<p>A character can be rotated using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Rotate">Rotate</a> Method</p>
+<p>A character can be rotated using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.Rotate">Rotate()</a> Method</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#rotate character exaample</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
 
 <span class="c1">#create a character at position 0,0,1</span>
-<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">)</span>
+<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">)</span>
 
 <span class="c1">#rotate 90 degres in 2 seconds, in the counter clockwise direction</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;ccw&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">bryce</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;ccw&quot;</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
 <section id="character-hide-and-show">
 <h5>Character hide and show<a class="headerlink" href="#character-hide-and-show" title="Permalink to this heading"></a></h5>
-<p>A character can be hidden (invisible) using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Hide">Hide</a> Method</p>
+<p>A character can be hidden (invisible) using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.Hide">Hide()</a> Method</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#hide character exaample</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
 
 <span class="c1">#create a character at position x=0 y0 z=3</span>
-<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="c1">#character exists but will not be shown in the screen</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Hide</span><span class="p">(</span><span class="n">bryce</span><span class="p">)</span>
+<span class="hll"><span class="n">bryce</span><span class="o">.</span><span class="n">Hide</span><span class="p">()</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A character that is hidden can be shown again using <a class="reference external" href="Source/sparkpy.html#sparkpy.Show">Show()</a></p>
+<p>A character that is hidden can be shown again using <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.Show">Show()</a></p>
 </div>
 </section>
 <section id="character-chat">
 <h5>Character chat<a class="headerlink" href="#character-chat" title="Permalink to this heading"></a></h5>
-<p>A character can create a chat box using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Chat">Chat()</a></p>
+<p>A character can create a chat box using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.Chat">Chat()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#chat example</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
 
 <span class="c1">#create a character</span>
-<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">)</span>
+<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;bryce&quot;</span><span class="p">)</span>
 
 <span class="c1">#create a chat box for 5 seconds</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryce</span><span class="p">,</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="hll"><span class="n">bryce</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
 <section id="control-character-with-keyboard">
 <h5>Control character with keyboard<a class="headerlink" href="#control-character-with-keyboard" title="Permalink to this heading"></a></h5>
-<p>To move a character with the keyboard, use the  <a class="reference external" href="Source/sparkpy.html#sparkpy.SetControlMode">SetControlMode()</a> method
+<p>To move a character with the keyboard, use the  <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.ControlMode">ControlMode()</a> method
 A character can be controlled in third person mode using ‘third_person’ as the SetControlMode parameter</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#control character with keyboard example</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 
 <span class="c1">#create robot character</span>
-<span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+<span class="n">robot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
 
 <span class="c1">#set control mode to keyboard</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">robot</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
@@ -363,13 +363,13 @@ You can hide an input box using <a class="reference external" href="Source/spark
    <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
 
    <span class="c1">#set the chat box text to the input</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">michelle</span><span class="p">,</span> <span class="s2">&quot;You said &quot;</span> <span class="o">+</span> <span class="n">inputText</span><span class="p">)</span>
+   <span class="n">michelle</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;You said &quot;</span> <span class="o">+</span> <span class="n">inputText</span><span class="p">)</span>
 
 <span class="c1">#create desert environment test</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">)</span>
 
 <span class="c1">#create a character</span>
-<span class="n">michelle</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;michelle&quot;</span><span class="p">)</span>
+<span class="n">michelle</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;michelle&quot;</span><span class="p">)</span>
 
 <span class="c1">#set the callback function</span>
 <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetInputBoxHandler</span><span class="p">(</span><span class="n">InputEntered</span><span class="p">)</span>
@@ -394,10 +394,10 @@ be run <em>after</em> input has been entered, you can use python input(see below
 <span class="c1">#blocking input call</span>
 
 <span class="c1">#create desert environment test</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">)</span>
 
 <span class="c1">#create a character</span>
-<span class="n">lewis</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;lewis&quot;</span><span class="p">)</span>
+<span class="n">lewis</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;lewis&quot;</span><span class="p">)</span>
 
 <span class="c1">#ask the user for a name, note the entire application will be paused</span>
 <span class="c1">#until a value is entered</span>
@@ -407,7 +407,7 @@ be run <em>after</em> input has been entered, you can use python input(see below
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 
 <span class="c1">#create a chat box with the entered text</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">lewis</span><span class="p">,</span><span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+<span class="n">lewis</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -415,36 +415,42 @@ be run <em>after</em> input has been entered, you can use python input(see below
 <section id="collisions">
 <h4>Collisions<a class="headerlink" href="#collisions" title="Permalink to this heading"></a></h4>
 <p>Collisions can be captured between two characters or primitives, using a callback function set with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a>
-when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided</p>
+when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided.
+To retrieve a character object from the ids, use <a class="reference external" href="Source/sparkpy.html#sparkpy.GetCharacterFromID">GetCharacterFromID()</a></p>
 <section id="collision-non-blocking">
 <h5>Collision (non blocking)<a class="headerlink" href="#collision-non-blocking" title="Permalink to this heading"></a></h5>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
+<span class="kn">import</span> <span class="nn">sparkpy</span>
+
 <span class="c1">#collision example</span>
 
-<span class="c1">#create collision handler function, the two ids represent the ids of the objects that collided</span>
+<span class="c1">#create collision handler function</span>
 <span class="k">def</span> <span class="nf">collision</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="n">id2</span><span class="p">):</span>
-   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collision occured between &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id2</span><span class="p">))</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Handled &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id2</span><span class="p">))</span>
+   <span class="n">collidedCharacter</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">GetCharacterFromID</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span>
+   <span class="n">collidedCharacter</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;I collided&quot;</span><span class="p">)</span>
 
 <span class="c1">#assign the collision handler function</span>
 <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetCollisionHandler</span><span class="p">(</span><span class="n">collision</span><span class="p">)</span>
 
 <span class="c1">#create an office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 
 <span class="c1">#create first character</span>
-<span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+<span class="n">robot1</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+
 
 <span class="c1">#create seconf character</span>
-<span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">robot2</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;XBot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="c1">#set control mode to keyboard</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+<span class="c1">#control character by keyboard</span>
+<span class="n">robot1</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the SetCollisionHandler() will continue
+<p><a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the SetCollisionHandler will continue
 to run regardless of if a collision has occured or not. To make collision detection <em>synchronous</em> (blocking) meaning any code <em>after</em> a collision can only
 be run <em>after</em> a collision has occured, use async await for collision event() [LINK NEEDED]</p>
 </div>
@@ -458,25 +464,25 @@ be run <em>after</em> a collision has occured, use async await for collision eve
 <h4>Sounds<a class="headerlink" href="#sounds" title="Permalink to this heading"></a></h4>
 <section id="environment-music">
 <h5>Environment music<a class="headerlink" href="#environment-music" title="Permalink to this heading"></a></h5>
-<p>The <a class="reference external" href="Source/sparkpy.html#sparkpy.PlaySceneSound">PlaySceneSound()</a> will play background music for the scene. The music will loop by default</p>
+<p>The <a class="reference external" href="Source/sparkpy.html#sparkpy.Environment.PlaySound">PlaySound()</a> will play background music for the scene environment. The music will loop by default</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+<span class="n">environment</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
 
 <span class="c1">#create robot character</span>
 <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">)</span>
 
 <span class="c1">#set animation to dancing</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">xbot</span><span class="p">,</span> <span class="s2">&quot;dancing1&quot;</span><span class="p">)</span>
+<span class="n">xbot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;dancing1&quot;</span><span class="p">)</span>
 
 <span class="c1">#play background music, music will loop by default</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">PlaySceneSound</span><span class="p">(</span><span class="s2">&quot;funkymusic1&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">environment</span><span class="o">.</span><span class="n">PlaySound</span><span class="p">(</span><span class="s2">&quot;funkymusic1&quot;</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Scene music can be stopped with <a class="reference external" href="Source/sparkpy.html#sparkpy.StopSceneSound">StopSceneSound()</a>
+<p>Scene music can be stopped with <a class="reference external" href="Source/sparkpy.html#sparkpy.Environment.StopSound">StopSound()</a>
 The current list of music</p>
 <table class="docutils align-default">
 <colgroup>
@@ -493,13 +499,12 @@ The current list of music</p>
 </section>
 <section id="sound-fx">
 <h5>Sound FX<a class="headerlink" href="#sound-fx" title="Permalink to this heading"></a></h5>
-<p>To play a sound effect for a specific character, use <a class="reference external" href="Source/sparkpy.html#sparkpy.PlayCharacterSound">PlayCharacterSound()</a>
+<p>To play a sound effect for a specific character, use <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.PlaySound">PlaySound()</a>
 Sound effects do not loop by default</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#simple quiz with sound effects</span>
-
-<span class="n">bryceid</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">bryce</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1">#input box handler function</span>
 <span class="k">def</span> <span class="nf">ProcessAnswer</span><span class="p">(</span><span class="n">answer</span><span class="p">):</span>
@@ -514,40 +519,39 @@ Sound effects do not loop by default</p>
    <span class="k">if</span><span class="p">(</span><span class="n">answer</span> <span class="o">==</span> <span class="s2">&quot;paris&quot;</span><span class="p">):</span>
 
       <span class="c1">#play an apploause sound effect</span>
-<span class="hll">      <span class="n">sparkpy</span><span class="o">.</span><span class="n">PlayCharacterSound</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span> <span class="s2">&quot;applause1&quot;</span><span class="p">)</span>
+<span class="hll">      <span class="n">bryce</span><span class="o">.</span><span class="n">PlaySound</span><span class="p">(</span><span class="s2">&quot;applause1&quot;</span><span class="p">)</span>
 </span>
       <span class="c1">#let the user know their answer is correct</span>
-      <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;Correct!! &quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+      <span class="n">bryce</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Correct!! &quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 
       <span class="c1">#do a victory dance</span>
-      <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;celebration&quot;</span><span class="p">)</span>
+      <span class="n">bryce</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;celebration&quot;</span><span class="p">)</span>
 
    <span class="k">else</span><span class="p">:</span>
 
       <span class="c1">#play a boo sound effect</span>
-<span class="hll">      <span class="n">sparkpy</span><span class="o">.</span><span class="n">PlayCharacterSound</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span> <span class="s2">&quot;boo1&quot;</span><span class="p">)</span>
+<span class="hll">      <span class="n">bryce</span><span class="o">.</span><span class="n">PlaySound</span><span class="p">(</span><span class="s2">&quot;boo1&quot;</span><span class="p">)</span>
 </span>
       <span class="c1">#let the user know their answer is correct</span>
-      <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;Not correct&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+      <span class="n">bryce</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Not correct&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 
       <span class="c1">#play a talking animation for the character</span>
-      <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;talking2&quot;</span><span class="p">)</span>
+      <span class="n">bryce</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;talking2&quot;</span><span class="p">)</span>
 
    <span class="c1">#once the input has been recieved, do not show the input box anymore</span>
    <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
 
-
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">)</span>
 
 <span class="c1">#create a character</span>
-<span class="n">bryceid</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s1">&#39;bryce&#39;</span><span class="p">)</span>
+<span class="n">bryce</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s1">&#39;bryce&#39;</span><span class="p">)</span>
 
 <span class="c1">#play a talking animation for the character</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;talking1&quot;</span><span class="p">)</span>
+<span class="n">bryce</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;talking1&quot;</span><span class="p">)</span>
 
 <span class="c1">#ask the user a question, keep the question on the screen for 20 seconds</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">bryceid</span><span class="p">,</span><span class="s2">&quot;What&#39;s the captial of france? &quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">bryce</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;What&#39;s the captial of france? &quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
 
 <span class="c1">#set the input box callback function</span>
 <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetInputBoxHandler</span><span class="p">(</span><span class="n">ProcessAnswer</span><span class="p">)</span>
@@ -596,25 +600,25 @@ Sound effects do not loop by default</p>
 <h4>Effects<a class="headerlink" href="#effects" title="Permalink to this heading"></a></h4>
 <section id="creating-effects">
 <h5>Creating effects<a class="headerlink" href="#creating-effects" title="Permalink to this heading"></a></h5>
-<p>The <a class="reference external" href="Source/sparkpy.html#sparkpy.CreateEffect">CreateEffect()</a> will create a special effect, it’s default position is 0
-The colour of the effect can be set with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetEffectColour">SetEffectColour()</a>
-An effecct can be stopped with <a class="reference external" href="Source/sparkpy.html#sparkpy.StopEffect">StopEffect()</a></p>
+<p>The <a class="reference external" href="Source/sparkpy.html#sparkpy.Effect">Effect()</a> object will create a special effect, it’s default position is 0
+The colour of the effect can be set with <a class="reference external" href="Source/sparkpy.html#sparkpy.Effect.SetColour">SetColour()</a>
+An effect can be stopped with <a class="reference external" href="Source/sparkpy.html#sparkpy.Effect.Stop">Stop()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#special effects example</span>
 
 <span class="c1">#create office environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#x position</span>
 <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1">#y position</span>
 <span class="n">z</span><span class="o">=</span> <span class="mi">0</span> <span class="c1">#z position</span>
 
 <span class="c1">#create a portal effect</span>
-<span class="n">eid</span><span class="o">=</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEffect</span><span class="p">(</span><span class="s2">&quot;portal&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+<span class="n">portal</span><span class="o">=</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">Effect</span><span class="p">(</span><span class="s2">&quot;portal&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
 
 <span class="c1">#set colour to red from default</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">SetEffectColour</span><span class="p">(</span><span class="n">eid</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">portal</span><span class="o">.</span><span class="n">SetColour</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -662,9 +666,9 @@ An effecct can be stopped with <a class="reference external" href="Source/sparkp
 <h4>Wait<a class="headerlink" href="#wait" title="Permalink to this heading"></a></h4>
 <section id="wait-for-seconds">
 <h5>Wait for seconds<a class="headerlink" href="#wait-for-seconds" title="Permalink to this heading"></a></h5>
-<p>To pause your program for a specific amount of time, use <em>aio.sleep</em> (see line 22 of the example)
-In order to use aio.sleep your program must be written in an <em>async</em> function (see line 7 of the example), this function should be called with
-<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see line 28 of the example). Waits are performed using <em>await aio.sleep()</em> which is available after an import of the aio module from browser(see line 4 of the example)</p>
+<p>To pause your program for a specific amount of time, use <em>aio.sleep</em>
+In order to use aio.sleep your program must be written in an <em>async</em> function, this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see last line of example). Waits are performed using <em>await aio.sleep()</em> which is available after an import of the aio module from browser</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#must import aio for await to work</span>
@@ -674,22 +678,22 @@ In order to use aio.sleep your program must be written in an <em>async</em> func
 <span class="hll"><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 </span>
    <span class="c1">#create office environment</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
 
    <span class="c1">#create robot character at position x=0 y0 z=3</span>
-   <span class="n">xbotid</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+   <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
    <span class="c1">#set animation to walk</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">xbotid</span><span class="p">,</span> <span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+   <span class="n">xbot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
 
    <span class="c1">#move the character for 3 seconds</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="n">xbotid</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+   <span class="n">xbot</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
    <span class="c1">#sleep for 3 seconds</span>
 <span class="hll">   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </span>
    <span class="c1">#set the animation back to idle</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="n">xbotid</span><span class="p">,</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
+   <span class="n">xbot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
 
 <span class="c1">#run the async function</span>
 <span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
@@ -698,9 +702,9 @@ In order to use aio.sleep your program must be written in an <em>async</em> func
 </section>
 <section id="wait-for-collision">
 <h5>Wait for collision<a class="headerlink" href="#wait-for-collision" title="Permalink to this heading"></a></h5>
-<p>To pause your program until a collision has occured use <em>await aio.event(SPARKPY_EVENT, EVENT_COLLISION)</em> (see line 30 of the example)
-In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function (see line 13 of the example), this function should be called with
-<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see line 35 of the example).  <em>await aio.event</em> is available after the aio module is imported from browser (see line 4 of the example)</p>
+<p>To pause your program until a collision has occured use <em>await aio.event(SPARKPY_EVENT, EVENT_COLLISION)</em>
+In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function , this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> .  <em>await aio.event</em> is available after the aio module is imported from browser</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#must import aio for await to work</span>
@@ -718,22 +722,22 @@ In order to use <em>await aio.event</em> your program must be written in an <em>
    <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetCollisionHandler</span><span class="p">(</span><span class="n">collision</span><span class="p">)</span>
 
    <span class="c1">#create an office environment</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
 
    <span class="c1">#create first character</span>
-   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
 
    <span class="c1">#create seconf character</span>
-   <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+   <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
    <span class="c1">#set control mode to keyboard</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
 
    <span class="c1">#wait for the collision to occur, no code below this will run until a collision happens</span>
 <span class="hll">   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT</span><span class="p">,</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT_COLLISION</span><span class="p">)</span>
 </span>
    <span class="c1">#this can only run after a collsion event has happened</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;I have collided!&quot;</span><span class="p">)</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;I have collided!&quot;</span><span class="p">)</span>
 
 <span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
 </pre></div>
@@ -741,10 +745,10 @@ In order to use <em>await aio.event</em> your program must be written in an <em>
 </section>
 <section id="wait-for-input">
 <h5>Wait for input<a class="headerlink" href="#wait-for-input" title="Permalink to this heading"></a></h5>
-<p>To pause your program until user has entered text use <em>await aio.event(SPARKPY_EVENT, EVENT_INPUT)</em> (see line 21 of the example)
-In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function (see line 7 of the example), this function should be called with
-<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see line 33 of the example).  <em>await aio.event</em> is available after the aio module is imported from browser (see line 4 of the example)
-Text entered into the input box can be retrieved using <a class="reference external" href="Source/sparkpy.html#sparkpy.GetInputBoxValue">GetInputBoxValue()</a> (see line 24 of the example).</p>
+<p>To pause your program until user has entered text use <em>await aio.event(SPARKPY_EVENT, EVENT_INPUT)</em>
+In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function , this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> .  <em>await aio.event</em> is available after the aio module is imported from browser
+Text entered into the input box can be retrieved using <a class="reference external" href="Source/sparkpy.html#sparkpy.GetInputBoxValue">GetInputBoxValue()</a> .</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#must import aio for await to work</span>
@@ -753,13 +757,13 @@ Text entered into the input box can be retrieved using <a class="reference exter
 <span class="c1">#programs with await must be written inside an async function</span>
 <span class="hll"><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 </span>   <span class="c1">#create desert environment test</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
 
    <span class="c1">#create first character</span>
-   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
 
    <span class="c1">#ask the user a question</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Hi, What&#39;s your name ? &quot;</span><span class="p">)</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Hi, What&#39;s your name ? &quot;</span><span class="p">)</span>
 
    <span class="c1">#show an input box, for the user to enter an answer</span>
    <span class="n">sparkpy</span><span class="o">.</span><span class="n">ShowInputBox</span><span class="p">()</span>
@@ -771,7 +775,7 @@ Text entered into the input box can be retrieved using <a class="reference exter
 <span class="hll">   <span class="n">name</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">GetInputBoxValue</span><span class="p">()</span>
 </span>
    <span class="c1">#out message to user, with the value they entered</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span> <span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 
    <span class="c1">#hide the input box</span>
    <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
@@ -787,14 +791,14 @@ Text entered into the input box can be retrieved using <a class="reference exter
 <section id="create-primitive">
 <h5>Create Primitive<a class="headerlink" href="#create-primitive" title="Permalink to this heading"></a></h5>
 <p>Primitives are simple shapes that have no animations attached to them.
-To create a primitive use the <a class="reference external" href="Source/sparkpy.html#sparkpy.CreatePrimitive">CreatePrimitive()</a> method</p>
+To create a primitive use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive">Primitive()</a> object</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=0, z=0</span>
-<span class="hll"><span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
@@ -817,13 +821,13 @@ To create a primitive use the <a class="reference external" href="Source/sparkpy
 </tr>
 </tbody>
 </table>
-<p>To hide a created primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.HidePrimitive">HidePrimitive()</a> method
-To show a previously hidden primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.ShowPrimitive">ShowPrimitive()</a> method</p>
+<p>To hide a created primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Hide">Hide()</a> method
+To show a previously hidden primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Show">Show()</a> method</p>
 </div>
 </section>
 <section id="set-primitive-colour">
 <h5>Set Primitive Colour<a class="headerlink" href="#set-primitive-colour" title="Permalink to this heading"></a></h5>
-<p>To set the colour of a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.SetPrimitiveColour">SetPrimitiveColour()</a> method.
+<p>To set the colour of a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.SetColour">SetColour()</a> method.
 The method accepts the levels of red, green and blue was values between 0-1. The transparancy of a primitive can also be set as a avlue between 0 (fully invisible) to 1 (fully opaque)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
@@ -831,94 +835,106 @@ The method accepts the levels of red, green and blue was values between 0-1. The
 <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=0, z=0</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#set the colour to red (1=Red, 0=Blue, 0=Green)</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">SetPrimitiveColour</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#1=Red, 0=Blue, 0=Green</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">SetColour</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#1=Red, 0=Blue, 0=Green</span>
 </span></pre></div>
 </div>
 </section>
 <section id="destroy-primitive">
 <h5>Destroy Primitive<a class="headerlink" href="#destroy-primitive" title="Permalink to this heading"></a></h5>
-<p>If a primitive is no longer needed in the program <a class="reference external" href="Source/sparkpy.html#sparkpy.DestroyPrimitive">DestroyPrimitive()</a>
+<p>If a primitive is no longer needed in the program <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Destroy">Destroy()</a>
 will remove the primitive completely</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
-<span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+<span class="c1">#must import aio for await to work</span>
+<span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
 
-<span class="c1">#make a cube at position x=0 , y=1, z=0</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">#programs with await with be written inside an async function</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 
-<span class="c1">#the cube is no longer needed, remove it</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">DestroyPrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">)</span>
-</span></pre></div>
+   <span class="c1">#create an environment</span>
+<span class="hll">   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+</span>
+   <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+   <span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+   <span class="c1">#sleep for 3 seconds</span>
+   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+   <span class="c1">#the cube is no longer needed, remove it</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+
+<span class="c1">#run main</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
 </div>
 </section>
 <section id="scale-primitive">
 <h5>Scale Primitive<a class="headerlink" href="#scale-primitive" title="Permalink to this heading"></a></h5>
 <p>To make a primitive bigger or smaller, use the
-<a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimitive">ScalePrimitive()</a> method</p>
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Scale">Scale()</a> method</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#double the size of the cube</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>to scale in a specific direction (non-uniform scale), provide the sizes
-of the x,y,z and use <a class="reference external" href="Source/sparkpy.html#sparkpy.ScalePrimitiveNonUniform">ScalePrimitiveNonUniform()</a></p>
+of the x,y,z when using <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Scale">Scale()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#double the size of the cube, along the x and z axis</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">ScalePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
 </section>
 <section id="rotate-primitive">
 <h5>Rotate Primitive<a class="headerlink" href="#rotate-primitive" title="Permalink to this heading"></a></h5>
-<p>To rotate a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.RotatePrimitive">RotatePrimitive()</a>
+<p>To rotate a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Rotate">Rotate()</a>
 by default primitives are rotated around their y (up) axis</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#rotate the cube at a speed of 90 degrees per second</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">RotatePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
 <section id="move-primitive">
 <h5>Move Primitive<a class="headerlink" href="#move-primitive" title="Permalink to this heading"></a></h5>
-<p>To move a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.MovePrimitive">MovePrimitive()</a> method.</p>
+<p>To move a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Move">Move()</a> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#move the cube to right at a speed of 4 for 1 seconds</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">MovePrimitive</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="admonition note">
@@ -943,17 +959,17 @@ by default primitives are rotated around their y (up) axis</p>
 </section>
 <section id="loop-primitive-move">
 <h5>Loop Primitive Move<a class="headerlink" href="#loop-primitive-move" title="Permalink to this heading"></a></h5>
-<p>To make a primitive continuously move between two points, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.LoopPrimitiveMove">LoopPrimitiveMove()</a></p>
+<p>To make a primitive continuously move between two points, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.LoopMove">LoopMove()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube</span>
-<span class="n">cubeID</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreatePrimitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#loop move from right to left and back again for 2 seconds at a speed of 1.</span>
-<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">LoopPrimitiveMove</span><span class="p">(</span><span class="n">cubeID</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">LoopMove</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>

@@ -64,12 +64,14 @@
 <li><a class="reference internal" href="#sparkpy.Effect.Stop"><code class="docutils literal notranslate"><span class="pre">Effect.Stop()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#sparkpy.ErrorMsg"><code class="docutils literal notranslate"><span class="pre">ErrorMsg()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.Evironment"><code class="docutils literal notranslate"><span class="pre">Evironment</span></code></a><ul>
-<li><a class="reference internal" href="#sparkpy.Evironment.Create"><code class="docutils literal notranslate"><span class="pre">Evironment.Create()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.Evironment.PlaySound"><code class="docutils literal notranslate"><span class="pre">Evironment.PlaySound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Environment"><code class="docutils literal notranslate"><span class="pre">Environment</span></code></a><ul>
+<li><a class="reference internal" href="#sparkpy.Environment.Create"><code class="docutils literal notranslate"><span class="pre">Environment.Create()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Environment.PlaySound"><code class="docutils literal notranslate"><span class="pre">Environment.PlaySound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Environment.StopSound"><code class="docutils literal notranslate"><span class="pre">Environment.StopSound()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#sparkpy.ErrorMsg"><code class="docutils literal notranslate"><span class="pre">ErrorMsg()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.GetCharacterFromID"><code class="docutils literal notranslate"><span class="pre">GetCharacterFromID()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.GetInputBoxValue"><code class="docutils literal notranslate"><span class="pre">GetInputBoxValue()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.HideInputBox"><code class="docutils literal notranslate"><span class="pre">HideInputBox()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.InputTextHook"><code class="docutils literal notranslate"><span class="pre">InputTextHook()</span></code></a></li>
@@ -367,14 +369,9 @@
 
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="sparkpy.ErrorMsg">
-<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ErrorMsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ErrorMsg" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py class">
-<dt class="sig sig-object py" id="sparkpy.Evironment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Evironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environmentName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Evironment" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="sparkpy.Environment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environmentName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Environment" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Creates an scene environment</p>
 <dl class="field-list simple">
@@ -389,13 +386,13 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="sparkpy.Evironment.Create">
-<span class="sig-name descname"><span class="pre">Create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environmentName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Evironment.Create" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="sparkpy.Environment.Create">
+<span class="sig-name descname"><span class="pre">Create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environmentName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Environment.Create" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="sparkpy.Evironment.PlaySound">
-<span class="sig-name descname"><span class="pre">PlaySound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clipname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Evironment.PlaySound" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="sparkpy.Environment.PlaySound">
+<span class="sig-name descname"><span class="pre">PlaySound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clipname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Environment.PlaySound" title="Permalink to this definition"></a></dt>
 <dd><p>Plays environment audio clip. Mainly used for background music</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -411,6 +408,31 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Environment.StopSound">
+<span class="sig-name descname"><span class="pre">StopSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Environment.StopSound" title="Permalink to this definition"></a></dt>
+<dd><p>Stops the scene’s audio clip</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ErrorMsg">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ErrorMsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ErrorMsg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.GetCharacterFromID">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">GetCharacterFromID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.GetCharacterFromID" title="Permalink to this definition"></a></dt>
+<dd><p>returns a Character object from an id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>characterID</strong> (<em>int</em>) – the characterID to retrieve</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Character Object or None if not found</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
