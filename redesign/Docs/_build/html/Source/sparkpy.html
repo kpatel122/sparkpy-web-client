@@ -82,6 +82,7 @@
 <li><a class="reference internal" href="#sparkpy.Primitive.Move"><code class="docutils literal notranslate"><span class="pre">Primitive.Move()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Primitive.Rotate"><code class="docutils literal notranslate"><span class="pre">Primitive.Rotate()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Primitive.Scale"><code class="docutils literal notranslate"><span class="pre">Primitive.Scale()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Primitive.ScaleNonUniform"><code class="docutils literal notranslate"><span class="pre">Primitive.ScaleNonUniform()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Primitive.SetColour"><code class="docutils literal notranslate"><span class="pre">Primitive.SetColour()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Primitive.Show"><code class="docutils literal notranslate"><span class="pre">Primitive.Show()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Primitive.StopMove"><code class="docutils literal notranslate"><span class="pre">Primitive.StopMove()</span></code></a></li>
@@ -550,7 +551,18 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Primitive.Scale">
-<span class="sig-name descname"><span class="pre">Scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Primitive.Scale" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Primitive.Scale" title="Permalink to this definition"></a></dt>
+<dd><p>uniform primative scale</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>float</em>) – size of scale</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Primitive.ScaleNonUniform">
+<span class="sig-name descname"><span class="pre">ScaleNonUniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Primitive.ScaleNonUniform" title="Permalink to this definition"></a></dt>
 <dd><p>non-uniform primative scale</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

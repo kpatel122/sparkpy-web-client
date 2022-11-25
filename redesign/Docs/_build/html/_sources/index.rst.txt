@@ -401,7 +401,7 @@ The `PlaySound() <Source/sparkpy.html#sparkpy.Environment.PlaySound>`_ will play
    environment = sparkpy.Environment("home")
 
    #create robot character
-   xbot = sparkpy.CreateCharacter("xbot")
+   xbot = sparkpy.Character("xbot")
 
    #set animation to dancing
    xbot.SetAnimation("dancing1")
@@ -633,7 +633,7 @@ In order to use *await aio.event* your program must be written in an *async* fun
       xbot = sparkpy.Character("xbot",2,0,0)
 
       #set control mode to keyboard
-      ybot.ControlMode(ybot,"keyboard")
+      ybot.ControlMode("keyboard")
 
       #wait for the collision to occur, no code below this will run until a collision happens
       await aio.event(sparkpy.EVENT, sparkpy.EVENT_COLLISION)
@@ -733,7 +733,7 @@ The method accepts the levels of red, green and blue was values between 0-1. The
    import sparkpy
 
    #create an environment
-   sparkpy.CreateEnvironment('forest')
+   sparkpy.Environment('forest')
 
    #make a cube at position x=0 , y=0, z=0
    cube = sparkpy.Primitive('cube',0,0,0)
@@ -769,7 +769,7 @@ will remove the primitive completely
       await aio.sleep(3)
 
       #the cube is no longer needed, remove it
-      sparkpy.Destroy()
+      cube.Destroy()
 
    #run main
    sparkpy.Run(main)
@@ -797,7 +797,7 @@ To make a primitive bigger or smaller, use the
 
 .. note:: 
    to scale in a specific direction (non-uniform scale), provide the sizes
-   of the x,y,z when using `Scale() <Source/sparkpy.html#sparkpy.Primitive.Scale>`_
+   of the x,y,z when using `ScaleNonUniform() <Source/sparkpy.html#sparkpy.Primitive.ScaleNonUniform>`_
    
    .. code-block:: python
       :emphasize-lines: 10
@@ -811,7 +811,7 @@ To make a primitive bigger or smaller, use the
       cube = sparkpy.Primitive('cube',0,1,0)
 
       #double the size of the cube, along the x and z axis
-      cube.Scale(2,1,2)
+      cube.ScaleNonUniform(2,1,2)
 
 """"""""""""""""""""
 Rotate Primitive

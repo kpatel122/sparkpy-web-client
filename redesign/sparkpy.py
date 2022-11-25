@@ -447,7 +447,7 @@ class Primitive:
         if(self.valid):
            return _ScalePrimitive(self.primitiveID,size)
 
-    def Scale(self,x,y,z):
+    def ScaleNonUniform(self,x,y,z):
         '''non-uniform primative scale
 
         :param x: x axis scale

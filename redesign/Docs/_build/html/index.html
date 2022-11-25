@@ -471,7 +471,7 @@ be run <em>after</em> a collision has occured, use async await for collision eve
 <span class="n">environment</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
 
 <span class="c1">#create robot character</span>
-<span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateCharacter</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">)</span>
+<span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">)</span>
 
 <span class="c1">#set animation to dancing</span>
 <span class="n">xbot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;dancing1&quot;</span><span class="p">)</span>
@@ -731,7 +731,7 @@ In order to use <em>await aio.event</em> your program must be written in an <em>
    <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
    <span class="c1">#set control mode to keyboard</span>
-   <span class="n">ybot</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="n">ybot</span><span class="p">,</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
 
    <span class="c1">#wait for the collision to occur, no code below this will run until a collision happens</span>
 <span class="hll">   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT</span><span class="p">,</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT_COLLISION</span><span class="p">)</span>
@@ -832,7 +832,7 @@ The method accepts the levels of red, green and blue was values between 0-1. The
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
-<span class="n">sparkpy</span><span class="o">.</span><span class="n">CreateEnvironment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
 
 <span class="c1">#make a cube at position x=0 , y=0, z=0</span>
 <span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
@@ -864,7 +864,7 @@ will remove the primitive completely</p>
    <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
    <span class="c1">#the cube is no longer needed, remove it</span>
-   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+   <span class="n">cube</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
 
 <span class="c1">#run main</span>
 <span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
@@ -890,7 +890,7 @@ will remove the primitive completely</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>to scale in a specific direction (non-uniform scale), provide the sizes
-of the x,y,z when using <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Scale">Scale()</a></p>
+of the x,y,z when using <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.ScaleNonUniform">ScaleNonUniform()</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
 
 <span class="c1">#create an environment</span>
@@ -900,7 +900,7 @@ of the x,y,z when using <a class="reference external" href="Source/sparkpy.html#
 <span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1">#double the size of the cube, along the x and z axis</span>
-<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">ScaleNonUniform</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
