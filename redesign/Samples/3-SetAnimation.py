@@ -9,7 +9,7 @@ sparkpy.CreateEnvironment("office")
 ybot = sparkpy.CreateCharacter("YBot")
 
 #set animation to walk
-sparkpy.SetAnimation(ybot, "Walk")
+sparkpy._SetAnimation(ybot, "Walk")
 
 #set animation speed
-sparkpy.SetAnimationSpeed(ybot, 1)
+sparkpy._SetAnimationSpeed(ybot, 1)

@@ -9,7 +9,7 @@ sparkpy.CreateEnvironment("home")
 xbot = sparkpy.CreateCharacter("xbot")
 
 #set animation to dancing
-sparkpy.SetAnimation(xbot, "dancing1")
+sparkpy._SetAnimation(xbot, "dancing1")
 
 #play background music, music will loop by default
-sparkpy.PlaySceneSound("funkymusic1")
+sparkpy._PlaySceneSound("funkymusic1")

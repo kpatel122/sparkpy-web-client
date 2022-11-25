@@ -19,4 +19,4 @@ uid = sparkpy.CreateCharacter("YBot")
 uid2 = sparkpy.CreateCharacter("XBot",2,0,0)
 
 #control character by keyboard
-sparkpy.SetControlMode(uid,"keyboard")
+sparkpy._SetControlMode(uid,"keyboard")

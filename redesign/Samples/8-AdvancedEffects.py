@@ -12,7 +12,7 @@ z=0
 scale = 2 # make the portal twice as normal
 
 #create portal effect
-eid=sparkpy.CreateEffect("portal",x,y,z,scale)
+eid=sparkpy._CreateEffect("portal",x,y,z,scale)
 
 #set the colour
-sparkpy.SetEffectColour(eid,"green","white")
+sparkpy._SetEffectColour(eid,"green","white")

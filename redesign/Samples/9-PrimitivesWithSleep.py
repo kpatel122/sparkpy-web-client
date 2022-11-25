@@ -12,26 +12,26 @@ async def main():
     sparkpy.CreateEnvironment('Office')
     
     #make a cube
-    cubeID = sparkpy.CreatePrimitive('cube',0,1,0)
+    cubeID = sparkpy._CreatePrimitive('cube',0,1,0)
     
     #set it's colour to red
-    sparkpy.SetPrimitiveColour(cubeID,1,0,0)
+    sparkpy._SetPrimitiveColour(cubeID,1,0,0)
     
     #rotate around y axis
-    sparkpy.RotatePrimitive(cubeID,100)
+    sparkpy._RotatePrimitive(cubeID,100)
     
     #loop move from left to right
-    sparkpy.LoopPrimitiveMove(cubeID, 2, 2, "right")
+    sparkpy._LoopPrimitiveMove(cubeID, 2, 2, "right")
     
     #wait for 4 seconds
     await aio.sleep(4)
     
     #stop moving the cube
-    sparkpy.StopPrimitiveMove(cubeID)
+    sparkpy._StopPrimitiveMove(cubeID)
     
     
     #change the colour to blue
-    sparkpy.SetPrimitiveColour(cubeID,0,0,1)
+    sparkpy._SetPrimitiveColour(cubeID,0,0,1)
  
    
 #functions with sleep must be called through run   

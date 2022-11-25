@@ -9,4 +9,4 @@ sparkpy.CreateEnvironment("office")
 ybot = sparkpy.CreateCharacter("YBot")
 
 #set control mode to keyboard
-sparkpy.SetControlMode(ybot,"keyboard")
+sparkpy._SetControlMode(ybot,"keyboard")

@@ -84,6 +84,51 @@ colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY
             "blue": COLOUR_BLUE, "green": COLOUR_GREEN}
 
 
+class Evironment:
+    '''Creates an scene environment
+
+    :param environmentName: The environment name to create
+    :type environmentName: string
+    
+    :param location: The location of the environment
+    :type location: int, optional, defaults to 0
+    
+    :return: Environment object
+    '''
+    def __init__(self, environmentName, location=0):
+
+        self._valid = False
+        self.Create(environmentName, location)
+    
+    def Create(self,environmentName, location=0):
+        result = _CreateEnvironment(environmentName, location=0)
+        if(result == VALID_ENVIROMENT):
+            self._valid = True
+    
+    def PlaySound(self, clipname, volume = 1.0 ,loop = True):
+    
+        '''Plays environment audio clip. Mainly used for background music 
+
+        :param clipname: name of the sound clip to play
+        :type clipname: string
+        
+        :param volume: the volume of the clip
+        :type volume: float optional, defaults to 1
+        
+        :param loop: whether to loop back to the beginning of the clip when finished
+        :type loop: bool optional, defaults to True
+        
+        :return: 1 on success or 0 on failure 
+        '''
+        if(self._valid):
+           return  _PlaySceneSound(clipname, volume ,loop)
+    
+    def _StopSound(self):
+        '''Stops the scene's audio clip
+        '''
+        if(self._valid):
+            return _StopSceneSound()
+        
 
 class Character:
     '''Creates an scene character
@@ -101,67 +146,368 @@ class Character:
         :type z: float optional, defaults to 0
     
         :return: Character object
-        
     '''
     
     def __init__(self, name,x=0,y=0,z=0):
         
-        self.name = name
-        self.valid = False
-        self.characterID = _CreateCharacter(name,x,y,z)
-        if self.characterID == FAILURE:
+        self._valid = False
+        self._characterID = _CreateCharacter(name,x,y,z)
+        if self._characterID == FAILURE:
             ErrorMsg("Character()","Could not create " + name)
         else:
-            self.valid = True
+            self._valid = True
 
     def __str__(self) -> str:
         return str(self.id)
     
 
-    def Chat(self, msg, seconds = -1):
-        if(self.valid):
-            Chat(self.characterID,msg, seconds)
+    def Chat(self, text, seconds = -1):
+        '''Displays a chat box above the character with 'text' for 'seconds'
+
+        :param text: the text for the chat box
+        :type text: string
+
+        :param seconds: how long to show the chat bubble for in seconds, -1 to display indefinitely
+        :type seconds: float optional, defaults to -1
+
+        :return: 0 on failure or 1 on success
+
+        '''
+        if(self._valid):
+           return  _Chat(self._characterID,text, seconds)
     
     def SetAnimationSpeed(self, speed):
-        if(self.valid):
-            SetAnimationSpeed(self.characterID, speed)
+        '''Sets the animation speed for the charcter
+
+        :param speed: The speed of the animation
+        :type speed: float 
+        
+        :return: 1 on success or 0 on failure  
+        '''        
+        if(self._valid):
+           return  _SetAnimationSpeed(self._characterID, speed)
     
     def SetAnimation(self,animationName, resetTrigger = False):
-        if(self.valid):
-            SetAnimation(self.characterID, animationName, resetTrigger)
+        '''Sets the animation for the charcter
+
+        :param animationName: The name of the animation
+        :type animationName: string
+        
+        :param resetTrigger: unity animation trigger reset
+        :type resetTrigger: bool, defaults to False 
+        
+        :return: 1 on success or 0 on failure 
+        '''
+        if(self._valid):
+           return  _SetAnimation(self._characterID, animationName, resetTrigger)
     
     def Hide(self):
-        if(self.valid):
-            Hide(self.characterID)
+        '''Sets the character to be invisible
+
+        :return: 1 on success or 0 on failure 
+        
+        '''
+        if(self._valid):
+           return  _Hide(self._characterID)
     
     def Show(self):
-        if(self.valid):
-            Show(self.characterID)
+        '''Sets the character to be visible
+       
+        :return: 1 on success or 0 on failure 
+        
+        '''
+        if(self._valid):
+           return  _Show(self._characterID)
     
     def Move(self, seconds, speed=1):
-        if(self.valid):
-            Move(self.characterID, seconds, speed)
+        '''moves a character forward at 'speed' for 'seconds'
+
+        :param seconds: how long the character moves for in seconds
+        :type seconds: float
+        
+        :param speed: how fast to move, defaults to 1
+        :type speed: float
+        
+        :return: 1 on success or 0 on failure 
+        '''
+        if(self._valid):
+           return  _Move(self._characterID, seconds, speed)
     
     def PlaySound(self, clipname, volume=1.0, loop=False):
-        if(self.valid):
-            PlayCharacterSound(self.characterID, volume, loop)
+        '''Plays character audio clip.   
+
+        :param clipname: name of the sound clip to play
+        :type clipname: string
+        
+        :param volume: the volume of the clip
+        :type volume: float, defaults to 1 (0-lowest 1-highest)
+        
+        :param loop: whether to loop back to the beginning of the clip when finished
+        :type loop: bool optional, defaults to False
+        
+        :return: 1 on success or 0 on failure
+        '''
+        if(self._valid):
+           return  _PlayCharacterSound(self._characterID, volume, loop)
 
     def StopSound(self):
-        if(self.valid):
-            StopCharacterSound(self.characterID)
+        '''Stops the character's sound clip playing
+
+        :return: 1 on success or 0 on failure 
+        
+        '''
+        if(self._valid):
+           return  _StopCharacterSound(self._characterID)
     
     def Rotate(self, degrees, seconds, direction='cw'):
-        if(self.valid):
-            Rotate(self.characterID, degrees, seconds, direction)
+
+        '''rotates a character to degrees in seconds. direction is cw (clockwise) or ccw (counter clockwise)
+        
+        :param degrees: how many degrees to rotate
+        :type degrees: float
+        
+        :param seconds: how long the character rotates for in seconds
+        :type seconds: float
+        
+        :param direction: which direction to rotate- cw or ccw
+        :type direction: string defaults to cw
+        
+        :return: 1 on success or 0 on failure 
+        '''
+
+        if(self._valid):
+           return  _Rotate(self._characterID, degrees, seconds, direction)
     
     def ControlMode(self, mode):
+        '''Sets the control mode for the charcter as either 'script' or 'keyboard'
+       
+        :param mode: 'script'- control through move, rotate etc. 'keyboard'- control through a,w,d,s & space (3rd person control) 'third_person'- control with mouse and keyboard
+        :type mode: string 
+        
+        :return: 1 on success or 0 on failure
+
+        '''
+        if(self._valid):
+           return  _SetControlMode(self._characterID, mode)
+
+class Primitive:
+    
+    '''Creates a primitive
+
+    :param primitiveType: the type of primitive to create
+    :type primitiveType: string- values can be:sphere,capsule,cylinder,cube,plane, quad
+    
+    :param x: x position
+    :type x: float optional, defaults to 0
+    
+    :param y: y position
+    :type y: float optional, defaults to 0
+    
+    :param z: z position
+    :type z: float optional, defaults to 0
+    
+    :return: Primitive object
+    '''
+    def __init__(self, primitiveType, x=0, y=0, z=0):
+        self.primitiveID=0
+        self.valid = False
+        self.primitiveID = _CreatePrimitive(primitiveType, x=0, y=0, z=0)
+        
+        if(self.primitiveID != FAILURE):
+            self.valid = True
+
+    def Rotate(self,speedY, speedX=0,speedZ=0):
+        '''Rotates primitive around it's x, y z axis
+
+        :param speedY: how fast to rotate around the Y axis
+        :type speedY: int 
+        
+        :param speedX: how fast to rotate around the X axis
+        :type speedX: int optional, defualts to 0
+        
+        :param speedZ: how fast to rotate around the z axis
+        :type speedZ: int optional, defualts to 0
+        
+        :return: 1 on success or 0 on failure
+        '''
         if(self.valid):
-            SetControlMode(self.characterID, mode)
+           return  _RotatePrimitive(self.primitiveID,speedY, speedX,speedZ)
     
+    def StopRotation(self):
+        '''stops a rotating primitive
 
-
+        :return: 1 on success, 0 on failure 
+        '''
+        if(self.valid):
+            return _StopPrimitiveRotation(self.primitiveID)
     
+    def Move(self, seconds, speed, direction):
+        '''moves a primitive for 'seconds' at a rate of 'speed' in 'direction'
+    
+        :param seconds: how long the primitive moves for in seconds
+        :type seconds: float
+        
+        :param speed: how fast to move 
+        :type speed: float
+        
+        :param direction: which direction to move the primitive 
+        :type direction: string, values#; 'up','down','left','right','forward','backward'
+        
+        :return: 1 on success or 0 on failure 
+        '''
+        if(self.valid):
+           return  _MovePrimitive(self.primitiveID, seconds, speed, direction)
 
+    def LoopMove(self, seconds, speed, direction):
+        '''loop moves a primitive for 'seconds' at a rate of 'speed' in 'direction' and then back to its original position again
+        :param seconds: how long the primitive moves for in seconds
+        :type seconds: float
+        
+        :param speed: how fast to move 
+        :type speed: float
+        
+        :param direction: which direction to move the primitive 
+        :type direction: string, values#; 'up','down','left','right','forward','backward'
+        
+        :return: 0 on failure or 1 on success
+        '''
+        if(self.valid):
+           return  _LoopPrimitiveMove(self.primitiveID, seconds, speed, direction)
+
+    def StopMove(self):
+        '''stops a moving primitive
+ 
+        :return: 1 on success, 0 on failure
+        
+        '''
+        if(self.valid):
+           return  _StopPrimitiveMove(self.primitiveID)
+    
+    def Show(self):
+        '''shows a primitive
+    
+        :return: 1 on success, 0 on failure
+        '''
+        if(self.valid):
+          return  _ShowPrimitive(self.primitiveID)
+
+    def Hide(self):
+        '''hides a primitive
+
+        :return: 1 on success, 0 on failure
+        '''
+        if(self.valid):
+           return  _HidePrimitive(self.primitiveID)
+
+    def Destroy(self):
+        '''destroys a primitive
+        
+        :return: 1 on success, 0 on failure
+        '''
+        if(self.valid):
+           return _DestroyPrimitive(self.primitiveID)
+    
+    def SetColour(self, red, green,blue,alpha=1):
+        '''sets the colour of a primitive
+
+        :param red: the red value of the colour (0-1)
+        :type red: float
+        
+        :param green: the green value of the colour (0-1)
+        :type green: float
+        
+        :param blue: the blue value of the colour (0-1)
+        :type alhpa: float
+        
+        :param alpha: alpha(transparaency) value of the colour (0-1)
+        :type alpha: float optional, defaults to 1
+        
+        :return: 1 on success, 0 on failure
+        '''
+        if(self.valid):
+            _SetPrimitiveColour(self.primitiveID, red, green,blue,alpha=1)
+    
+    def Scale(self,size):
+        '''uniform primative scale
+
+        :param size: size of scale
+        :type size: float
+        
+        '''
+        if(self.valid):
+           return _ScalePrimitive(self.primitiveID,size)
+
+    def Scale(self,x,y,z):
+        '''non-uniform primative scale
+
+        :param x: x axis scale
+        :type x: float
+        
+        :param y: y axis scale
+        :type y: float
+        
+        :param z: z axis scale
+        :type z: float
+        
+        :return: 1 on success,0 on failure
+        '''
+        if(self.valid):
+           return _ScalePrimitiveNonUniform(self.primitiveID,x,y,z)
+
+class Effect:
+
+    '''Creates a special effect
+
+    :param effectName: the name of the effect
+    :type effectName: string- valid values are stored in specialEffectNames
+    
+    :param x: x position
+    :type x: float optional, defaults to 0
+    
+    :param y: y position
+    :type y: float optional, defaults to 0
+    
+    :param z: z position
+    :type z: float optional, defaults to 0
+    
+    :param scale: scale(size) of the effect
+    :type scale: float optional, defaults to 1
+    
+    :return: Effect object
+    '''
+
+    def __init__(self,effectName, x=0, y=0, z=0,scale=1):
+        self._valid = False
+        self._effectID = 0
+
+        self._effectID = _CreateEffect(effectName, x=0, y=0, z=0,scale=1)
+        if(self._effectID != FAILURE):
+            self._valid = True
+
+    def Stop(self):
+        '''stops an effect
+
+        :return: 1 on success, 0 on failure
+        '''
+        if(self._valid):
+           return  _StopEffect(self._effectID)
+    
+    def SetColour(self, startColour,endColour="white"):
+        '''sets the effect colour, valid colours: 'yellow','clear','grey','magenta','cyan','red','black','white','blue' & 'green'
+        
+        :param effectID: the ID of the effect
+        :type effectID: int 
+        
+        :param startColour: start colour of the effect
+        :type startColour: string 
+        
+        :param endColour: start colour of the effect
+        :type endColour: string optional, defaults to white 
+        
+        :return: 1 on success, 0 on failure
+        '''
+        if(self._valid):
+            return _SetEffectColour(self.effectID, startColour,endColour)
 
 @bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)
 def InputTextHook(ev):
@@ -216,7 +562,7 @@ def ResetScene():
     unityInstance.SendMessage(sparkpyClass, "ResetScene")
     
 
-def CreateEnvironment(environmentName, location=0):
+def _CreateEnvironment(environmentName, location=0):
     '''Creates an scene environment
 
     :param environmentName: The environment name to create
@@ -282,7 +628,7 @@ def _CreateCharacter(characterName,x=0,y=0,z=0):
 
     return result
    
-def SetAnimationSpeed(characterID, speed):
+def _SetAnimationSpeed(characterID, speed):
     '''Sets the animation speed for the charcter
 
     :param characterID: The characterID to set
@@ -322,7 +668,7 @@ def SetAnimationSpeed(characterID, speed):
 
     return result
 
-def SetAnimation(characterID, animationName, resetTrigger = False):
+def _SetAnimation(characterID, animationName, resetTrigger = False):
     '''Sets the animation for the charcter
 
     :param characterID: The characterID to set the snimation for
@@ -374,7 +720,7 @@ def SetAnimation(characterID, animationName, resetTrigger = False):
 
     return result
 
-def SetControlMode(characterID, mode):
+def _SetControlMode(characterID, mode):
     '''Sets the control mode for the charcter as either 'script' or 'keyboard'
 
     :param characterID: The characterID to set
@@ -432,7 +778,7 @@ def SetControlMode(characterID, mode):
 
     return result
 
-def Show(characterID):
+def _Show(characterID):
     '''Sets the character to be visible
 
     :param characterID: The characterID to set
@@ -464,7 +810,7 @@ def Show(characterID):
 
     return result
     
-def Hide(characterID):
+def _Hide(characterID):
     '''Sets the character to be invisible
 
     :param characterID: The characterID to set
@@ -497,7 +843,7 @@ def Hide(characterID):
 
     return result 
 
-def Rotate(characterID, degrees, seconds, direction = "cw"):
+def _Rotate(characterID, degrees, seconds, direction = "cw"):
 
     '''rotates a character to degrees in seconds. direction is cw (clockwise) or ccw (counter clockwise)
 
@@ -565,7 +911,7 @@ def Rotate(characterID, degrees, seconds, direction = "cw"):
 
     return result
 
-def Move(characterID, seconds, speed=1):
+def _Move(characterID, seconds, speed=1):
     '''moves a character forward at 'speed' for 'seconds'
 
     :param characterID: The characterID to rotate
@@ -615,7 +961,7 @@ def Move(characterID, seconds, speed=1):
 
 #TODO add hide chat
 
-def Chat(characterID, text, seconds = -1):
+def _Chat(characterID, text, seconds = -1):
     '''Displays a chat box above the character with 'text' for 'seconds'
 
     :param characterID: The characterID to display that chat box
@@ -682,7 +1028,7 @@ def HideInputBox():
     '''
     unityInstance.SendMessage(sparkpyClass, "HideInputBox")
 
-def PlaySceneSound(clipname, volume = 1.0 ,loop = True):
+def _PlaySceneSound(clipname, volume = 1.0 ,loop = True):
     '''Plays Scene audio clip. Mainly used for background music 
 
     :param clipname: name of the sound clip to play
@@ -731,13 +1077,13 @@ def PlaySceneSound(clipname, volume = 1.0 ,loop = True):
 
     return result
 
-def StopSceneSound():
+def _StopSceneSound():
     '''Stops the scene's audio clip
     '''
     #call the unity function
     unityInstance.SendMessage(sparkpyClass, "StopSceneSound")
     
-def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
+def _PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     '''Plays character audio clip.   
 
     :param clipname: name of the sound clip to play
@@ -793,7 +1139,7 @@ def PlayCharacterSound(characterID, clipname, volume = 1.0 ,loop = False):
     
     return result
 
-def StopCharacterSound(characterID):
+def _StopCharacterSound(characterID):
     '''Stops the character's sound clip playing
 
     :param characterID: The characterID to stop audio for
@@ -828,7 +1174,7 @@ def StopCharacterSound(characterID):
 
  
 
-def CreatePrimitive(primitiveType, x=0, y=0, z=0):
+def _CreatePrimitive(primitiveType, x=0, y=0, z=0):
     '''Creates a scene primitive
 
     :param primitiveType: the type of primitive to create
@@ -884,7 +1230,7 @@ def CreatePrimitive(primitiveType, x=0, y=0, z=0):
     return result
 
 
-def RotatePrimitive(primitiveID,speedY, speedX=0,speedZ=0):
+def _RotatePrimitive(primitiveID,speedY, speedX=0,speedZ=0):
     '''Rotates primitive around it's x, y z axis
 
     :param primitiveID: the id of the primitive to rotate
@@ -941,7 +1287,7 @@ def RotatePrimitive(primitiveID,speedY, speedX=0,speedZ=0):
     return result
 
 
-def MovePrimitive(primitiveID, seconds, speed, direction):
+def _MovePrimitive(primitiveID, seconds, speed, direction):
     '''moves a primitive for 'seconds' at a rate of 'speed' in 'direction'
 
     :param primitiveID: primitiveID  
@@ -999,7 +1345,7 @@ def MovePrimitive(primitiveID, seconds, speed, direction):
     #return result
     return 0
 
-def LoopPrimitiveMove(primitiveID, seconds, speed, direction):
+def _LoopPrimitiveMove(primitiveID, seconds, speed, direction):
     '''loop moves a primitive for 'seconds' at a rate of 'speed' in 'direction' and then back to its original position again
     
     :param primitiveID: primitiveID  
@@ -1058,7 +1404,7 @@ def LoopPrimitiveMove(primitiveID, seconds, speed, direction):
 
 
 
-def StopPrimitiveRotation(primitiveID):
+def _StopPrimitiveRotation(primitiveID):
     '''stops a rotating primitive
     
     :param primitiveID: primitiveID  
@@ -1088,7 +1434,7 @@ def StopPrimitiveRotation(primitiveID):
 
     return result
 
-def StopPrimitiveMove(primitiveID):
+def _StopPrimitiveMove(primitiveID):
     '''stops a moving primitive
 
     :param primitiveID: primitiveID
@@ -1118,7 +1464,7 @@ def StopPrimitiveMove(primitiveID):
 
     return result
 
-def HidePrimitive(primitiveID):
+def _HidePrimitive(primitiveID):
     '''hides a primitive
 
     :param primitiveID: primitiveID
@@ -1147,7 +1493,7 @@ def HidePrimitive(primitiveID):
 
     return result
 
-def ShowPrimitive(primitiveID):
+def _ShowPrimitive(primitiveID):
     '''shows a primitive
     
     :param primitiveID: primitiveID
@@ -1176,7 +1522,7 @@ def ShowPrimitive(primitiveID):
 
     return result
 
-def DestroyPrimitive(primitiveID):
+def _DestroyPrimitive(primitiveID):
     '''destroys a primitive
 
     :param primitiveID: primitiveID
@@ -1208,7 +1554,7 @@ def DestroyPrimitive(primitiveID):
 def BoundsCheckInc(value,min,max): #inclusive boundary check
     return ((float(value) >= float(min) ) and (float(value)<=float(max)))
 
-def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
+def _SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
     '''sets the colour of a primitive
 
     :param primitiveID: primitiveID  
@@ -1288,7 +1634,7 @@ def SetPrimitiveColour(primitiveID, red, green,blue,alpha=1):
     return result
 
  
-def ScalePrimitive(primitiveID,size):
+def _ScalePrimitive(primitiveID,size):
     '''uniform primative scale
 
     :param primitiveID: primitiveID  
@@ -1299,12 +1645,12 @@ def ScalePrimitive(primitiveID,size):
     
     '''
     #wrapper call
-    result = ScalePrimitiveNonUniform(primitiveID,size,size,size)
+    result = _ScalePrimitiveNonUniform(primitiveID,size,size,size)
     return result
 
 
  
-def ScalePrimitiveNonUniform(primitiveID,x,y,z):
+def _ScalePrimitiveNonUniform(primitiveID,x,y,z):
     '''non-uniform primative scale
 
     :param primitiveID: primitiveID  
@@ -1362,7 +1708,7 @@ def ScalePrimitiveNonUniform(primitiveID,x,y,z):
     return result
 
 
-def CreateEffect(effectName, x=0, y=0, z=0,scale=1):
+def _CreateEffect(effectName, x=0, y=0, z=0,scale=1):
     '''Creates a special effect
 
     :param effectName: the name of the effect
@@ -1423,7 +1769,7 @@ def CreateEffect(effectName, x=0, y=0, z=0,scale=1):
 
     return result
 
-def StopEffect(effectID):
+def _StopEffect(effectID):
     '''stops an effect
 
     :param effectID: effectID
@@ -1454,7 +1800,7 @@ def StopEffect(effectID):
 
 
 
-def SetEffectColour(effectID, startColour,endColour="white"):
+def _SetEffectColour(effectID, startColour,endColour="white"):
     '''sets the effect colour, valid colours: 'yellow','clear','grey','magenta','cyan','red','black','white','blue' & 'green'
     
     :param effectID: the ID of the effect

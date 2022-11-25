@@ -10,7 +10,7 @@ y = -1 #y position
 z= 0 #z position
 
 #create a portal effect
-eid=sparkpy.CreateEffect("portal",x,y,z)
+eid=sparkpy._CreateEffect("portal",x,y,z)
 
 #set colour to red from default
-sparkpy.SetEffectColour(eid,"red")
+sparkpy._SetEffectColour(eid,"red")
