@@ -83,6 +83,86 @@ colourMap = {"yellow": COLOUR_YELLOW, "clear": COLOUR_CLEAR, "grey": COLOUR_GREY
             "cyan": COLOUR_CYAN, "red": COLOUR_RED,"black": COLOUR_BLACK, "white": COLOUR_WHITE,
             "blue": COLOUR_BLUE, "green": COLOUR_GREEN}
 
+
+
+class Character:
+    '''Creates an scene character
+
+        :param characterName: The name of the character to create
+        :type characterName: string
+
+        :param x: x position
+        :type x: float optional, defaults to 0
+    
+        :param y: y position
+        :type y: float optional, defaults to 0
+    
+        :param z: z position
+        :type z: float optional, defaults to 0
+    
+        :return: Character object
+        
+    '''
+    
+    def __init__(self, name,x=0,y=0,z=0):
+        
+        self.name = name
+        self.valid = False
+        self.characterID = _CreateCharacter(name,x,y,z)
+        if self.characterID == FAILURE:
+            ErrorMsg("Character()","Could not create " + name)
+        else:
+            self.valid = True
+
+    def __str__(self) -> str:
+        return str(self.id)
+    
+
+    def Chat(self, msg, seconds = -1):
+        if(self.valid):
+            Chat(self.characterID,msg, seconds)
+    
+    def SetAnimationSpeed(self, speed):
+        if(self.valid):
+            SetAnimationSpeed(self.characterID, speed)
+    
+    def SetAnimation(self,animationName, resetTrigger = False):
+        if(self.valid):
+            SetAnimation(self.characterID, animationName, resetTrigger)
+    
+    def Hide(self):
+        if(self.valid):
+            Hide(self.characterID)
+    
+    def Show(self):
+        if(self.valid):
+            Show(self.characterID)
+    
+    def Move(self, seconds, speed=1):
+        if(self.valid):
+            Move(self.characterID, seconds, speed)
+    
+    def PlaySound(self, clipname, volume=1.0, loop=False):
+        if(self.valid):
+            PlayCharacterSound(self.characterID, volume, loop)
+
+    def StopSound(self):
+        if(self.valid):
+            StopCharacterSound(self.characterID)
+    
+    def Rotate(self, degrees, seconds, direction='cw'):
+        if(self.valid):
+            Rotate(self.characterID, degrees, seconds, direction)
+    
+    def ControlMode(self, mode):
+        if(self.valid):
+            SetControlMode(self.characterID, mode)
+    
+
+
+    
+
+
 @bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)
 def InputTextHook(ev):
     #call the input text box handler
@@ -177,7 +257,7 @@ def CreateEnvironment(environmentName, location=0):
     
     return result
 
-def CreateCharacter(characterName,x=0,y=0,z=0):
+def _CreateCharacter(characterName,x=0,y=0,z=0):
     '''Creates an scene character
 
     :param characterName: The name of the character to create

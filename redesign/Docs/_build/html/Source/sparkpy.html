@@ -44,9 +44,21 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">sparkpy module</a><ul>
 <li><a class="reference internal" href="#sparkpy.BoundsCheckInc"><code class="docutils literal notranslate"><span class="pre">BoundsCheckInc()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character"><code class="docutils literal notranslate"><span class="pre">Character</span></code></a><ul>
+<li><a class="reference internal" href="#sparkpy.Character.Chat"><code class="docutils literal notranslate"><span class="pre">Character.Chat()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.ControlMode"><code class="docutils literal notranslate"><span class="pre">Character.ControlMode()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.Hide"><code class="docutils literal notranslate"><span class="pre">Character.Hide()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.Move"><code class="docutils literal notranslate"><span class="pre">Character.Move()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.PlaySound"><code class="docutils literal notranslate"><span class="pre">Character.PlaySound()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.Rotate"><code class="docutils literal notranslate"><span class="pre">Character.Rotate()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.SetAnimation"><code class="docutils literal notranslate"><span class="pre">Character.SetAnimation()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.SetAnimationSpeed"><code class="docutils literal notranslate"><span class="pre">Character.SetAnimationSpeed()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.Show"><code class="docutils literal notranslate"><span class="pre">Character.Show()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.StopSound"><code class="docutils literal notranslate"><span class="pre">Character.StopSound()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#sparkpy.Chat"><code class="docutils literal notranslate"><span class="pre">Chat()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ColiisionHook"><code class="docutils literal notranslate"><span class="pre">ColiisionHook()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.CreateCharacter"><code class="docutils literal notranslate"><span class="pre">CreateCharacter()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.CreateEffect"><code class="docutils literal notranslate"><span class="pre">CreateEffect()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.CreateEnvironment"><code class="docutils literal notranslate"><span class="pre">CreateEnvironment()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.CreateParentChild"><code class="docutils literal notranslate"><span class="pre">CreateParentChild()</span></code></a></li>
@@ -120,6 +132,76 @@
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">BoundsCheckInc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.BoundsCheckInc" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="sparkpy.Character">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Creates an scene character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characterName</strong> (<em>string</em>) – The name of the character to create</p></li>
+<li><p><strong>x</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – x position</p></li>
+<li><p><strong>y</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – y position</p></li>
+<li><p><strong>z</strong> (<em>float optional</em><em>, </em><em>defaults to 0</em>) – z position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Character object</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.Chat">
+<span class="sig-name descname"><span class="pre">Chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.Chat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.ControlMode">
+<span class="sig-name descname"><span class="pre">ControlMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.ControlMode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.Hide">
+<span class="sig-name descname"><span class="pre">Hide</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.Hide" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.Move">
+<span class="sig-name descname"><span class="pre">Move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.Move" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.PlaySound">
+<span class="sig-name descname"><span class="pre">PlaySound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clipname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.PlaySound" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.Rotate">
+<span class="sig-name descname"><span class="pre">Rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cw'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.Rotate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.SetAnimation">
+<span class="sig-name descname"><span class="pre">SetAnimation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">animationName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resetTrigger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.SetAnimation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.SetAnimationSpeed">
+<span class="sig-name descname"><span class="pre">SetAnimationSpeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.SetAnimationSpeed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.Show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.StopSound">
+<span class="sig-name descname"><span class="pre">StopSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.StopSound" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.Chat">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Chat" title="Permalink to this definition"></a></dt>
@@ -142,20 +224,6 @@
 <dt class="sig sig-object py" id="sparkpy.ColiisionHook">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ColiisionHook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ColiisionHook" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="sparkpy.CreateCharacter">
-<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">CreateCharacter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.CreateCharacter" title="Permalink to this definition"></a></dt>
-<dd><p>Creates an scene character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>characterName</strong> (<em>string</em>) – The name of the character to create</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>characterID (int)- unique ID of the character</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.CreateEffect">
