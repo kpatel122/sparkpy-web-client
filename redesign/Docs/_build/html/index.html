@@ -51,6 +51,7 @@
 <li><a class="reference internal" href="#character-animation">Character animation</a></li>
 <li><a class="reference internal" href="#character-movement">Character movement</a></li>
 <li><a class="reference internal" href="#character-rotation">Character rotation</a></li>
+<li><a class="reference internal" href="#character-scale">Character scale</a></li>
 <li><a class="reference internal" href="#character-hide-and-show">Character hide and show</a></li>
 <li><a class="reference internal" href="#character-chat">Character chat</a></li>
 <li><a class="reference internal" href="#control-character-with-keyboard">Control character with keyboard</a></li>
@@ -279,6 +280,24 @@
 
 <span class="c1">#rotate 90 degres in 2 seconds, in the counter clockwise direction</span>
 <span class="hll"><span class="n">bryce</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;ccw&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="character-scale">
+<h5>Character scale<a class="headerlink" href="#character-scale" title="Permalink to this heading"></a></h5>
+<p>A character can be scaled using the <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.Scale">Scale()</a> Method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#scale character example</span>
+
+<span class="c1">#create office environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;office&quot;</span><span class="p">)</span>
+
+<span class="c1">#create a character</span>
+<span class="n">robot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;Ybot&quot;</span><span class="p">)</span>
+
+<span class="c1">#shrink the robot to half the size</span>
+<span class="hll"><span class="n">robot</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>

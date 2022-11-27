@@ -21,6 +21,7 @@ NO_ANIM_SEQUENCE = 5
 
 unityInstance = window.unint
 sparkpyClass = "Main" #the name of the unity class that contains the lib methods
+trailsClass = "Trails" #the name of the unity class that contains the lib methods for trails
 
 CollisionHandler = None #collision function pointer
 InputHandler     = None #input bix function pointer
@@ -288,6 +289,17 @@ class Character:
         if(self._valid):
            return  _Rotate(self._characterID, degrees, seconds, direction)
     
+    def Scale(self, size):
+        '''scales a character by size'
+
+        :param size: scale size for the character
+        :type size: float
+        
+        :return: 1 on success or 0 on failure 
+        '''
+        if(self._valid):
+           return  _Scale(self._characterID, size)
+    
     def ControlMode(self, mode):
         '''Sets the control mode for the charcter as either 'script' or 'keyboard'
        
@@ -518,6 +530,69 @@ class Effect:
         '''
         if(self._valid):
             return _SetEffectColour(self._effectID, startColour,endColour)
+
+class Trails:
+    def __init__(self):
+        self.StartTrails()
+    
+    def StartTrails(self):
+        unityInstance.SendMessage(trailsClass, "Wrap_StartTrails","ybot|home|circles")
+    
+    def Forward(self, distance):
+        unityInstance.SendMessage(trailsClass, "Forward",distance)
+
+    def Backward(self, distance):
+        unityInstance.SendMessage(trailsClass, "Backward",distance)
+
+    def Right(self, degrees):
+        unityInstance.SendMessage(trailsClass, "Right", degrees)
+
+    def Left(self, degrees):
+        unityInstance.SendMessage(trailsClass, "Left", degrees)
+    
+    def PenUp(self):
+        unityInstance.SendMessage(trailsClass, "PenUp")
+
+    def PenDown(self):
+        unityInstance.SendMessage(trailsClass, "PenDown")
+    
+    def PenSize(self, size):
+        unityInstance.SendMessage(trailsClass, "PenSize")
+
+    def PenColour(self, startColour,endColour="white"):
+        methodName = "PenColour"
+    
+        #change colour values to lowercase
+        startColour = startColour.lower()
+        endColour = endColour.lower()
+
+        #check for valid colour values
+        if startColour not in colourMap:
+            ErrorMsg(methodName,"Invalid startColour. startColour=\'"+startColour+"\'")
+            return 0
+        if endColour not in colourMap:
+            ErrorMsg(methodName,"Invalid endColour. endColour=\'"+endColour+"\'")
+            return 0
+        
+        unityInstance.SendMessage(trailsClass, "Wrap_SetTrailColour", str(colourMap[startColour]) + "|" + str(colourMap[endColour]))
+
+    def FD(self, distance): #short hand version of forward
+        self.Forward(distance)
+
+    def BK(self, distance): #short hand version of backward
+        self.Backward(distance)
+    
+    def RT(self, degrees):
+        self.Right(degrees)
+    
+    def LT(self, degrees):
+        self.Left(degrees)
+    
+    def PU(self):
+        self.PenUp()
+    
+    def PD(self):
+        self.PenDown()
 
 @bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)
 def InputTextHook(ev):
@@ -968,6 +1043,39 @@ def _Move(characterID, seconds, speed=1):
         ErrorMsg(methodName,"Invalid characterID. characterID=\'"+ str(characterID) + "\'")
 
     return result
+
+
+def _Scale(characterID, size):
+
+    methodName = "Scale" #used for error messages
+
+    #data type checks
+    try:
+        uid = int(characterID)
+    except (ValueError, TypeError):
+        ErrorMsg(methodName,"parameter characterID was not an int. characterID=\'"+ str(characterID) + "\'")
+        return 0
+    try:
+        sizeToScale = float(size)
+    except (ValueError, TypeError):
+        ErrorMsg(methodName,"parameter size was not a float. seconds=\'"+ size + "\'")
+        return 0
+   
+    #create parameter string
+    params = str(characterID) + PARAM_DELIMINATOR + str(size)    
+
+    #call the unity function
+    unityInstance.SendMessage(sparkpyClass, "Wrap_Scale",params)
+
+    #check the return value(unity function modifies this div's value to store the return value)
+    result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
+
+    #check if the character was valid
+    if(result == INVALID_CHARACTER):
+        ErrorMsg(methodName,"Invalid characterID. characterID=\'"+ str(characterID) + "\'")
+
+    return result
+
 
 #TODO add hide chat
 
@@ -1916,6 +2024,7 @@ def Run(func):
 
     '''
     aio.run(func())
+
 
 
 

@@ -51,6 +51,7 @@
 <li><a class="reference internal" href="#sparkpy.Character.Move"><code class="docutils literal notranslate"><span class="pre">Character.Move()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.PlaySound"><code class="docutils literal notranslate"><span class="pre">Character.PlaySound()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.Rotate"><code class="docutils literal notranslate"><span class="pre">Character.Rotate()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.Scale"><code class="docutils literal notranslate"><span class="pre">Character.Scale()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.SetAnimation"><code class="docutils literal notranslate"><span class="pre">Character.SetAnimation()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.SetAnimationSpeed"><code class="docutils literal notranslate"><span class="pre">Character.SetAnimationSpeed()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.Show"><code class="docutils literal notranslate"><span class="pre">Character.Show()</span></code></a></li>
@@ -95,6 +96,24 @@
 <li><a class="reference internal" href="#sparkpy.SetInputBoxHandler"><code class="docutils literal notranslate"><span class="pre">SetInputBoxHandler()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ShowInputBox"><code class="docutils literal notranslate"><span class="pre">ShowInputBox()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Sleep"><code class="docutils literal notranslate"><span class="pre">Sleep()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails"><code class="docutils literal notranslate"><span class="pre">Trails</span></code></a><ul>
+<li><a class="reference internal" href="#sparkpy.Trails.BK"><code class="docutils literal notranslate"><span class="pre">Trails.BK()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Backward"><code class="docutils literal notranslate"><span class="pre">Trails.Backward()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.FD"><code class="docutils literal notranslate"><span class="pre">Trails.FD()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Forward"><code class="docutils literal notranslate"><span class="pre">Trails.Forward()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.LT"><code class="docutils literal notranslate"><span class="pre">Trails.LT()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Left"><code class="docutils literal notranslate"><span class="pre">Trails.Left()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.PD"><code class="docutils literal notranslate"><span class="pre">Trails.PD()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.PU"><code class="docutils literal notranslate"><span class="pre">Trails.PU()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.PenColour"><code class="docutils literal notranslate"><span class="pre">Trails.PenColour()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.PenDown"><code class="docutils literal notranslate"><span class="pre">Trails.PenDown()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.PenSize"><code class="docutils literal notranslate"><span class="pre">Trails.PenSize()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.PenUp"><code class="docutils literal notranslate"><span class="pre">Trails.PenUp()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.RT"><code class="docutils literal notranslate"><span class="pre">Trails.RT()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Right"><code class="docutils literal notranslate"><span class="pre">Trails.Right()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.StartTrails"><code class="docutils literal notranslate"><span class="pre">Trails.StartTrails()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -236,6 +255,20 @@
 <li><p><strong>seconds</strong> (<em>float</em>) – how long the character rotates for in seconds</p></li>
 <li><p><strong>direction</strong> (<em>string defaults to cw</em>) – which direction to rotate- cw or ccw</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1 on success or 0 on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.Scale">
+<span class="sig-name descname"><span class="pre">Scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.Scale" title="Permalink to this definition"></a></dt>
+<dd><p>scales a character by size’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>float</em>) – scale size for the character</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>1 on success or 0 on failure</p>
@@ -690,6 +723,87 @@
 <dt class="sig sig-object py" id="sparkpy.Sleep">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Sleep" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sparkpy.Trails">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Trails</span></span><a class="headerlink" href="#sparkpy.Trails" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.BK">
+<span class="sig-name descname"><span class="pre">BK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.BK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Backward">
+<span class="sig-name descname"><span class="pre">Backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Backward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.FD">
+<span class="sig-name descname"><span class="pre">FD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.FD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Forward">
+<span class="sig-name descname"><span class="pre">Forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Forward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.LT">
+<span class="sig-name descname"><span class="pre">LT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.LT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Left">
+<span class="sig-name descname"><span class="pre">Left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Left" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.PD">
+<span class="sig-name descname"><span class="pre">PD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.PU">
+<span class="sig-name descname"><span class="pre">PU</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PU" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.PenColour">
+<span class="sig-name descname"><span class="pre">PenColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startColour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endColour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenColour" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.PenDown">
+<span class="sig-name descname"><span class="pre">PenDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenDown" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.PenSize">
+<span class="sig-name descname"><span class="pre">PenSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenSize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.PenUp">
+<span class="sig-name descname"><span class="pre">PenUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenUp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.RT">
+<span class="sig-name descname"><span class="pre">RT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.RT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Right">
+<span class="sig-name descname"><span class="pre">Right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Right" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.StartTrails">
+<span class="sig-name descname"><span class="pre">StartTrails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.StartTrails" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 </section>
 

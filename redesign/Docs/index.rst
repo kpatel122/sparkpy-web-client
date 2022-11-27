@@ -183,6 +183,28 @@ A character can be rotated using the `Rotate() <Source/sparkpy.html#sparkpy.Char
    #rotate 90 degres in 2 seconds, in the counter clockwise direction 
    bryce.Rotate(90, 2, "ccw")
 
+""""""""""""""""""""""""""""""""
+Character scale
+""""""""""""""""""""""""""""""""
+
+A character can be scaled using the `Scale() <Source/sparkpy.html#sparkpy.Character.Scale>`_ Method
+
+.. code-block:: python
+   :emphasize-lines: 12
+   
+   import sparkpy
+
+   #scale character example
+
+   #create office environment
+   sparkpy.Environment("office")
+
+   #create a character
+   robot = sparkpy.Character("Ybot")
+
+   #shrink the robot to half the size 
+   robot.Scale(0.5)
+
 
 """"""""""""""""""""""""""""""""
 Character hide and show
