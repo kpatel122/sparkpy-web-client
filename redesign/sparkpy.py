@@ -532,34 +532,88 @@ class Effect:
             return _SetEffectColour(self._effectID, startColour,endColour)
 
 class Trails:
-    def __init__(self):
-        self.StartTrails()
+
+    '''Creates a Trails object used for Logo programming.
+
+    :param characterName: The charcter to use
+    :type characterName: string optional, defaults to ybot
     
-    def StartTrails(self):
-        unityInstance.SendMessage(trailsClass, "Wrap_StartTrails","ybot|home|circles")
+    :return: Trails object
+    '''
+
+    def __init__(self,characterName="ybot"):
+        self._StartTrails(characterName)
+    
+    def _StartTrails(self, characterName="ybot"):
+        unityInstance.SendMessage(trailsClass, "Wrap_StartTrails",characterName+"|home|circles")
     
     def Forward(self, distance):
+        '''Moves charatcer forward
+
+        :param distance: distance to move forward
+        :type distance: float 
+    
+        '''
         unityInstance.SendMessage(trailsClass, "Forward",distance)
 
     def Backward(self, distance):
+        '''Moves charatcer backward
+
+        :param distance: distance to move backward
+        :type distance: float 
+    
+        '''
         unityInstance.SendMessage(trailsClass, "Backward",distance)
 
     def Right(self, degrees):
+        '''Rotate charatcer to the right
+
+        :param degrees: degrees to rotate
+        :type degrees: float 
+    
+        '''
         unityInstance.SendMessage(trailsClass, "Right", degrees)
 
     def Left(self, degrees):
+        '''Rotate charatcer to the left
+
+        :param degrees: degrees to rotate
+        :type degrees: float 
+    
+        '''
         unityInstance.SendMessage(trailsClass, "Left", degrees)
     
     def PenUp(self):
+        '''Stop trails (lines) from being drawn as character moves
+
+        '''
         unityInstance.SendMessage(trailsClass, "PenUp")
 
     def PenDown(self):
+        '''Starts trails (lines) being drawing as character moves
+        
+        '''
         unityInstance.SendMessage(trailsClass, "PenDown")
     
     def PenSize(self, size):
-        unityInstance.SendMessage(trailsClass, "PenSize")
+        '''Sets the size of the trail
+
+        :param size: size of the trails
+        :type size: int 
+    
+        '''
+        unityInstance.SendMessage(trailsClass, "PenSize", size)
 
     def PenColour(self, startColour,endColour="white"):
+        '''Sets the colour of the trail
+
+        :param startColour: the main colour of the trail, `full list of colours can be found in Effect() <../index.html#creating-effects>`_
+        :type startColour: string 
+
+        :param endColour: the end trail colour as the line fades out
+        :type endColour: string optional, defaults to 'white'
+    
+        '''
         methodName = "PenColour"
     
         #change colour values to lowercase
@@ -577,21 +631,52 @@ class Trails:
         unityInstance.SendMessage(trailsClass, "Wrap_SetTrailColour", str(colourMap[startColour]) + "|" + str(colourMap[endColour]))
 
     def FD(self, distance): #short hand version of forward
+        '''Short hand notation for `Forward() <sparkpy.html#sparkpy.Trails.Forward>`_
+
+        :param distance: distance to move forward
+        :type distance: float 
+    
+        '''
         self.Forward(distance)
 
     def BK(self, distance): #short hand version of backward
+        '''Short hand notation for `Backward() <sparkpy.html#sparkpy.Trails.Backward>`_
+
+        :param distance: distance to move backward
+        :type distance: float 
+    
+        '''
         self.Backward(distance)
     
     def RT(self, degrees):
+        '''Short hand notation for `Right() <sparkpy.html#sparkpy.Trails.Right>`_
+
+        :param degrees: degrees to rotate
+        :type degrees: float 
+    
+        '''
+        
         self.Right(degrees)
     
     def LT(self, degrees):
+        '''Short hand notation for `Left() <sparkpy.html#sparkpy.Trails.Left>`_
+
+        :param degrees: degrees to rotate
+        :type degrees: float 
+    
+        '''
         self.Left(degrees)
     
     def PU(self):
+        '''Short hand notation for `PenUp() <sparkpy.html#sparkpy.Trails.PenUp>`_
+    
+        '''
         self.PenUp()
     
     def PD(self):
+        '''Short hand notation for `PenDown() <sparkpy.html#sparkpy.Trails.PenDown>`_
+    
+        '''
         self.PenDown()
 
 @bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)

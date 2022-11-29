@@ -111,7 +111,6 @@
 <li><a class="reference internal" href="#sparkpy.Trails.PenUp"><code class="docutils literal notranslate"><span class="pre">Trails.PenUp()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.RT"><code class="docutils literal notranslate"><span class="pre">Trails.RT()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.Right"><code class="docutils literal notranslate"><span class="pre">Trails.Right()</span></code></a></li>
-<li><a class="reference internal" href="#sparkpy.Trails.StartTrails"><code class="docutils literal notranslate"><span class="pre">Trails.StartTrails()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -726,82 +725,153 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sparkpy.Trails">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Trails</span></span><a class="headerlink" href="#sparkpy.Trails" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">Trails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characterName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ybot'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Creates a Trails object used for Logo programming.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>characterName</strong> (<em>string optional</em><em>, </em><em>defaults to ybot</em>) – The charcter to use</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trails object</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.BK">
 <span class="sig-name descname"><span class="pre">BK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.BK" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Short hand notation for <a class="reference external" href="sparkpy.html#sparkpy.Trails.Backward">Backward()</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>distance</strong> (<em>float</em>) – distance to move backward</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.Backward">
 <span class="sig-name descname"><span class="pre">Backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Backward" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Moves charatcer backward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>distance</strong> (<em>float</em>) – distance to move backward</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.FD">
 <span class="sig-name descname"><span class="pre">FD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.FD" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Short hand notation for <a class="reference external" href="sparkpy.html#sparkpy.Trails.Forward">Forward()</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>distance</strong> (<em>float</em>) – distance to move forward</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.Forward">
 <span class="sig-name descname"><span class="pre">Forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Forward" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Moves charatcer forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>distance</strong> (<em>float</em>) – distance to move forward</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.LT">
 <span class="sig-name descname"><span class="pre">LT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.LT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Short hand notation for <a class="reference external" href="sparkpy.html#sparkpy.Trails.Left">Left()</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>degrees</strong> (<em>float</em>) – degrees to rotate</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.Left">
 <span class="sig-name descname"><span class="pre">Left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Left" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Rotate charatcer to the left</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>degrees</strong> (<em>float</em>) – degrees to rotate</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.PD">
 <span class="sig-name descname"><span class="pre">PD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PD" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Short hand notation for <a class="reference external" href="sparkpy.html#sparkpy.Trails.PenDown">PenDown()</a></p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.PU">
 <span class="sig-name descname"><span class="pre">PU</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PU" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Short hand notation for <a class="reference external" href="sparkpy.html#sparkpy.Trails.PenUp">PenUp()</a></p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.PenColour">
 <span class="sig-name descname"><span class="pre">PenColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startColour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endColour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenColour" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Sets the colour of the trail</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startColour</strong> (<em>string</em>) – the main colour of the trail, <a class="reference external" href="../index.html#creating-effects">full list of colours can be found in Effect()</a></p></li>
+<li><p><strong>endColour</strong> (<em>string optional</em><em>, </em><em>defaults to 'white'</em>) – the end trail colour as the line fades out</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.PenDown">
 <span class="sig-name descname"><span class="pre">PenDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenDown" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Starts trails (lines) being drawing as character moves</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.PenSize">
 <span class="sig-name descname"><span class="pre">PenSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenSize" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Sets the size of the trail</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – size of the trails</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.PenUp">
 <span class="sig-name descname"><span class="pre">PenUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.PenUp" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Stop trails (lines) from being drawn as character moves</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.RT">
 <span class="sig-name descname"><span class="pre">RT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.RT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Short hand notation for <a class="reference external" href="sparkpy.html#sparkpy.Trails.Right">Right()</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>degrees</strong> (<em>float</em>) – degrees to rotate</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Trails.Right">
 <span class="sig-name descname"><span class="pre">Right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Right" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="sparkpy.Trails.StartTrails">
-<span class="sig-name descname"><span class="pre">StartTrails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.StartTrails" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Rotate charatcer to the right</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>degrees</strong> (<em>float</em>) – degrees to rotate</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

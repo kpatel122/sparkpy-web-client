@@ -92,6 +92,15 @@
 <li><a class="reference internal" href="#loop-primitive-move">Loop Primitive Move</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#logo-programming-with-trails">LOGO programming with Trails</a><ul>
+<li><a class="reference internal" href="#create-trails">Create Trails</a></li>
+<li><a class="reference internal" href="#movement">Movement</a></li>
+<li><a class="reference internal" href="#rotation">Rotation</a></li>
+<li><a class="reference internal" href="#pen-up-pen-down">Pen Up &amp; Pen Down</a></li>
+<li><a class="reference internal" href="#trail-colour">Trail Colour</a></li>
+<li><a class="reference internal" href="#trail-size">Trail Size</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -990,6 +999,136 @@ by default primitives are rotated around their y (up) axis</p>
 <span class="c1">#loop move from right to left and back again for 2 seconds at a speed of 1.</span>
 <span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">LoopMove</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
 </span></pre></div>
+</div>
+</section>
+</section>
+<section id="logo-programming-with-trails">
+<h4>LOGO programming with Trails<a class="headerlink" href="#logo-programming-with-trails" title="Permalink to this heading"></a></h4>
+<p>Trails is sparkpy’s implementation of the Logo programming similiar to python turtles using 3D graphics</p>
+<section id="create-trails">
+<h5>Create Trails<a class="headerlink" href="#create-trails" title="Permalink to this heading"></a></h5>
+<p>To start using trails create a <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails">Trails()</a> Object</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create a trails object</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Trails</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="movement">
+<h5>Movement<a class="headerlink" href="#movement" title="Permalink to this heading"></a></h5>
+<p>To move a trails character, use <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.Forward">Forward()</a> and <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.Backward">Backward()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create a trails object</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Trails</span><span class="p">()</span>
+
+<span class="c1">#move the trails object forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rotation">
+<h5>Rotation<a class="headerlink" href="#rotation" title="Permalink to this heading"></a></h5>
+<p>To rotate a trails character, use <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.Right">Right()</a> and <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.Left">Left()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create a trails character</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Trails</span><span class="p">()</span>
+
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#turn left by 90 degrees</span>
+<span class="hll"><span class="n">t</span><span class="o">.</span><span class="n">Left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span>
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pen-up-pen-down">
+<h5>Pen Up &amp; Pen Down<a class="headerlink" href="#pen-up-pen-down" title="Permalink to this heading"></a></h5>
+<p>To stop leaving trails as the character moves use <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.PenUp">PenUp()</a>. To resume trails use <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.PenDown">PenDown()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#draw 2 parallel lines</span>
+
+<span class="c1">#create a trails character</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Trails</span><span class="p">()</span>
+
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#turn left by 90 degrees</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+
+<span class="c1">#stop trails effect</span>
+<span class="hll"><span class="n">t</span><span class="o">.</span><span class="n">PenUp</span><span class="p">()</span>
+</span>
+<span class="c1">#move the trails character forward by a distance of 0.5 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1">#turn left</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+
+<span class="c1">#resume trails effect</span>
+<span class="hll"><span class="n">t</span><span class="o">.</span><span class="n">PenDown</span><span class="p">()</span>
+</span>
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="trail-colour">
+<h5>Trail Colour<a class="headerlink" href="#trail-colour" title="Permalink to this heading"></a></h5>
+<p>To set the colour of the trail, use <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.PenColour">PenColour</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create a trails character</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Trails</span><span class="p">()</span>
+
+<span class="c1">#set the trail colour to blue</span>
+<span class="hll"><span class="n">t</span><span class="o">.</span><span class="n">PenColour</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+</span>
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#turn left by 90 degrees</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A full list of colours can be found at <a class="reference external" href="index.html#creating-effects">Creating effects</a></p>
+</div>
+</section>
+<section id="trail-size">
+<h5>Trail Size<a class="headerlink" href="#trail-size" title="Permalink to this heading"></a></h5>
+<p>The size of the trail can be set using <a class="reference external" href="Source/sparkpy.html#sparkpy.Trails.PenSize">PenSize()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create a trails character</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Trails</span><span class="p">()</span>
+
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#turn left by 90 degrees</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+
+<span class="c1">#change the colour to blue</span>
+<span class="n">t</span><span class="o">.</span><span class="n">PenColour</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+
+<span class="c1">#make the trail half the size</span>
+<span class="hll"><span class="n">t</span><span class="o">.</span><span class="n">PenSize</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</span>
+<span class="c1">#move the trails character forward by a distance of 1 unit</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Forward</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
 </div>
 </section>
 </section>
