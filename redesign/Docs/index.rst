@@ -180,8 +180,8 @@ A character can be rotated using the `Rotate() <Source/sparkpy.html#sparkpy.Char
    #create a character at position 0,0,1
    bryce = sparkpy.Character("bryce")
 
-   #rotate 90 degres in 2 seconds, in the counter clockwise direction 
-   bryce.Rotate(90, 2, "ccw")
+   #rotate left 90 degres in 2 seconds 
+   bryce.Rotate(90, 2, "left")
 
 """"""""""""""""""""""""""""""""
 Character scale

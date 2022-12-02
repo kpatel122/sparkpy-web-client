@@ -60,9 +60,9 @@
 
   <script type="text/python3" id="tests_editor">
 
-  from browser import document, window
+  from browser import document, window, bind
   import brython.tests.editor as editor
-          
+         
   def run(ev):
     document['console'].value = ''
     editor.run(editor.editor.getValue())
@@ -90,7 +90,10 @@
   
 
   smp.bind("change", selectSample)
-          
+
+ 
+
+
   </script>
   <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
@@ -207,8 +210,22 @@
     <!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
     <div id="unity_return_values"></div>
 
+    <div id="reset_id"></div>
 
+    <script>
 
+    </script>
+    <script type="text/python3">
+    from browser import document,window,bind,aio
+    import sparkpy
+    
+    
+    @bind(window, "message")
+    def ready(ev):
+      #unity instance variable (window.unint) is now valid
+      sparkpy.SetUnityInstance(window.unint)
+    
+    </script>
 
     <!-- Need to merge with main grid-->
     <table>
@@ -225,12 +242,11 @@
     <script src="Scripts/settingsRow.js"></script>
     <script src="Scripts/themes.js"></script>
     <script>
-
+      const resetEvent = new CustomEvent('resetScene'); //only make this once
       function unityRestScene() 
       {
-        //reset the scene
-        unint.SendMessage('Main', "ResetScene");
-        
+        //reset the scene. Call the reset scene method in sparkpy via binding to this event
+        document.getElementById("reset_id").dispatchEvent(resetEvent); //event is binded in sparkpy.py
         //set focus on unity
         document.getElementById("unityiframe").focus();
       }

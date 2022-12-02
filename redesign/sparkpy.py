@@ -3,6 +3,8 @@
 from browser import document,window,bind,aio
 import traceback
 
+SPARKPY_WEB_VERSION  = "0.1.0" 
+
 PARAM_DELIMINATOR = '|' #unity SendMessage only accepts one parameter so pack multiple params with this deliminator, unity uses the same character to unpack the values
 
 #enviroment return *must match unity values*
@@ -19,7 +21,13 @@ NO_SOUND_CLIP = 2
 #animation returns *must match unity values*
 NO_ANIM_SEQUENCE = 5
 
-unityInstance = window.unint
+#unityInstance = window.unint
+unityInstance = None
+def SetUnityInstance(inst):
+    global unityInstance
+    unityInstance = inst
+    
+
 sparkpyClass = "Main" #the name of the unity class that contains the lib methods
 trailsClass = "Trails" #the name of the unity class that contains the lib methods for trails
 
@@ -243,7 +251,7 @@ class Character:
         '''
         if(self._valid):
            return  _Move(self._characterID, seconds, speed)
-    
+        
     def PlaySound(self, clipname, volume=1.0, loop=False):
         '''Plays character audio clip.   
 
@@ -270,9 +278,9 @@ class Character:
         if(self._valid):
            return  _StopCharacterSound(self._characterID)
     
-    def Rotate(self, degrees, seconds, direction='cw'):
+    def Rotate(self, degrees, seconds, direction='right'):
 
-        '''rotates a character to degrees in seconds. direction is cw (clockwise) or ccw (counter clockwise)
+        '''rotates a character to degrees in seconds. direction is right (clockwise) or left (counter clockwise)
         
         :param degrees: how many degrees to rotate
         :type degrees: float
@@ -280,8 +288,8 @@ class Character:
         :param seconds: how long the character rotates for in seconds
         :type seconds: float
         
-        :param direction: which direction to rotate- cw or ccw
-        :type direction: string defaults to cw
+        :param direction: which direction to rotate- right or left
+        :type direction: string defaults to right
         
         :return: 1 on success or 0 on failure 
         '''
@@ -679,6 +687,12 @@ class Trails:
         '''
         self.PenDown()
 
+#event created in unityRestScene() pys.html when the play button is pressed
+@bind(document["reset_id"], "resetScene")
+def ResetEvent(ev):
+    ResetScene()
+    
+
 @bind(document[SPARKPY_EVENT_DIV], EVENT_INPUT)
 def InputTextHook(ev):
     #call the input text box handler
@@ -726,8 +740,12 @@ def ResetScene():
     
     #reset the collision handler
     global CollisionHandler
-    CollisionHandler = None 
-    
+    CollisionHandler = None
+
+    #reset the input box handler
+    global InputHandler
+    InputHandler = None 
+
     #call unity function
     unityInstance.SendMessage(sparkpyClass, "ResetScene")
     
@@ -1013,9 +1031,9 @@ def _Hide(characterID):
 
     return result 
 
-def _Rotate(characterID, degrees, seconds, direction = "cw"):
+def _Rotate(characterID, degrees, seconds, direction = "right"):
 
-    '''rotates a character to degrees in seconds. direction is cw (clockwise) or ccw (counter clockwise)
+    '''rotates a character to degrees in seconds. direction is right (clockwise) or left (counter clockwise)
 
     :param characterID: The characterID to rotate
     :type characterID: int
@@ -1026,8 +1044,8 @@ def _Rotate(characterID, degrees, seconds, direction = "cw"):
     :param seconds: how long the character rotates for in seconds
     :type seconds: float
     
-    :param direction: which direction to rotate- cw or ccw
-    :type direction: string defaults to cw
+    :param direction: which direction to rotate- right or left
+    :type direction: string defaults to right
     
     :return: 1 on success or 0 on failure 
     '''
@@ -1054,16 +1072,16 @@ def _Rotate(characterID, degrees, seconds, direction = "cw"):
     direction = direction.lower()
 
     #map the string to the unity enum value
-    CW = 1
-    CCW = 2
-    dirEnum = CW 
+    RIGHT = 1
+    LEFT = 2
+    dirEnum = RIGHT 
 
-    if direction == "cw":
-        dirEnum = CW
-    elif direction == "ccw":
-        dirEnum = CCW
+    if direction == "right":
+        dirEnum = RIGHT
+    elif direction == "left":
+        dirEnum = LEFT
     else:
-        ErrorMsg(methodName,"parameter direction has invalid value direction=\'"+ direction + "\'. Valid values are \'cw\' or \'ccw\'")
+        ErrorMsg(methodName,"parameter direction has invalid value direction=\'"+ direction + "\'. Valid values are \'right\' or \'left\'")
         return 0
 
     #create parameter string
@@ -1213,6 +1231,16 @@ def _Chat(characterID, text, seconds = -1):
         ErrorMsg(methodName,"Invalid characterID. characterID=\'"+ str(characterID) + "\'")
 
     return result
+
+def Version():
+    '''Gets the aplication version numbers
+    '''
+    unityInstance.SendMessage(sparkpyClass, "GetVersion")
+    ENGINE_VERION = document[SPARKPY_RETURN_VALUE_DIV].innerHTML
+    PYTHON_VERSION = str(document['version'].innerHTML)
+
+    version = "Web:"+SPARKPY_WEB_VERSION+"\n"+"Engine:"+ENGINE_VERION+"\n"+"Python:"+PYTHON_VERSION+"\n"
+    print(version)
 
 #examples of input retrival can be found at samples/InputMethods.py
 def ShowInputBox():
