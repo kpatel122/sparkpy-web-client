@@ -610,7 +610,40 @@ class Trails:
         :type size: int 
     
         '''
+        methodName = "PenSize"
+        try:
+            sizeType = int(size)
+        except (ValueError, TypeError):
+            ErrorMsg(methodName,"parameter speed was not a float. speed=\'"+ str(size) + "\'")
+            return 0
         unityInstance.SendMessage(trailsClass, "PenSize", size)
+    
+    def Speed(self, speed):
+        '''Sets the speed of the trail
+
+        :param speed: speed of the trails character
+        :type speed: float 
+
+        '''
+        methodName = "Speed"
+        try:
+            speedType = float(speed)
+        except (ValueError, TypeError):
+            ErrorMsg(methodName,"parameter speed was not a float. speed=\'"+ str(speed) + "\'")
+            return 0
+        unityInstance.SendMessage(trailsClass, "PenSpeed", speed)
+    
+    def Show(self):
+        '''Shows the trails character
+        
+        '''
+        unityInstance.SendMessage(trailsClass, "Show")
+    
+    def Hide(self):
+        '''Hides the trails character
+        
+        '''
+        unityInstance.SendMessage(trailsClass, "Hide")
 
     def PenColour(self, startColour,endColour="white"):
         '''Sets the colour of the trail
