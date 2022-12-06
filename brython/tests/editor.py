@@ -50,7 +50,9 @@ def reset_src():
         if storage is not None and "py_src" in storage:
             editor.setValue(storage["py_src"])
         else:
-            editor.setValue('print(\"Hello Sparkpy\")')#editor.setValue('for i in range(10):\n\tprint(i)')
+            #default code
+            #editor.setValue('print(\"Hello Sparkpy\")')#editor.setValue('for i in range(10):\n\tprint(i)')
+            pass
         if "py_test" in storage and 'files' in document:
             document['files'].selectedIndex = int(storage["py_test"])
     editor.scrollToRow(0)

@@ -87,7 +87,12 @@
     fake_qs = '?foo=%s' #%time.time()
     code = open(filename +fake_qs).read()
     editor.editor.setValue(code)
-  
+    
+  code = 'import sparkpy\n\n #create dessert environment\nsparkpy.Environment(\"forest\")\n\n'\
+          '#create robot character\nrobot = sparkpy.Character(\"ybot\")\n\n' \
+          '#set animation to talk\nrobot.SetAnimation(\"talking1\")\n\n'\
+          '#create a speech box\nrobot.Chat(\"Hello World\")'
+  editor.editor.setValue(code)
 
   smp.bind("change", selectSample)
 
