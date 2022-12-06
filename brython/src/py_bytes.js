@@ -63,7 +63,7 @@ var bytearray = {
 }
 
 var mutable_methods = ["__delitem__", "clear", "copy", "count", "index",
-    "pop", "remove", "reverse", "sort"]
+    "pop", "remove", "reverse"]
 
 mutable_methods.forEach(function(method){
     bytearray[method] = (function(m){
@@ -77,10 +77,13 @@ mutable_methods.forEach(function(method){
     })(method)
 })
 
+bytearray.__hash__ = _b_.None
+
 var bytearray_iterator = $B.make_iterator_class('bytearray_iterator')
 bytearray.__iter__ = function(self){
     return bytearray_iterator.$factory(self.source)
 }
+
 bytearray.__mro__ = [_b_.object]
 
 bytearray.__repr__ = bytearray.__str__ = function(self){
@@ -115,7 +118,7 @@ bytearray.__setitem__ = function(self, arg, value){
                 if(! _b_.isinstance($temp[i], _b_.int)){
                     throw _b_.TypeError.$factory('an integer is required')
                 }else if($temp[i] > 255){
-                    throw ValueError.$factory("byte must be in range(0, 256)")
+                    throw _b_.ValueError.$factory("byte must be in range(0, 256)")
                 }
                 self.source.splice(start, 0, $temp[i])
             }
@@ -136,11 +139,16 @@ bytearray.append = function(self, b){
     if(! _b_.isinstance(b, _b_.int)){
         throw _b_.TypeError.$factory("an integer is required")
     }
-    if(b > 255){throw ValueError.$factory("byte must be in range(0, 256)")}
+    if(b > 255){throw _b_.ValueError.$factory("byte must be in range(0, 256)")}
     self.source[self.source.length] = b
 }
 
 bytearray.extend = function(self, b){
+    if(self.in_iteration){
+        // happens in re.finditer()
+        throw _b_.BufferError.$factory("Existing exports of data: object " +
+            "cannot be re-sized")
+    }
     if(b.__class__ === bytearray || b.__class__ === bytes){
         b.source.forEach(function(item){
             self.source.push(item)
@@ -167,7 +175,7 @@ bytearray.insert = function(self, pos, b){
     if(! _b_.isinstance(b, _b_.int)){
         throw _b_.TypeError.$factory("an integer is required")
     }
-    if(b > 255){throw ValueError.$factory("byte must be in range(0, 256)")}
+    if(b > 255){throw _b_.ValueError.$factory("byte must be in range(0, 256)")}
     _b_.list.insert(self.source, pos, b)
 }
 
@@ -192,12 +200,17 @@ var bytes = {
 }
 
 bytes.__add__ = function(self, other){
-    if(_b_.isinstance(other, bytes)){
-        return self.__class__.$factory(self.source.concat(other.source))
-    }else if(_b_.isinstance(other, bytearray)){
-        return self.__class__.$factory(bytes.__add__(self, bytes.$factory(other)))
+    var other_bytes
+    if(_b_.isinstance(other, [bytes, bytearray])){
+        other_bytes = other.source
     }else if(_b_.isinstance(other, _b_.memoryview)){
-        return self.__class__.$factory(bytes.__add__(self, _b_.memoryview.tobytes(other)))
+        other_bytes = _b_.memoryview.tobytes(other).source
+    }
+    if(other_bytes !== undefined){
+        return {
+            __class__: self.__class__,
+            source: self.source.concat(other_bytes)
+        }
     }
     throw _b_.TypeError.$factory("can't concat bytes to " +
         _b_.str.$factory(other))
@@ -228,7 +241,9 @@ bytes.__iter__ = function(self){
 }
 
 bytes.__eq__ = function(self, other){
-    if(invalid(other)){return false}
+    if(invalid(other)){
+        return false
+    }
     return $B.$getattr(self.source, '__eq__')(other.source)
 }
 
@@ -341,14 +356,80 @@ bytes.__mul__ = function(){
     return res
 }
 
-bytes.__ne__ = function(self,other){return ! bytes.__eq__(self, other)}
+bytes.__ne__ = function(self,other){
+    return ! bytes.__eq__(self, other)
+}
 
 bytes.__new__ = function(cls, source, encoding, errors){
-    var $ = $B.args("__new__", 4,
+    var missing = {},
+        $ = $B.args("__new__", 4,
             {cls: null, source: null, encoding: null, errors: null},
             ["cls", "source", "encoding", "errors"], arguments,
-            {source: [], encoding: "utf-8", errors: "strict"}, null, null)
-    return bytes.$new($.cls, $.source, $.encoding, $.errors)
+            {source: missing, encoding: missing, errors: missing}, null, null)
+    var source
+    if($.source === missing){
+        return {
+            __class__: $.cls,
+            source: []
+        }
+    }else if(typeof $.source == "string" || _b_.isinstance($.source, _b_.str)){
+        if($.encoding === missing){
+            throw _b_.TypeError.$factory('string argument without an encoding')
+        }
+        $.errors = $.errors === missing ? 'strict' : $.errors
+        return {
+            __class__: $.cls,
+            source: encode($.source, $.encoding, $.errors)
+        }
+    }
+    if($.encoding !== missing){
+        throw _b_.TypeError.$factory("encoding without a string argument")
+    }
+    if(typeof $.source == "number" || _b_.isinstance($.source, _b_.int)){
+        var size = $B.PyNumber_Index($.source)
+        source = []
+        for(var i = 0; i < size; i++){
+            source[i] = 0
+        }
+    }else if(_b_.isinstance($.source, [_b_.bytes, _b_.bytearray])){
+        source = $.source.source
+    }else if(_b_.isinstance($.source, _b_.memoryview)){
+        source = $.source.obj.source
+    }else{
+        if(Array.isArray($.source)){
+            var int_list = $.source
+        }else{
+            try{
+                var int_list = _b_.list.$factory($.source)
+            }catch(err){
+                var bytes_method = $B.$getattr(source, '__bytes__', _b_.None)
+                if(bytes_method === _b_.None){
+                    throw _b_.TypeError.$factory("cannot convert " +
+                        `'${$B.class_name(source)}' object to bytes`)
+                }
+                var res = $B.$call(bytes_method)()
+                if(! _b_.isinstance(res, _b_.bytes)){
+                    throw _b_.TypeError.$factory(`__bytes__ returned ` +
+                        `non-bytes (type ${$B.class_name(res)})`)
+                }
+                return res
+            }
+        }
+        source = []
+        for(var item of int_list){
+            item = $B.PyNumber_Index(item)
+            if(item >= 0 && item < 256){
+                source.push(item)
+            }else{
+                throw _b_.ValueError.$factory(
+                    "bytes must be in range (0, 256)")
+            }
+        }
+    }
+    return {
+        __class__: $.cls,
+        source
+    }
 }
 
 bytes.$new = function(cls, source, encoding, errors){
@@ -369,19 +450,41 @@ bytes.$new = function(cls, source, encoding, errors){
             }
             int_list = encode(source, encoding || "utf-8", errors || "strict")
         }else{
+            if(encoding !== undefined){
+                console.log('encoding', encoding)
+                throw _b_.TypeError.$factory("encoding without a string argument")
+            }
             // tranform iterable "source" into a list
-            int_list = _b_.list.$factory(source)
-            for(var i = 0; i < int_list.length; i++){
+            if(Array.isArray(source)){
+                int_list = source
+            }else{
                 try{
-                    var item = _b_.int.$factory(int_list[i])
+                    int_list = _b_.list.$factory(source)
                 }catch(err){
-                    throw _b_.TypeError.$factory("'" +
-                        $B.class_name(int_list[i]) + "' object " +
-                        "cannot be interpreted as an integer")
+                    var bytes_method = $B.$getattr(source, '__bytes__', _b_.None)
+                    if(bytes_method === _b_.None){
+                        throw _b_.TypeError.$factory("cannot convert " +
+                            `'${$B.class_name(source)}' object to bytes`)
+                    }
+                    var res = $B.$call(bytes_method)()
+                    if(! _b_.isinstance(res, _b_.bytes)){
+                        throw _b_.TypeError.$factory(`__bytes__ returned ` +
+                            `non-bytes (type ${$B.class_name(res)})`)
+                    }
+                    return res
                 }
-                if(item < 0 || item > 255){
-                    throw _b_.ValueError.$factory("bytes must be in range" +
-                        "(0, 256)")
+                for(var i = 0; i < int_list.length; i++){
+                    try{
+                        var item = _b_.int.$factory(int_list[i])
+                    }catch(err){
+                        throw _b_.TypeError.$factory("'" +
+                            $B.class_name(int_list[i]) + "' object " +
+                            "cannot be interpreted as an integer")
+                    }
+                    if(item < 0 || item > 255){
+                        throw _b_.ValueError.$factory("bytes must be in range" +
+                            "(0, 256)")
+                    }
                 }
             }
         }
@@ -393,11 +496,12 @@ bytes.$new = function(cls, source, encoding, errors){
 }
 
 bytes.__repr__ = bytes.__str__ = function(self){
-    var res = ""
+    var t = $B.special_string_repr, // in brython_builtins.js
+        res = ""
     for(var i = 0, len = self.source.length; i < len; i++){
         var s = self.source[i]
-        if(s == 10){
-            res += '\\n'
+        if(t[s] !== undefined){
+            res += t[s]
         }else if(s < 32 || s >= 128){
             var hx = s.toString(16)
             hx = (hx.length == 1 ? '0' : '') + hx
@@ -497,15 +601,15 @@ bytes.decode = function(self, encoding,errors){
 }
 
 bytes.endswith = function() {
-    var $ = $B.args('endswith', 4, {self: null, suffix: null, start: null, end: null},
-        ['self', 'suffix', 'start', 'end'], arguments, {start: -1, end: -1}, null, null)
+    var $ = $B.args('endswith', 4,
+            {self: null, suffix: null, start: null, end: null},
+            ['self', 'suffix', 'start', 'end'], arguments,
+            {start: -1, end: -1}, null, null)
     if(_b_.isinstance($.suffix, bytes)){
         var start = $.start == -1 ?
             $.self.source.length - $.suffix.source.length :
             Math.min($.self.source.length - $.suffix.source.length, $.start)
-        var end = $.end == -1 ?
-            ($.start == -1 ? $.self.source.length : start + $.suffix.source.length) :
-            Math.min($.self.source.length - 1, $.end)
+        var end = $.end == -1 ? $.self.source.length : $.end
         var res = true
         for (var i = $.suffix.source.length - 1, len = $.suffix.source.length;
                 i >= 0 && res; --i){
@@ -543,7 +647,10 @@ bytes.expandtabs = function() {
     var buffer = $.self.source.slice()
     for(let i = 0; i < buffer.length; ++i){
         if(buffer[i] === 9){
-            buffer.splice.apply(buffer, [i, 1].concat(tab_spaces))
+            var nb_spaces = $.tabsize - i % $.tabsize
+            var tabs = new Array(nb_spaces)
+            tabs.fill(32)
+            buffer.splice.apply(buffer, [i, 1].concat(tabs))
         }
     }
     return _b_.bytes.$factory(buffer)
@@ -612,34 +719,60 @@ bytes.fromhex = function(){
 }
 
 bytes.hex = function(){
-    // Return a string object containing two hexadecimal digits for each byte
-    // in the instance.
-    var $ = $B.args('hex', 1, {self: null}, ['self'],
-            arguments, {}, null, null),
-        self = $.self,
-        res = ""
-    for(var i = 0, len = self.source.length; i < len; i++){
-        var hexa = self.source[i].toString(16)
-        if(hexa.length < 2){hexa = "0" + hexa}
-        res += hexa
+    // Return a string which is hex representation of the instance
+    // The hexstring can include a separator every specified number of bytes
+    var $ = $B.args('hex', 3, {self:null, sep:null, bytes_per_sep:null},
+            ['self','sep','bytes_per_sep'], arguments,
+            {sep: "", bytes_per_sep: 1}, null, null),
+            self = $.self,
+            sep = $.sep,
+            bytes_per_sep = $.bytes_per_sep,
+            res = "",
+            digits = "0123456789abcdef",
+            bps = bytes_per_sep,
+            jstart = bps,
+            len = self.source.length;
+    if(bytes_per_sep < 0){
+        bps = -bytes_per_sep;
+        jstart = bps
+    }else if(bytes_per_sep == 0){
+        sep = ''
+    }else{
+        jstart = len % bps
+        if(jstart == 0){
+           jstart = bps
+       }
+    }
+    for(var i = 0, j = jstart; i < len; i++){
+        var c = self.source[i]
+        if (j == 0) {
+            res += sep
+            j = bps
+        }
+        j--
+        res += digits[c >> 4]
+        res += digits[c & 0x0f]
     }
     return res
 }
 
 bytes.index = function() {
-    var $ = $B.args('rfind', 4,
+    var $ = $B.args('index', 4,
         {self: null, sub: null, start: null, end: null},
         ['self', 'sub', 'start', 'end'],
         arguments, {start: 0, end: -1}, null, null)
-
     var index = bytes.find($.self, $.sub, $.start, $.end)
+    console.log('index', index)
     if(index == -1){
         throw _b_.ValueError.$factory("subsection not found")
     }
     return index
 }
 
-bytes.isalnum = function(self) {
+bytes.isalnum = function(){
+    var $ = $B.args('isalnum', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
     var src = self.source,
         len = src.length,
         res = len > 0
@@ -652,7 +785,10 @@ bytes.isalnum = function(self) {
     return res
 }
 
-bytes.isalpha = function(self) {
+bytes.isalpha = function(){
+    var $ = $B.args('isalpha', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
     var src = self.source,
         len = src.length,
         res = len > 0
@@ -663,7 +799,10 @@ bytes.isalpha = function(self) {
     return res
 }
 
-bytes.isdigit = function(self) {
+bytes.isdigit = function(){
+    var $ = $B.args('isdigit', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
     var src = self.source,
         len = src.length,
         res = len > 0
@@ -674,7 +813,10 @@ bytes.isdigit = function(self) {
     return res
 }
 
-bytes.islower = function(self) {
+bytes.islower = function(){
+    var $ = $B.args('islower', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
     var src = self.source,
         len = src.length,
         res = false
@@ -690,7 +832,11 @@ bytes.islower = function(self) {
     return res
 }
 
-bytes.isspace = function(self) {
+bytes.isspace = function(){
+    var $ = $B.args('isspace', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
+
     var src = self.source,
         len = src.length
 
@@ -712,7 +858,10 @@ bytes.isspace = function(self) {
     return true
 }
 
-bytes.isupper = function(self) {
+bytes.isupper = function(){
+    var $ = $B.args('isupper', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
     var src = self.source,
         len = src.length,
         res = false
@@ -728,7 +877,10 @@ bytes.isupper = function(self) {
     return res
 }
 
-bytes.istitle = function(self) {
+bytes.istitle = function(){
+    var $ = $B.args('istitle', 1, {self: null}, ['self'],
+            arguments, {}, null, null),
+        self = $.self
     var src = self.source,
         len = src.length,
         current_char_is_letter = false,
@@ -754,7 +906,7 @@ bytes.istitle = function(self) {
 
 bytes.join = function(){
     var $ns = $B.args('join', 2, {self: null, iterable: null},
-        ['self', 'iterable'], arguments, {}),
+            ['self', 'iterable'], arguments, {}),
         self = $ns['self'],
         iterable = $ns['iterable']
     var next_func = $B.$getattr(_b_.iter(iterable), '__next__'),
@@ -763,8 +915,11 @@ bytes.join = function(){
     while(true){
         try{
             var item = next_func()
-            if(empty){empty = false}
-            else{res = bytes.__add__(res, self)}
+            if(empty){
+                empty = false
+            }else{
+                res = bytes.__add__(res, self)
+            }
             res = bytes.__add__(res, item)
         }catch(err){
             if(_b_.isinstance(err, _b_.StopIteration)){
@@ -1032,7 +1187,7 @@ bytes.rstrip = function(self, cars){return _strip(self, cars, 'r')}
 
 bytes.split = function(){
     var $ = $B.args('split', 2, {self:null, sep:null}, ['self', 'sep'],
-        arguments, {}, null, null),
+        arguments, {sep: bytes.$factory([32])}, null, null),
         res = [],
         start = 0,
         stop = 0
@@ -1240,13 +1395,18 @@ function $UnicodeDecodeError(encoding, position){
         "' codec can't decode bytes in position " + position)
 }
 
-function _hex(_int){return _int.toString(16)}
-function _int(hex){return parseInt(hex, 16)}
+function _hex(_int){
+    var h = _int.toString(16)
+    return '0x' + '0'.repeat(2 - h.length) + h
+}
+function _int(hex){
+    return parseInt(hex, 16)
+}
 
 function normalise(encoding){
     var enc = encoding.toLowerCase()
     if(enc.substr(0, 7) == "windows"){enc = "cp" + enc.substr(7)}
-    if(enc.startsWith("cp") || enc.startsWith("iso")){
+    if(enc.startsWith("cp-") || enc.startsWith("iso-")){
         enc = enc.replace("-", "") // first hyphen, like in cp-1250
     }
     enc = enc.replace(/-/g, "_") // second, like in iso-8859-1
@@ -1278,8 +1438,7 @@ function load_encoder(enc){
 var decode = $B.decode = function(obj, encoding, errors){
     var s = "",
         b = obj.source,
-        enc = normalise(encoding),
-        has_surrogate = false
+        enc = normalise(encoding)
     switch(enc) {
       case "utf_8":
       case "utf-8":
@@ -1358,7 +1517,6 @@ var decode = $B.decode = function(obj, encoding, errors){
                   }
               }else if((byte >> 3) == 30){
                   // 4 bytes, 1st of the form 11110xxx and 3 next 10xxxxxx
-                  has_surrogate = true
                   if(b[pos + 1] === undefined){
                       err_info = [byte, pos, "end", pos + 1]
                   }else if((b[pos + 1] & 0xc0) != 0x80){
@@ -1413,9 +1571,6 @@ var decode = $B.decode = function(obj, encoding, errors){
                           ": invalid start byte")
                   }
               }
-          }
-          if(has_surrogate){
-              return _b_.str.$surrogate.$factory(s)
           }
           return s
       case "latin_1":
@@ -1475,12 +1630,21 @@ var decode = $B.decode = function(obj, encoding, errors){
               console.log(b, encoding, "error load_decoder", err)
               throw _b_.LookupError.$factory("unknown encoding: " + enc)
           }
-          return to_unicode[enc](obj)[0]
+          var decoded = to_unicode[enc](obj)[0]
+          for(var i = 0, len = decoded.length; i < len; i++){
+              if(decoded.codePointAt(i) == 0xfffe){
+                  throw _b_.UnicodeDecodeError.$factory("'charmap' codec " +
+                      `can't decode byte ${_hex(b[i])} in position ${i}: ` +
+                      "character maps to <undefined>")
+              }
+          }
+          return decoded
     }
     return s
 }
 
 var encode = $B.encode = function(){
+    // returns a list of ints in [0, 256[
     var $ = $B.args("encode", 3, {s: null, encoding: null, errors: null},
         ["s", "encoding", "errors"],
         arguments, {encoding: "utf-8", errors:"strict"}, null, null),
@@ -1529,10 +1693,26 @@ var encode = $B.encode = function(){
             }
             break
         case "ascii":
-          for(var i = 0, len = s.length; i < len; i++){
-              var cp = s.charCodeAt(i) // code point
-              if(cp <= 127){t[pos++] = cp}
-              else if(errors != "ignore"){$UnicodeEncodeError(encoding, i)}
+          for(var i = 0, len = _b_.str.__len__(s); i < len; i++){
+              var cp = s.charCodeAt(i), // code point
+                  char = _b_.str.__getitem__(s, i)
+              if(cp <= 127){
+                  t[pos++] = cp
+              }else if(errors == "backslashreplace"){
+                  var hex = _b_.hex(_b_.ord(char))
+                  if(hex.length < 5){
+                      hex = '\\x' + '0'.repeat(4 - hex.length) + hex.substr(2)
+                  }else if(hex.length < 7){
+                      hex = '\\u' + '0'.repeat(6 - hex.length) + hex.substr(2)
+                  }else{
+                      hex = '\\U' + '0'.repeat(10 - hex.length) + hex.substr(2)
+                  }
+                  for(var char of hex){
+                      t[pos++] = char.charCodeAt(0)
+                  }
+              }else if(errors !== 'ignore'){
+                  $UnicodeEncodeError(encoding, i)
+              }
           }
           break
         case "raw_unicode_escape":
@@ -1563,11 +1743,7 @@ var encode = $B.encode = function(){
 
 
 bytes.$factory = function(source, encoding, errors){
-    var $ = $B.args("bytes", 3,
-            {source: null, encoding: null, errors: null},
-            ["source", "encoding", "errors"], arguments,
-            {source: [], encoding: "utf-8", errors: "strict"}, null, null)
-    return bytes.$new(bytes, $.source, $.encoding, $.errors)
+    return bytes.__new__.bind(null, bytes).apply(null, arguments)
 }
 
 bytes.__class__ = _b_.type

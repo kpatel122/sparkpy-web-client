@@ -20,6 +20,10 @@ environ = {'HOME': __BRYTHON__.curdir,
     'PYTHONPATH': __BRYTHON__.brython_path
 }
 
+SEEK_SET = 0
+SEEK_CUR = 1
+SEEK_END = 2
+
 # fake implementation of terminal size
 class terminal_size:
 
@@ -136,6 +140,9 @@ if name == 'nt':
 
 def scandir(*args, **kw):
     raise NotImplementedError
+
+def waitstatus_to_exitcode(status):
+    return status >> 8
 
 _set = set()
 

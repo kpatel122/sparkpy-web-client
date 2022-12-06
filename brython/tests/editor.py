@@ -5,27 +5,17 @@ import binascii
 import tb as traceback
 import javascript
 
-from browser import document as doc, window, alert, bind, html
-from browser.widgets import dialog
+from browser import console, document, window, alert, bind, html
+import browser.widgets.dialog as dialog
 
 # set height of container to 75% of screen
-_height = doc.documentElement.clientHeight
-_s = doc['container']
-#_s.style.height = '%spx' % int(_height * 0.85) #set this in CSS
+_height = document.documentElement.clientHeight
+_s = document['container']
+_s.style.height = '%spx' % int(_height * 0.85)
 
 has_ace = True
 try:
-
-     
-      
     editor = window.ace.edit("editor")
-     
-    #alert("Set theme called 22")
-    #editor.setTheme("ace/theme/solarized_light")
-    #editor.setTheme("ace/theme/theme-nord_dark")
-    editor.setTheme("ace/theme/tomorrow_night_blue") 
-
-    #editor.setTheme("nord_dark.js")
     editor.session.setMode("ace/mode/python")
     editor.focus()
 
@@ -37,7 +27,7 @@ try:
 except:
     from browser import html
     editor = html.TEXTAREA(rows=20, cols=70)
-    doc["editor"] <= editor
+    document["editor"] <= editor
     def get_value(): return editor.value
     def set_value(x): editor.value = x
     editor.getValue = get_value
@@ -49,18 +39,20 @@ if hasattr(window, 'localStorage'):
 else:
     storage = None
 
-if 'set_debug' in doc:
-    __BRYTHON__.debug = int(doc['set_debug'].checked)
+if 'set_debug' in document:
+    __BRYTHON__.debug = int(document['set_debug'].checked)
 
 def reset_src():
-    if "code" in doc.query:
-        code = doc.query.getlist("code")[0]
+    if "code" in document.query:
+        code = document.query.getlist("code")[0]
         editor.setValue(code)
     else:
         if storage is not None and "py_src" in storage:
             editor.setValue(storage["py_src"])
         else:
-            editor.setValue('for i in range(10):\n\tprint(i)')
+            editor.setValue('print(\"Hello Sparkpy\")')#editor.setValue('for i in range(10):\n\tprint(i)')
+        if "py_test" in storage and 'files' in document:
+            document['files'].selectedIndex = int(storage["py_test"])
     editor.scrollToRow(0)
     editor.gotoLine(0)
 
@@ -75,7 +67,7 @@ class cOutput:
     encoding = 'utf-8'
 
     def __init__(self):
-        self.cons = doc["console"]
+        self.cons = document["console"]
         self.buf = ''
 
     def write(self, data):
@@ -88,7 +80,7 @@ class cOutput:
     def __len__(self):
         return len(self.buf)
 
-if "console" in doc:
+if "console" in document:
     cOut = cOutput()
     sys.stdout = cOut
     sys.stderr = cOut
@@ -101,44 +93,109 @@ info = sys.implementation.version
 version = '%s.%s.%s' % (info.major, info.minor, info.micro)
 if info.releaselevel == "rc":
     version += f"rc{info.serial}"
-doc['version'].text = version
+document['version'].text = version
 
 output = ''
 
+def clear_console():
+    document["console"].value = ''
+
 def show_console(ev):
-    doc["console"].value = output
-    doc["console"].cols = 60
+    document["console"].value = output
+    document["console"].cols = 60
 
 # load a Python script
 def load_script(evt):
-    _name = evt.target.value + '?foo=%s' % time.time()
+    _name = evt.target.value
     editor.setValue(open(_name).read())
 
-# run a script, in global namespace if in_globals is True
-def run(*args):
-    global output
-    doc["console"].value = ''
-    src = editor.getValue()
-    if storage is not None:
-       storage["py_src"] = src
+def trace_exc(run_frame, src, ns):
+    result_lines = []
+    exc_type, exc_value, traceback = sys.exc_info()
 
+    if __BRYTHON__.debug > 1:
+        console.log(exc_value)
+
+    def handle_repeats(filename, lineno, count_repeats):
+        if count_repeats > 0:
+            for _ in range(2):
+                result_lines.append(f'  File {filename}, line {lineno}')
+                show_line(filename, lineno, src)
+            result_lines.append(f'[Previous line repeated {count_repeats - 2}' +
+                ' more times]')
+
+    def show_line(filename, lineno, src):
+        if filename == ns['__file__']:
+            source = src
+        elif filename.startswith('<'):
+            return '-- from ' + filename
+        else:
+            src = open(filename, encoding='utf-8').read()
+        lines = src.split('\n')
+        line = lines[lineno - 1]
+        result_lines.append('    ' + line.strip())
+        return line
+
+    started = False
+    save_filename = None
+    save_lineno = None
+    same_line = False
+    count_repeats = 0
+
+    while traceback:
+        frame = traceback.tb_frame
+        # don't show the frames above that of the "run" function
+        if frame is run_frame:
+            started = True
+            result_lines.append('Traceback (most recent call last):')
+        elif started:
+            lineno = frame.f_lineno
+            filename = frame.f_code.co_filename
+            if filename == save_filename and lineno == save_lineno:
+                count_repeats += 1
+                traceback = traceback.tb_next
+                continue
+            handle_repeats(save_filename, save_lineno, count_repeats)
+            count_repeats = 0
+            save_filename = filename
+            save_lineno = lineno
+            name = frame.f_code.co_name
+            result_lines.append(f'  File {filename}, line {lineno}, in {name}')
+            show_line(filename, lineno, src)
+        traceback = traceback.tb_next
+
+    handle_repeats(save_filename, save_lineno, count_repeats)
+
+    if isinstance(exc_value, SyntaxError):
+        filename = exc_value.args[1][0]
+        lineno = exc_value.args[1][1]
+        result_lines.append(f'  File {filename}, line {lineno}')
+        line = exc_value.text
+        if line:
+            result_lines.append('    ' + line.strip())
+            indent = len(line) - len(line.lstrip())
+            col_offset = exc_value.args[1][2]
+            result_lines.append('    ' +  (col_offset - indent - 1) * ' ' + '^')
+
+    result_lines.append(f'{exc_type.__name__}: {exc_value}')
+    return '\n'.join(result_lines)
+
+def run(src, filename='editor'):
     t0 = time.perf_counter()
+    msg = ''
+    ns = {'__name__':'__main__', '__file__': filename}
+    state = 1
     try:
-        ns = {'__name__':'__main__'}
         exec(src, ns)
-        state = 1
     except Exception as exc:
-        traceback.print_exc(file=sys.stderr)
+        print(trace_exc(sys._getframe(), src, ns))
         state = 0
-    sys.stdout.flush()
-    output = doc["console"].value
-
-    print('<completed in %6.2f ms>' % ((time.perf_counter() - t0) * 1000.0))
-    return state
+    t1 = time.perf_counter()
+    return state, t0, t1, msg
 
 def show_js(ev):
     src = editor.getValue()
-    doc["console"].value = javascript.py2js(src, '__main__')
+    document["console"].value = javascript.py2js(src, '__main__')
 
 def share_code(ev):
     src = editor.getValue()
@@ -149,7 +206,7 @@ def share_code(ev):
                               ok=True)
     else:
         href = window.location.href.rsplit("?", 1)[0]
-        query = doc.query
+        query = document.query
         query["code"] = src
         url = f"{href}{query}"
         url = url.replace("(", "%28").replace(")", "%29")
@@ -160,7 +217,7 @@ def share_code(ev):
         # copy to clipboard
         area.focus()
         area.select()
-        doc.execCommand("copy")
+        document.execCommand("copy")
         d.remove()
         d = dialog.Dialog("Copy url")
         d.panel <= html.DIV("url copied in the clipboard<br>Send it to share the code")
@@ -173,7 +230,8 @@ def share_code(ev):
         def click(evt):
             d.remove()
 
-if has_ace:
-    reset_src()
-else:
-    reset_src_area()
+def reset():
+    if has_ace:
+        reset_src()
+    else:
+        reset_src_area()

@@ -156,4 +156,34 @@ for num in [1, 4.7]:
     except TypeError:
         pass
 
+# javascript.extends() and javascript.super()
+@javascript.extends(window.Rectangle)
+class Square2:
+
+    def __init__(self, length):
+        javascript.super()(length, length)
+        self.name = 'Square2'
+
+    def f(self):
+        return javascript.super().surface()
+
+assert Square2(10).name == "Square2"
+assert Square2(25).surface() == 625
+assert Square2(20).f() == 400
+
+# issue 1696
+window.jsFunction1696('asdf'.isupper)
+
+# issue 1918
+assert isinstance(window.test_jsobj, javascript.JSObject)
+
+# import Javascript modules
+javascript.import_js('js_test.js')
+assert js_test.x == 1
+
+# issue 1996
+js = __BRYTHON__.python_to_js("x = 1 + 2")
+ns = window.eval(js)
+assert ns.x == 3
+
 print("all tests ok...")

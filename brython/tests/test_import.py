@@ -1,5 +1,7 @@
 import simple
 
+assert simple.__doc__ == "Documentation string of module simple.", simple.__doc__
+
 class Simple2:
 
     def __init__(self):
@@ -52,10 +54,17 @@ except NameError:
 
 # use "__getattr__" and "__dir__" at module level (PEP 562)
 assert simple.strange == "a strange name"
-assert dir(simple) == ["Simple", "text", "strange", "unknown"]
+assert set(dir(simple)) == {"Simple", "text", "strange", "unknown"}, dir(simple)
 
 # issue 1483
-from foobar import *
-assert str(Foo()) == "foo"
+# search in site-packages, but only if the script is served at the right
+# location compared to the Brython engine
+brython_loc = __BRYTHON__.brython_path.split('//')[1].split('/')
+script_loc = __BRYTHON__.script_path.split('//')[1].split('/')
+if script_loc[0] == brython_loc[0]:
+    from foobar import *
+    assert str(Foo()) == "foo"
+
+import import_bug
 
 print('passed all tests')

@@ -1,4 +1,7 @@
 import sys
+import builtins
+import re
+
 import tb as traceback
 
 from browser import console, document, window, html, DOMNode
@@ -63,7 +66,12 @@ class Info:
 editor_ns = {
     'credits': Info(_credits),
     'copyright': Info(_copyright),
-    'license': Info(_license)
+    'license': Info(_license),
+    '__annotations__': {},
+    '__builtins__': builtins,
+    '__doc__': None,
+    '__file__': '<stdin>',
+    '__name__': '__main__'
 }
 
 # default style for console textarea
@@ -75,6 +83,21 @@ style_sheet = """
 }
 """
 
+active = []
+
+class Output:
+
+    def __init__(self, interpreter):
+        self.interpreter = interpreter
+
+    def flush(self, *args, **kw):
+        self.interpreter.flush(*args, **kw)
+
+    def write(self, *args, **kw):
+        self.interpreter.write(*args, **kw)
+
+    def __len__(self):
+        return len(self.interpreter.buffer)
 
 class Trace:
 
@@ -99,13 +122,15 @@ class Interpreter:
     """Add a Python interactive interpreter in a textarea."""
 
     def __init__(self, elt_id=None, title="Interactive Interpreter",
-                 globals=None, locals=None,
-                 rows=30, cols=84, default_css=True):
+                 globals=None, locals=None, history=None,
+                 rows=30, cols=84, default_css=True,
+                 clear_zone=True, banner=True):
         """
         Create the interpreter.
         - "elt_id" is the id of a textarea in the document. If not set, a new
           popup window is added with a textarea.
         - "globals" and "locals" are the namespaces the RPEL runs in
+        - "history", if set, must be a list of strings
         """
         if default_css:
             # Insert default CSS stylesheet if not already loaded
@@ -118,6 +143,9 @@ class Interpreter:
         if elt_id is None:
             self.dialog = Dialog(title=title, top=10, left=10,
                 default_css=default_css)
+            self.dialog.bind('blur', self.blur)
+            self.dialog.bind('click', self.focus)
+            self.dialog.close_button.bind('click', self.close)
             self.zone = html.TEXTAREA(rows=rows, cols=cols,
                 Class="brython-interpreter")
             self.dialog.panel <= self.zone
@@ -141,31 +169,57 @@ class Interpreter:
                 raise ValueError("element should be a string or " +
                     f"a TEXTAREA, got '{elt_id.__class__.__name__}'")
         v = sys.implementation.version
-        self.zone.value = (f"Brython {v[0]}.{v[1]}.{v[2]} on " +
-            f"{window.navigator.appName} {window.navigator.appVersion}\n>>> ")
+        if clear_zone:
+            self.zone.value = ''
+        if banner:
+            self.zone.value += (
+                f"Brython {v[0]}.{v[1]}.{v[2]} on "
+                f"{window.navigator.appName} {window.navigator.appVersion}"
+                "\n"
+            )
+        self.zone.value += ">>> "
         self.cursor_to_end()
         self._status = "main"
-        self.current = 0
-        self.history = []
+        self.history = history or []
+        self.current = len(self.history)
 
         self.globals = {} if globals is None else globals
         self.globals.update(editor_ns)
         self.locals = self.globals if locals is None else locals
 
         self.buffer = ''
-        sys.stdout.write = sys.stderr.write = self.write
-        sys.stdout.__len__ = sys.stderr.__len__ = lambda: len(self.buffer)
-
         self.zone.bind('keypress', self.keypress)
         self.zone.bind('keydown', self.keydown)
         self.zone.bind('mouseup', self.mouseup)
 
+        self.zone.bind('focus', self.focus)
+        self.zone.bind('blur', self.blur)
         self.zone.focus()
+
+        active.append(self)
+
+    def blur(self, ev):
+        if hasattr(self, 'dialog'):
+            self.dialog.style.zIndex = 0
+
+    def close(self, ev):
+        active.remove(self)
 
     def cursor_to_end(self, *args):
         pos = len(self.zone.value)
         self.zone.setSelectionRange(pos, pos)
         self.zone.scrollTop = self.zone.scrollHeight
+
+    def focus(self, *args):
+        """When the interpreter gets focus, set sys.stdout and stderr"""
+        if hasattr(self, 'dialog'):
+            # put other active windows in the background
+            for w in active:
+                if w is not self:
+                    w.dialog.style.zIndex = 0
+            self.dialog.style.zIndex = 1
+        sys.stdout = sys.stderr = Output(self)
+        self.zone.focus()
 
     def get_col(self):
         # returns the column num of cursor
@@ -176,10 +230,10 @@ class Interpreter:
         return sel
 
     def keypress(self, event):
-        if event.keyCode == 9:  # tab key
+        if event.key == "Tab":  # tab key
             event.preventDefault()
             self.zone.value += "    "
-        elif event.keyCode == 13:  # return
+        elif event.key == "Enter":  # return
             sel_start = self.zone.selectionStart
             sel_end = self.zone.selectionEnd
             if sel_end > sel_start:
@@ -189,97 +243,113 @@ class Interpreter:
                 event.preventDefault() # don't insert line feed
                 return
             src = self.zone.value
-            if self._status == "main":
-                currentLine = src[src.rfind('>>>') + 4:]
-            elif self._status == "3string":
-                currentLine = src[src.rfind('>>>') + 4:]
-                currentLine = currentLine.replace('\n... ', '\n')
-            else:
-                currentLine = src[src.rfind('...') + 4:]
-            if self._status == 'main' and not currentLine.strip():
-                self.zone.value += '\n>>> '
+            self.handle_line(self, event)
+
+    def feed(self, src):
+        """src is Python source code, possibly on several lines.
+        Simulate typing the code in the interpreter.
+        Can be used for debugging, or showing how a code snippet executes.
+        """
+        current_indent = 0
+        for line in src.split('\n'):
+            mo = re.match('^\s*', line)
+            indent = mo.end() - mo.start()
+            current_indent = indent
+            self.zone.value += line
+            self.handle_line(line)
+
+    def handle_line(self, code, event=None):
+        src = self.zone.value
+        if self._status == "main":
+            currentLine = src[src.rfind('\n>>>') + 5:]
+        elif self._status == "3string":
+            currentLine = src[src.rfind('\n>>>') + 5:]
+            currentLine = currentLine.replace('\n... ', '\n')
+        else:
+            currentLine = src[src.rfind('\n...') + 5:]
+        if self._status == 'main' and not currentLine.strip():
+            self.zone.value += '\n>>> '
+            if event is not None:
                 event.preventDefault()
-                return
-            self.zone.value += '\n'
-            self.history.append(currentLine)
-            self.current = len(self.history)
-            if self._status in ["main", "3string"]:
-                try:
-                    _ = editor_ns['_'] = eval(currentLine,
-                                              self.globals,
-                                              self.locals)
-                    self.flush()
-                    if _ is not None:
-                        self.write(repr(_) + '\n')
-                    self.flush()
-                    self.zone.value += '>>> '
-                    self._status = "main"
-                except IndentationError:
-                    self.zone.value += '... '
-                    self._status = "block"
-                except SyntaxError as msg:
-                    if str(msg) == 'invalid syntax : triple string end not found' or \
-                            str(msg).startswith('Unbalanced bracket'):
-                        self.zone.value += '... '
-                        self._status = "3string"
-                    elif str(msg) == 'eval() argument must be an expression':
-                        try:
-                            exec(currentLine,
-                                self.globals,
-                                self.locals)
-                        except:
-                            self.print_tb()
-                        self.flush()
-                        self.zone.value += '>>> '
-                        self._status = "main"
-                    elif str(msg) == 'decorator expects function':
-                        self.zone.value += '... '
-                        self._status = "block"
-                    else:
-                        self.syntax_error(msg.args)
-                        self.zone.value += '>>> '
-                        self._status = "main"
-                except:
-                    # the full traceback includes the call to eval(); to
-                    # remove it, it is stored in a buffer and the 2nd and 3rd
-                    # lines are removed
-                    self.print_tb()
-                    self.zone.value += '>>> '
-                    self._status = "main"
-            elif currentLine == "":  # end of block
-                block = src[src.rfind('\n>>>') + 5:].splitlines()
-                block = [block[0]] + [b[4:] for b in block[1:]]
-                block_src = '\n'.join(block)
-                # status must be set before executing code in globals()
-                self._status = "main"
-                try:
-                    _ = exec(block_src,
-                             self.globals,
-                             self.locals)
-                    if _ is not None:
-                        print(repr(_))
-                except:
-                    self.print_tb()
+            return
+        self.zone.value += '\n'
+        self.history.append(currentLine)
+        self.current = len(self.history)
+        if self._status in ["main", "3string"]:
+            try:
+                _ = self.globals['_'] = eval(currentLine,
+                                          self.globals,
+                                          self.locals)
+                if _ is not None:
+                    self.write(repr(_) + '\n')
                 self.flush()
                 self.zone.value += '>>> '
-            else:
+                self._status = "main"
+            except IndentationError:
                 self.zone.value += '... '
+                self._status = "block"
+            except SyntaxError as msg:
+                if str(msg).startswith('unterminated triple-quoted string literal'):
+                    self.zone.value += '... '
+                    self._status = "3string"
+                elif str(msg) == 'decorator expects function':
+                    self.zone.value += '... '
+                    self._status = "block"
+                elif str(msg).endswith('was never closed'):
+                    self.zone.value += '... '
+                    self._status = "block"
+                else:
+                    try:
+                        exec(currentLine,
+                            self.globals,
+                            self.locals)
+                    except:
+                        self.print_tb()
+                    #self.syntax_error(msg.args)
+                    self.zone.value += '>>> '
+                    self._status = "main"
+            except:
+                # the full traceback includes the call to eval(); to
+                # remove it, it is stored in a buffer and the 2nd and 3rd
+                # lines are removed
+                self.print_tb()
+                self.zone.value += '>>> '
+                self._status = "main"
+        elif currentLine == "":  # end of block
+            block = src[src.rfind('\n>>>') + 5:].splitlines()
+            block = [block[0]] + [b[4:] for b in block[1:]]
+            block_src = '\n'.join(block)
+            # status must be set before executing code in globals()
+            self._status = "main"
+            try:
+                _ = exec(block_src,
+                         self.globals,
+                         self.locals)
+                if _ is not None:
+                    print(repr(_))
+            except:
+                self.print_tb()
+            self.flush()
+            self.zone.value += '>>> '
+        else:
+            self.zone.value += '... '
 
-            self.cursor_to_end()
+        self.cursor_to_end()
+        if event is not None:
             event.preventDefault()
 
     def keydown(self, event):
-        if event.keyCode == 37:  # left arrow
+        if event.key == "ArrowLeft":
             sel = self.get_col()
             if sel < 5:
                 event.preventDefault()
                 event.stopPropagation()
-        elif event.keyCode == 36:  # line start
+        elif event.key == "Home":
             pos = self.zone.selectionStart
             col = self.get_col()
             self.zone.setSelectionRange(pos - col + 4, pos - col + 4)
             event.preventDefault()
-        elif event.keyCode == 38:  # up
+        elif event.key == "ArrowUp":
             if self.current > 0:
                 pos = self.zone.selectionStart
                 col = self.get_col()
@@ -288,7 +358,7 @@ class Interpreter:
                 self.current -= 1
                 self.zone.value += self.history[self.current]
             event.preventDefault()
-        elif event.keyCode == 40:  # down
+        elif event.key == "ArrowDown":
             if self.current < len(self.history) - 1:
                 pos = self.zone.selectionStart
                 col = self.get_col()
@@ -297,19 +367,13 @@ class Interpreter:
                 self.current += 1
                 self.zone.value += self.history[self.current]
             event.preventDefault()
-        elif event.keyCode == 8:  # backspace
+        elif event.key == "Backspace":
             src = self.zone.value
             lstart = src.rfind('\n')
             if (lstart == -1 and len(src) < 5) or (len(src) - lstart < 6):
                 event.preventDefault()
                 event.stopPropagation()
-        elif event.ctrlKey and event.keyCode == 65: # ctrl+a
-            src = self.zone.value
-            pos = self.zone.selectionStart
-            col = get_col()
-            self.zone.setSelectionRange(pos - col + 4, len(src))
-            event.preventDefault()
-        elif event.keyCode in [33, 34]: # page up, page down
+        elif event.key in ["PageUp", "PageDown"]:
             event.preventDefault()
 
     def mouseup(self, ev):
@@ -329,12 +393,13 @@ class Interpreter:
     def print_tb(self):
         trace = Trace()
         traceback.print_exc(file=trace)
-        self.zone.value += trace.format()
+        self.write(trace.format())
+        self.flush()
 
     def syntax_error(self, args):
-        info, filename, lineno, offset, line = args
+        info, [filename, lineno, offset, line] = args
         print(f"  File {filename}, line {lineno}")
-        print("    " + line)
+        print("    " + line.rstrip())
         print("    " + offset * " " + "^")
         print("SyntaxError:", info)
         self.flush()

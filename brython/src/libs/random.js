@@ -274,12 +274,41 @@ function RandomStream(seed) {
     var random = genrand_res53
 
     random.seed = function(seed){
-        if(seed === undefined){seed = Date.now()}
-        if(typeof seed != "number"){seed = parseInt(seed, 10)}
-        if((seed !== 0 && ! seed) || isNaN(seed)){
-            throw _b_.ValueError.$factory("Bad seed: " + _b_.str.$factory(seed))
+        if(seed === undefined){
+            seed = Date.now()
         }
-        init_genrand(seed)
+        var keys = []
+        if(_b_.isinstance(seed, _b_.int)){
+            var int32_1 = 2n ** 32n - 1n
+            // Transform to long integer
+            if(typeof seed == "number"){
+                seed = BigInt(seed)
+            }else if(seed.__class__ === $B.long_int){
+                seed = seed.value
+            }else{
+                return random.seed(seed.$brython_value)
+            }
+            // Take abs(seed)
+            seed = seed > 0 ? seed : -seed
+            // decomposition in factors of 2 ** 32
+            while(seed >= int32_1){
+                var quot = seed / int32_1,
+                    rest = seed - quot * int32_1
+                // Rest is a JS number (< 2 ** 32)
+                keys.push(Number(rest))
+                // Quotient is either a JS number or a instance of long_int
+                // but seed must be long_int
+                seed = quot
+            }
+            keys.push(Number(seed))
+        }else if(typeof seed != "number"){
+            seed = parseInt(seed, 10)
+            if((seed !== 0 && ! seed) || isNaN(seed)){
+                throw _b_.ValueError.$factory("Bad seed: " +
+                    _b_.str.$factory(seed))
+            }
+        }
+        init_by_array(keys, keys.length)
     }
 
     random.seed(seed)
@@ -291,11 +320,15 @@ function RandomStream(seed) {
     random.res53 = genrand_res53
 
     // Added for compatibility with Python
-    random.getstate = function(){return [VERSION, mt, mti]}
+    random.getstate = function(){
+        return $B.fast_tuple([VERSION,
+            $B.fast_tuple(mt.concat([mti]))
+            , _b_.None])
+    }
 
     random.setstate = function(state){
-        mt = state[1]
-        mti = state[2]
+        mt = state[1].slice(0, state[1].length - 1)
+        mti = state[1][state[1].length - 1]
     }
 
     return random
@@ -661,7 +694,50 @@ Random.paretovariate = function(){
 function is_integer(x){
     return _b_.isinstance(x, _b_.int) || (
         _b_.isinstance(x, _b_.float) &&
-            x.valueOf() == Math.floor(x.valueOf()))
+            Number.isInteger(x.value))
+}
+
+function bigint_value(x){
+    // return a Javascript BigInt
+    if(_b_.isinstance(x, _b_.float) &&
+            Number.isInteger(x.value)){
+        return BigInt(x.value)
+    }else if(typeof x == "number"){
+        return BigInt(x)
+    }else if(x.__class__ === $B.long_int){
+        return x.value
+    }else if(_b_.isinstance(x, _b_.int)){
+        return bigint_value(x.$brython_value)
+    }
+    throw _b_.TypeError.$factory('not an integer')
+}
+
+function int_value(x){
+    if(_b_.isinstance(x, _b_.float) &&
+            Number.isInteger(x.value)){
+        return x.value
+    }else if(_b_.isinstance(x, _b_.int)){
+        return x
+    }
+    throw _b_.TypeError.$factory('not an integer')
+}
+
+Random.randbytes = function(self, n){
+    var $ = $B.args('randbytes', 2,
+        {self: null, n:null}, ['self', 'n'],
+        arguments, {}, null, null)
+    var n = $B.PyNumber_Index($.n)
+    if(n < 0){
+        throw _b_.ValueError.$factory('number of bytes must be non-negative')
+    }
+    var t = []
+    for(var i = 0; i < n; i++){
+        t.push(Math.round(256 * Math.random()))
+    }
+    return {
+        __class__: _b_.bytes,
+        source: t
+    }
 }
 
 Random.randint = function(self, a, b){
@@ -669,19 +745,22 @@ Random.randint = function(self, a, b){
         {self: null, a:null, b:null},
         ['self', 'a', 'b'],
         arguments, {}, null, null)
-    if(! is_integer($.a)){
+    try{
+        var a = int_value($.a)
+    }catch(err){
         throw _b_.ValueError.$factory("non-integer value for start")
     }
-    if(! is_integer($.b)){
+    try{
+        var b = int_value($.b)
+    }catch(err){
         throw _b_.ValueError.$factory("non-integer value for stop")
     }
-    return Random.randrange($.self, $.a, $B.add($.b, 1))
+    return Random.randrange($.self, a, $B.rich_op('__add__', b, 1))
 }
 
 Random.random = function(self){
     var res = self._random()
-    if(! Number.isInteger(res)){return new Number(res)}
-    return res
+    return $B.fast_float(res)
 }
 
 Random.randrange = function(){
@@ -692,65 +771,45 @@ Random.randrange = function(){
         self = $.self,
         _random = self._random
 
-    if(! is_integer($.x)){
+    try{
+        var x = bigint_value($.x)
+    }catch(err){
         throw _b_.ValueError.$factory("non-integer arg 1 for randrange()")
-    }
-    if($.stop !== null && ! is_integer($.stop)){
-        throw _b_.ValueError.$factory("non-integer arg 2 for randrange()")
-    }
-    if($.step !== null && ! is_integer($.step)){
-        throw _b_.ValueError.$factory("non-integer arg 3 for randrange()")
     }
 
     if($.stop === null){
-        var start = 0, stop = $.x.valueOf(), step = 1
+        var start = 0n,
+            stop = x,
+            step = 1n
     }else{
-        var start = $.x.valueOf(), stop = $.stop.valueOf(),
-            step = $.step === null ? 1 : $.step.valueOf()
-        if(step == 0){throw _b_.ValueError.$factory('step cannot be 0')}
+        var start = x
+        try{
+            var stop = bigint_value($.stop)
+        }catch(err){
+            throw _b_.ValueError.$factory("non-integer arg 2 for randrange()")
+        }
+        if($.step === null){
+            var step = 1n
+        }else{
+            try{
+                var step = bigint_value($.step)
+            }catch(err){
+                throw _b_.ValueError.$factory("non-integer arg 3 for randrange()")
+            }
+        }
+        if(step == 0){
+            throw _b_.ValueError.$factory('step cannot be 0')
+        }
     }
 
-    if((step > 0 && start >= stop) || (step < 0 && start <= stop)){
+    if((step > 0 && start >= stop) ||
+            (step < 0 && start <= stop)){
         throw _b_.ValueError.$factory("empty range for randrange() (" +
             start + ", " + stop + ", " + step + ")")
     }
-    if(typeof start == 'number' && typeof stop == 'number' &&
-            typeof step == 'number'){
-        return start + step * Math.floor(_random() *
-            Math.ceil((stop - start) / step))
-    }else{
-        var d = _b_.getattr(stop, '__sub__')(start)
-        d = _b_.getattr(d, '__floordiv__')(step)
-        // Force d to be a LongInt
-        d = $B.long_int.$factory(d)
-        // d is a long integer with n digits ; to choose a random number
-        // between 0 and d the most simple is to take a random digit
-        // at each position, except the first one
-        var s = d.value,
-            _len = s.length,
-            res = Math.floor(_random() * (parseInt(s.charAt(0)) +
-                (_len == 1 ? 0 : 1))) + ''
-        var same_start = res.charAt(0) == s.charAt(0)
-        for(var i = 1; i < _len; i++){
-            if(same_start){
-                // If it's the last digit, don't allow stop as valid
-                if(i == _len - 1){
-                    res += Math.floor(_random() * parseInt(s.charAt(i))) + ''
-                }else{
-                    res += Math.floor(_random() *
-                        (parseInt(s.charAt(i)) + 1)) + ''
-                    same_start = res.charAt(i) == s.charAt(i)
-                }
-            }else{
-                res += Math.floor(_random() * 10) + ''
-            }
-        }
-        var offset = {__class__: $B.long_int, value: res,
-            pos: true}
-        d = _b_.getattr(step, '__mul__')(offset)
-        d = _b_.getattr(start, '__add__')(d)
-        return _b_.int.$factory(d)
-    }
+    var nb_steps = Number(stop - start) / Number(step),
+        offset = BigInt(parseInt(_random() * nb_steps))
+    return _b_.int.$int_or_long(start + step * offset)
 }
 
 Random.sample = function(){
@@ -824,7 +883,7 @@ Random.sample = function(){
                             _b_.getattr(population, '__getitem__')(j)
         }
     }
-    return result
+    return $B.$list(result) // not "return result", cf. issue #1622
 }
 
 Random.seed = function(){
@@ -847,30 +906,22 @@ Random.seed = function(){
     else if(version == 2){
         if(_b_.isinstance(a, _b_.str)){
             a = _b_.int.from_bytes(_b_.bytes.$factory(a, 'utf-8'), 'big')
-        }else if(_b_.isinstance(a, [_b_.bytes, _b_.bytearray])){
+        }else if(_b_.isinstance(a, [_b_.str, _b_.bytes, _b_.bytearray])){
+            $B.$import("hashlib",["sha512"], {}, {}, true);
+            var sha512 = $B.$getattr($B.imported["hashlib"], "sha512");
+            if(_b_.isinstance(a, _b_.str)){
+                a = _b_.str.encode(a)
+            }
+            a = $B.add(a, $B.$getattr(sha512(a), 'digest')())
             a = _b_.int.from_bytes(a, 'big')
+        }else if(false && Array.isArray(a)){
+            // for debugging
         }else if(!_b_.isinstance(a, _b_.int)){
             throw _b_.TypeError.$factory('wrong argument')
-        }
-        if(a.__class__ === $B.long_int){
-            // In this implementation, seed() only accepts safe integers
-            // Generate a random one from the underlying string value,
-            // using an arbitrary seed (99) to always return the same
-            // integer
-            var numbers = a.value,
-                res = '',
-                pos
-            self._random.seed(99)
-            for(var i = 0; i < 17; i++){
-                pos = parseInt(self._random() * numbers.length)
-                res += numbers.charAt(pos)
-            }
-            a = parseInt(res)
         }
     }else{
         throw _b_.ValueError.$factory('version can only be 1 or 2')
     }
-
     self._random.seed(a)
     gauss_next = null
 }
@@ -893,7 +944,7 @@ Random.setstate = function(state){
             state.length + ")")
     }
     if($.state[0] != 3){
-        throw _b_.ValueError.$factory("ValueError: state with version " +
+        throw _b_.ValueError.$factory("state with version " +
             $.state[0] + " passed to Random.setstate() of version 3")
     }
     var second = _b_.list.$factory($.state[1])

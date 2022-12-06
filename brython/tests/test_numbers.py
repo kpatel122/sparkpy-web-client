@@ -1,4 +1,7 @@
 # numbers
+
+from tester import assert_raises
+
 x = 1
 assert x.__class__ == int
 assert isinstance(x, int)
@@ -198,7 +201,7 @@ assert isinstance(3.0 - x, float)
 # issue 749
 assert float.__eq__(1.5, 1.5)
 assert float.__eq__(1.0, 1)
-assert not float.__eq__(1, 0)
+assert_raises(TypeError, float.__eq__, 1, 0)
 assert int.__eq__(1, 1)
 assert not int.__eq__(1, 0)
 
@@ -382,7 +385,7 @@ assert eval("0j") == 0j
 
 # as_integer_ratio() on integers
 x = 19
-assert x.as_integer_ratio() == [19, 1]
+assert x.as_integer_ratio() == (19, 1)
 
 # & for long integers
 for v1, v2 in [
@@ -555,5 +558,163 @@ assert math.isnan(float('nan') - float('inf'))
 assert math.isnan(float('nan') + float('inf'))
 assert math.isnan(float('nan') - float('-inf'))
 assert math.isnan(float('nan') - float('-inf'))
+
+# issue 1524
+assert isinstance(10 // 3.1, float)
+
+class Float(float):
+  pass
+
+assert 10 // Float(2) == 5.0
+
+# issue 1558
+values = [
+    [
+        76840139,
+        b'\x00\x00\x00\x00\x00\x00\x00\x00\x04\x94|\xcb',
+        b'\xcb|\x94\x04\x00\x00\x00\x00\x00\x00\x00\x00'
+    ],
+    [
+        7684013976526520320,
+        b'\x00\x00\x00\x00j\xa3\x1a\x00\x00\x00\x00\x00',
+        b'\x00\x00\x00\x00\x00\x1a\xa3j\x00\x00\x00\x00'
+    ]
+]
+
+for value in values:
+    for i, byteorder in enumerate(["big", "little"]):
+        b = int.to_bytes(value[0], 12, byteorder)
+        assert b == value[1 + i]
+        assert int.from_bytes(b, byteorder) == value[0]
+
+# issue 1578
+assert str(1e-6) == "1e-06"
+assert str(1e-7) == "1e-07"
+assert str(1e-8) == "1e-08"
+assert str(1e-12) == "1e-12"
+assert str(1.2e-123) == "1.2e-123"
+assert str(1e6) == "1000000.0"
+assert str(1e7) == "10000000.0"
+assert str(1e8) == "100000000.0"
+assert str(1e12) == "1000000000000.0"
+assert str(1.2e123) == "1.2e+123"
+
+# issue 1666
+a = 0.1
+assert abs(a) == 0.1
+
+a = 10**(-1)
+assert abs(a) == 0.1
+
+# issue 1686
+class Squared(int):
+    def __mul__(self, other):
+        return self**2 * other
+
+    def __rmul__(self, other):
+        return self**2 * other
+
+x = Squared(4)
+y = 3
+assert x * y == 48
+assert y * x == 48
+
+# augmented assignment on list item
+a = [1800]
+a[0] += -260.7
+assert a[0] == 1539.3
+
+# hash of integers
+assert hash(2 ** 61 - 2) == 2 ** 61 - 2
+assert hash(2 ** 61 - 1) == 0
+assert hash(-(2 ** 61 - 1)) == 0
+
+class Int(int):
+  pass
+
+assert hash(Int(2**61)) == 1
+
+class IntH(int):
+
+  def __hash__(self):
+     return 99
+
+assert hash(IntH(0)) == 99
+
+# issue 1784
+assert str(1 ** 1) == "1"
+assert str(pow(1, 1)) == "1"
+assert str(1 ** 0.5) == "1.0"
+assert str(pow(1, 0.5)) == "1.0"
+
+a = 2 ** 63 + 67
+assert divmod(a, 445677) == (20695194135786, 78753)
+assert divmod(a, -445677) == (-20695194135787, -366924)
+assert divmod(-a, 445677) == (-20695194135787, 366924)
+assert divmod(-a, -445677) == (20695194135786, -78753)
+
+assert str(float(a)) == "9.223372036854776e+18"
+assert str(float(-a)) == "-9.223372036854776e+18"
+
+# issue 1840
+assert 0 // 10 ** 100 == 0
+
+# issue 1864
+assertRaises(NameError, exec, "_12")
+assert 1_2 == 12
+assertRaises(SyntaxError, exec, "12_")
+
+assertRaises(SyntaxError, exec, "_12.34e56")
+assert 1_2.34e56 == 1.234e+57
+assertRaises(SyntaxError, exec, "12_.34e56")
+assertRaises(SyntaxError, exec, "12._34e56")
+assert 12.3_4e56 == 1.234e+57
+assertRaises(SyntaxError, exec, "12.34e_56")
+assert 12.34e5_6 == 1.234e+57
+assertRaises(SyntaxError, exec, "12.34e56_")
+
+# issue 1885
+assertRaises(TypeError, exec, '1 / float')
+
+# issue 1924
+n = 19
+assert n.bit_count() == 3
+assert (-n).bit_count() == 3
+
+n = 2 ** 70 + 567444332
+assert n.bit_count() == 14
+
+# issue 1947
+a = -1 + 1j
+assert a ** 3 == 2+2j
+assert a ** -1 == (-0.5-0.5j)
+
+assert (-0.5 + math.sqrt(3) / 2 * 1j) ** 3 == (0.9999999999999998 +
+    1.1102230246251565e-16j)
+
+# issue 1955
+a = -1
+a %= 2
+assert(a == 1)
+
+# issue 1960
+assert int('-10', 0) == -10
+assert int('-0b010', 0) == -2
+assert int('-0o010', 0) == -8
+assert int('-0x010', 0) == -16
+
+# issue 1994
+x = 0
+x += 0.5
+assert x == abs(x), (x, abs(x))
+
+# issue 2023
+assert_raises(TypeError, eval, "1 % 'a'",
+    msg="unsupported operand type(s) for %: 'int' and 'str'")
+
+# issue 2026
+x = 65152
+x <<= 112
+assert x == 338288524927261089654018896841347694592
 
 print('passed all tests...')

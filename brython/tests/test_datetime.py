@@ -1,4 +1,4 @@
-from datetime import MINYEAR, MAXYEAR, timedelta, date, datetime
+from datetime import MINYEAR, MAXYEAR, timedelta, date, datetime, timezone
 #todo: issue when importing from a module, one object at a time.
 # for example, the next three lines
 #from datetime import tzinfo
@@ -115,5 +115,56 @@ assert '{:%Y-%m-%d %H:%M:%S}'.format(d) == '2010-07-04 12:15:58'
 s = '2019-08-05T22:24:10.544Z'
 dt = datetime.strptime(s,"%Y-%m-%dT%H:%M:%S.%f%z")
 assert str(dt) == "2019-08-05 22:24:10.544000+00:00"
+
+# issue 1755
+date = "Thu, 26 Aug 2021 00:00:00 GMT"
+dt = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S GMT")
+assert dt == datetime(2021, 8, 26, 0, 0)
+
+# issue 1845
+for d in ['01.02.2020', '01/02/2020', '01-02-2020']:
+    try:
+        datetime.strptime(d, '%d%m%Y')
+        raise Exception('should have raised ValueError')
+    except ValueError:
+        pass
+
+d = datetime(2020,2, 1)
+assert datetime.strptime('01.02.2020', '%d.%m.%Y') == d
+assert datetime.strptime('01/02/2020', '%d/%m/%Y') == d
+assert datetime.strptime('01-02-2020', '%d-%m-%Y') == d
+
+assert datetime.strptime('3.2.2020', '%d.%m.%Y') == datetime(2020, 2, 3)
+
+# issue 1847
+import time
+assert time.strptime(f'01.02.2020', '%d.%m.%Y').tm_wday == 5
+
+# issue 1848
+try:
+    datetime.strptime('1.1.10000', '%d.%m.%Y')
+    raise Exception('should have raised ValueError')
+except ValueError:
+    pass
+
+# issue 1849
+assert datetime.strptime('11-12-2013', '%d-%m-%Y') == \
+    datetime(2013, 12, 11, 0, 0)
+assert datetime.strptime('09-09-2013', '%d-%m-%Y') == \
+    datetime(2013, 9, 9, 0, 0)
+assert datetime.strptime('9-9-2013', '%d-%m-%Y') == \
+    datetime(2013, 9, 9, 0, 0)
+
+assert list(time.strptime('11-12-2013', '%d-%m-%Y')) == \
+    [2013, 12, 11, 0, 0, 0, 2, 345, -1]
+
+assert list(time.strptime('09-09-2013', '%d-%m-%Y')) == \
+    [2013, 9, 9, 0, 0, 0, 0, 252, -1]
+
+assert list(time.strptime('9-9-2013', '%d-%m-%Y')) == \
+    [2013, 9, 9, 0, 0, 0, 0, 252, -1]
+
+# issue 1917
+datetime.utcnow().replace(tzinfo=timezone.utc).astimezone(tz=None)
 
 print('passed all tests')

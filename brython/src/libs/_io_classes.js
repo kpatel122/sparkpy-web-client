@@ -16,9 +16,26 @@ _IOBase.flush = function(){
     return _b_.None
 }
 
+$B.set_func_names(_IOBase, '_io')
+
 // Base class for binary streams that support some kind of buffering.
 var _BufferedIOBase = $B.make_class("_BufferedIOBase")
 _BufferedIOBase.__mro__ = [_IOBase, _b_.object]
+
+_BufferedIOBase.__enter__ = function(self){
+    return self
+}
+_BufferedIOBase.__exit__ = function(self, type, value, traceback){
+    try{
+        $B.$call($B.$getattr(self, 'close'))()
+        self.__closed = true
+        return true
+    }catch(err){
+        return false
+    }
+}
+
+$B.set_func_names(_BufferedIOBase, '_io')
 
 // Base class for raw binary I/O.
 var _RawIOBase = $B.make_class("_RawIOBase")
@@ -50,6 +67,8 @@ _RawIOBase.readall = function(){
     return _RawIOBase.read(get_self("readall", arguments))
 }
 
+$B.set_func_names(_RawIOBase, '_io')
+
 // Base class for text streams.
 _TextIOBase = $B.make_class("_TextIOBase")
 _TextIOBase.__mro__ = [_IOBase, _b_.object]
@@ -62,25 +81,48 @@ var StringIO = $B.make_class("StringIO",
         return {
             __class__: StringIO,
             $counter: 0,
-            $string: $.value
+            $content: $.value
         }
     }
 )
+
 StringIO.__mro__ = [$B.Reader, _b_.object]
 
 StringIO.getvalue = function(){
     var $ = $B.args("getvalue", 1, {self: null},
             ["self"], arguments, {}, null, null)
-    return $.self.$string
+    return $.self.$content.substr(0) // copy
+}
+
+StringIO.truncate = function(self, size){
+    var $ = $B.args('truncate', 2, {self: null, size: null}, ['self', 'size'],
+            arguments, {size: _b_.None}, null, null),
+        self = $.self,
+        size = $.size
+    if(size === _b_.None){
+        size = self.$counter
+    }
+    self.$content = self.$content.substr(0, size)
+    self.$counter = self.$content.length
+    return self.$counter
 }
 
 StringIO.write = function(){
     var $ = $B.args("write", 2, {self: null, data: null},
             ["self", "data"], arguments, {}, null, null)
-    $.self.$string += $.data
-    $.self.$counter += $.data.length
-    return _b_.None
+    if(! _b_.isinstance($.data, _b_.str)){
+        throw _b_.TypeError.$factory('string argument expected, got ' +
+            `'${$B.class_name($.data)}'`)
+    }
+    var text = $.self.$content,
+        position = $.self.$counter
+    text = text.substr(0, position) + $.data +
+        text.substr(position + $.data.length)
+    $.self.$content = text
+    $.self.$counter = position + $.data.length
+    return $.data.length
 }
+
 $B.set_func_names(StringIO, "_io")
 
 var BytesIO = $B.make_class("BytesIO",
@@ -91,7 +133,8 @@ var BytesIO = $B.make_class("BytesIO",
         return {
             __class__: BytesIO,
             $binary: true,
-            $bytes: $.value,
+            $content: $.value,
+            $length: $.value.source.length,
             $counter: 0
         }
     }
@@ -100,34 +143,41 @@ BytesIO.__mro__ = [$B.Reader, _b_.object]
 
 BytesIO.getbuffer = function(){
     var self = get_self("getbuffer", arguments)
-    return self.$bytes
+    return self.$content
 }
 
 BytesIO.getvalue = function(){
     var self = get_self("getvalue", arguments)
-    return self.$bytes
+    return self.$content
 }
 
 BytesIO.write = function(){
     var $ = $B.args("write", 2, {self: null, data: null},
             ["self", "data"], arguments, {}, null, null)
-    $.self.$bytes.source = $.self.$bytes.source.concat(
+    $.self.$content.source = $.self.$content.source.concat(
         $.data.source)
     $.self.$counter += $.data.source.length
     return _b_.None
 }
+
 $B.set_func_names(BytesIO, "_io")
+
+var BlockingIOError = $B.make_class('BlockingIOError')
+BlockingIOError.__bases__ = [_b_.OSError]
+
+$B.set_func_names(BlockingIOError, '_io')
 
 var $module = (function($B){
     return {
-        _BufferedIOBase: _BufferedIOBase,
-        _IOBase: _IOBase,
-        _RawIOBase: _RawIOBase,
+        _BufferedIOBase,
+        _IOBase,
+        _RawIOBase,
         _TextIOBase: $B.make_class("_TextIOBase",
             function(){
                 return "fileio"
             }
         ),
+        BlockingIOError,
         BytesIO: BytesIO,
         FileIO: $B.make_class("_TextIOBase",
             function(){

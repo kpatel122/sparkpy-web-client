@@ -1094,7 +1094,7 @@ assert ''.join(ll) == "()"
 results = []
 
 def main():
-  while (a:=(yield)): # something funny happens here and freezes the page.
+  while (a:=(yield)):
     results.append(a)
 next(test:=main())
 test.send('magic')
@@ -1180,4 +1180,39 @@ def g():
 
 assert list(g()) == [1, 2, 3]
 
+# issue 1564
+def spam() -> str:
+  yield 'eggs'
+
+# issue 1672
+def test(lst):
+    if lst:
+        yield lst[0]
+        yield from [item for item in test(lst[1:])]
+
+assert list(test([0, 1, 2, 3, 4])) == [0, 1, 2, 3, 4]
+
+# issue 1967
+def collect(nn):
+    rr = []
+    while len(rr) < nn:
+        try:
+            val = yield
+        except Exception as ee:
+            val = ee
+        rr.append(val)
+    return rr
+
+expected = [Exception(), 'abc', Exception()]
+col = collect(3)
+col.send(None)
+col.throw(expected[0])
+col.send(expected[1])
+try:
+    col.throw(expected[2])
+except StopIteration as ee:
+    assert ee.value == expected, ee.value
+else:
+    assert False
+    
 print('passed all tests...')

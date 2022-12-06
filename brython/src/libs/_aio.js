@@ -38,14 +38,14 @@ function handle_kwargs(kw, method){
             }else{
                 if(params.__class__ !== _b_.dict){
                     throw _b_.TypeError.$factory("wrong type for data, " +
-                        "expected dict, bytes or str, got " + 
+                        "expected dict, bytes or str, got " +
                         $B.class_name(params))
                 }
                 params = params.$string_dict
                 var items = []
                 for(var key in params){
                     items.push(encodeURIComponent(key) + "=" +
-                               encodeURIComponent(params[key][0]))
+                               encodeURIComponent($B.pyobj2jsobj(params[key][0])))
                 }
                 data = items.join("&")
             }
@@ -70,9 +70,6 @@ function handle_kwargs(kw, method){
         // For POST requests, set default header
         if(! headers.hasOwnProperty("Content-type")){
             headers["Content-Type"] = "application/x-www-form-urlencoded"
-        }
-        if(data && !headers.hasOwnProperty("Content-Length")){
-            headers["Content-Length"] = data.length
         }
     }
     return {
@@ -113,7 +110,8 @@ function ajax(){
                     resolve(this)
                 }
             }
-            if(method == "POST" && args.body){
+            if(args.body &&
+                    ['POST', 'PUT', 'DELETE', 'PATCH'].indexOf(method) > -1){
                 xhr.send(args.body)
             }else{
                 xhr.send()
@@ -213,7 +211,6 @@ function run(coro){
         handle_error = function(err){
             // coro.$stack is a snapshot of the frames stack when the async
             // function was called. Restore it to get the correct call tree
-            console.log("Exception in asynchronous function")
             err.$stack = coro.$stack.concat([$B.last(err.$stack)])
             $B.handle_error(err)
         }
@@ -228,6 +225,7 @@ function run(coro){
 
     if(onerror !== handle_error){
         function error_func(exc){
+            exc.$stack = coro.$stack.concat([$B.last(exc.$stack)])
             try{
                 onerror(exc)
             }catch(err){
@@ -237,6 +235,7 @@ function run(coro){
     }else{
         error_func = handle_error
     }
+    
     var save_stack = $B.frames_stack.slice()
     $B.coroutine.send(coro).then(onsuccess).catch(error_func)
     $B.frames_stack = save_stack
@@ -244,6 +243,12 @@ function run(coro){
 }
 
 function sleep(seconds){
+    if(seconds.__class__ === _b_.float){
+        seconds = seconds.value
+    }else if(typeof seconds != "number"){
+        throw _b_.TypeError.$factory("'sleep' argument must be " +
+            "int or float, not " + $B.class_name(seconds))
+    }
     var func = function(){
         return new Promise(resolve => setTimeout(
             function(){resolve(_b_.None)}, 1000 * seconds))
@@ -258,15 +263,72 @@ function sleep(seconds){
     }
 }
 
+function make_error(name, module){
+    var error_obj = {
+        $name: name,
+        $qualname: module + '.' + name,
+        $is_class: true,
+        __module__: module
+    }
+    var error = $B.$class_constructor(name, error_obj,
+        _b_.tuple.$factory([_b_.Exception]), ["_b_.Exception"], [])
+    error.__doc__ = _b_.None
+    error.$factory = $B.$instance_creator(error)
+    $B.set_func_names(error, module)
+    return error
+}
+
+
+var InvalidStateError = make_error('InvalidStateError', 'browser.aio')
+var CancelledError = make_error('CancelledError', 'browser.aio')
+
+
+var Future = $B.make_class("Future",
+    function(){
+        var methods = {}
+        var promise = new Promise(function(resolve, reject){
+            methods.resolve = resolve
+            methods.reject = reject
+        })
+        promise._methods = methods
+        promise._done = false
+        promise.__class__ = Future
+        return promise
+    }
+)
+
+Future.done = function(){
+    var $ = $B.args('done', 1, {self:null},
+                    ['self'], arguments, {}, null, null)
+    return !! self._done
+}
+
+Future.set_result = function(self, value){
+    var $ = $B.args('set_result', 2, {self:null, value: null},
+                    ['self', 'value'], arguments, {}, null, null)
+    self._done = true
+    return self._methods.resolve(value)
+}
+
+Future.set_exception = function(self, exception){
+    var $ = $B.args('set_exception', 2, {self:null, exception: null},
+                    ['self', 'exception'], arguments, {}, null, null)
+    self._done = true
+    return self._methods.reject(exception)
+}
+
+$B.set_func_names(Future, 'browser.aio')
+
 return {
-    ajax: ajax,
-    event: event,
-    get: get,
-    iscoroutine: iscoroutine,
-    iscoroutinefunction: iscoroutinefunction,
-    post: post,
-    run: run,
-    sleep: sleep
+    ajax,
+    event,
+    get,
+    iscoroutine,
+    iscoroutinefunction,
+    post,
+    run,
+    sleep,
+    Future
 }
 
 })(__BRYTHON__)

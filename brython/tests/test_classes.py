@@ -1,3 +1,5 @@
+from tester import assert_raises
+
 class baz:
 
     A = 8
@@ -151,6 +153,10 @@ b = myclass1()
 assert b.__doc__ == None
 
 # classmethod
+def g(obj, x):
+  assert type(obj) is A
+  return A(x)
+
 class A:
 
     def __init__(self, arg):
@@ -160,8 +166,33 @@ class A:
     def foo(cls, x):
         return cls(x)
 
+    bar = g
 
 assert A(5).foo(88).arg == 88
+assert A(6).bar(89).arg == 89
+
+assert A(5).foo.__self__ is A
+
+import re
+_IS_BLANK_OR_COMMENT = re.compile(r'^[ ]*(#.*)?$').match
+
+class B:
+
+  def f(self):
+    return 'f'
+
+class A:
+    f = B().f
+    g = _IS_BLANK_OR_COMMENT
+    def h(self):
+      pass
+    @classmethod
+    def m(cls):
+      pass
+
+assert A.m.__self__ is A
+assert A().f() == 'f'
+assert A().g('# comment')
 
 # If a rich-comparison method returns NotImplemented
 # we should retry with the reflected operator of the other object.
@@ -385,6 +416,63 @@ class C(A3, A1):
 
 assert C.__class__ == Meta3
 
+
+# setting __class__
+class A:pass
+class B:
+    x = 1
+
+a = A()
+assert not hasattr(a, 'x')
+a.__class__ = B
+assert a.x == 1
+
+# issue 118
+class A:
+
+    def toString(self):
+        return "whatever"
+
+assert A().toString() == "whatever"
+
+# issue 126
+class MyType(type):
+
+    def __getattr__(cls, attr):
+        return "whatever"
+
+class MyParent(metaclass=MyType):
+    pass
+
+class MyClass(MyParent):
+    pass
+
+assert MyClass.spam == "whatever"
+assert MyParent.spam == "whatever"
+
+# issue 154
+class MyMetaClass(type):
+
+    def __str__(cls):
+        return "Hello"
+
+class MyClass(metaclass=MyMetaClass):
+    pass
+
+assert str(MyClass) == "Hello"
+
+# issue 155
+class MyMetaClass(type):
+    pass
+
+class MyClass(metaclass=MyMetaClass):
+    pass
+
+MyOtherClass = MyMetaClass("DirectlyCreatedClass", (), {})
+
+assert isinstance(MyClass, MyMetaClass), type(MyClass)
+assert isinstance(MyOtherClass, MyMetaClass), type(MyOtherClass)
+
 # issue 905
 class A:
     prop: str
@@ -394,7 +482,7 @@ class B(A):
     pass
 
 
-assert {'prop': str} == B.__annotations__
+assert B.__annotations__ == {}
 
 # issue 922
 class A:
@@ -604,5 +692,164 @@ class D(C):
 
 d = D()
 assert d.sup.a == 1
+
+# class attributes set to builtin functions became *static* methods for
+# instances (is this documented ?)
+def not_builtin(instance, x):
+    return x
+
+class WithBuiltinFuncs:
+
+    builtin_func = abs
+    not_builtin_func = not_builtin
+
+    def test(self):
+        # self.not_builtin_func(x) is self.__class__.not_builtin_func(self, x)
+        assert self.not_builtin_func(3) == 3
+        # self.builtin_func(x) is self.__class__.builtin_func(x)
+        assert self.builtin_func(-2) == 2
+
+WithBuiltinFuncs().test()
+
+# Set attributes with aliased names
+class A:
+
+    def __init__(self):
+        self.length = 0
+
+
+a = A()
+a.message = "test"
+assert a.__dict__["message"] == "test"
+assert a.length == 0
+
+# issue 1551
+class MyClass:
+
+    def __init__(self):
+       self.x = 1
+
+    def __getattribute__(self, name):
+        raise Exception("This will never happen")
+
+
+m = MyClass()
+try:
+    m.x
+except Exception as exc:
+    assert exc.args[0] == "This will never happen"
+
+# issue 1737
+class A: pass
+
+class B(A): pass
+
+assert A.__bases__ == (object,)
+assert B.__bases__ == (A,)
+
+assert object.__bases__ == ()
+assert type.__bases__ == (object,)
+assert type.__mro__ == (type, object)
+assert object.mro() == [object]
+assert list.__bases__ == (object,)
+
+try:
+    type.mro()
+    raise AssertionError('should have raised TypeError')
+except TypeError:
+    pass
+
+# issue 1740
+class A:
+
+    class B:
+        def __init__(self):
+            pass
+
+    B()
+
+# issue 1779
+class A:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        t.append('I am A')
+
+t = []
+
+class MetaB(type):
+    def __call__(cls, *args, **kwargs):
+        t.append('MetaB Call')
+        self = super().__call__(*args, **kwargs)  # create
+        return self
+
+
+class B(metaclass=MetaB):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        t.append('I am B')
+
+class C(B, A):
+  pass
+
+c = C()
+assert t == ['MetaB Call', 'I am A', 'I am B']
+
+del t[:]
+
+D = type('C', (B, A,), {})
+
+d = D()
+assert t == ['MetaB Call', 'I am A', 'I am B']
+
+# issue 1884
+assert_raises(SyntaxError, exec, 'class(x):\n pass')
+
+# reference to class inside class definition raises NameError
+assert_raises(NameError, exec, "class A:\n A")
+
+# also for annotations
+assert_raises(NameError, exec, "class A:\n x:A")
+
+# except with __future__ annotations
+exec("""from __future__ import annotations
+class A:
+    x: A
+
+assert A.__annotations__ == {'x': 'A'}
+""", {})
+
+# mangle attributes for augmented assignments
+class A:
+
+  def __init__(self):
+      self.__scale = 1
+
+  def upscale(self):
+      assert self.__scale == 1
+      self.__scale += 1
+
+a = A()
+a.upscale()
+assert a._A__scale == 2
+
+# setting attribute __class__ inside a class definition
+class A:
+
+  @property
+  def __class__(self):
+    return 99
+
+assert A.__class__ is type
+assert type(A.__dict__['__class__']) is property
+assert A().__class__ == 99
+
+# issue 2033
+class Meta(type):
+    def __new__(cls, name, bases, namespace):
+        assert namespace.get("__qualname__", None) == "Foo"
+        return super().__new__(cls, name, bases, namespace)
+
+class Foo(metaclass=Meta):
+    pass
 
 print('passed all tests..')

@@ -95,5 +95,20 @@ from math import cos, radians
 theta = 30
 assert f'{theta=}  {cos(radians(theta))=:.3f}' == \
   "theta=30  cos(radians(theta))=0.866"
-  
+
+# issue 1554
+assertRaises(SyntaxError, exec, 'f"Bad format {}"')
+
+# issue 1734
+assert f'[{"Text":10}]' == '[Text      ]'
+assert f'[{"Text:":10}]' == '[Text:     ]'
+
+x = 45
+assert f'{x}' 'b' == '45b'
+
+# issue 1863
+a = 2
+s = f'foo { a }'
+assert s == 'foo 2'
+
 print("passed all tests")

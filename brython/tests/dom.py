@@ -45,15 +45,19 @@ assert f_called
 class A(html.DIV):
     def __init__(self):
         self.uV = 5
+        self.f = 0.5
         self.Xyz = "mystring"
         self.zd = {"a": 3}
+        self.long_int = 18446744073709552000
 
 p = A()
 assert not hasattr(p, "XYZ")
 assert p.Xyz == "mystring"
 assert p.uV == 5
+assert p.f == 0.5
 assert not hasattr(p, "uv")
 assert p.zd == {"a": 3}
+assert p.long_int == 18446744073709552000, p.long_int
 
 # SVG attributes are case-sensitive
 class B(svg.circle):
@@ -104,3 +108,38 @@ assert not hasattr(y, "myattr")
 
 # chained insertions
 html.P() <= html.B() <= html.I("coucou")
+
+# Brython-specific attributes
+document <= (s := html.SPAN(style=dict(position="absolute", height="10px")))
+for attr in ['abs_left', 'abs_top', 'top', 'width', 'height', 'width',
+             'scrolled_left', 'scrolled_top']:
+    assert isinstance(getattr(s, attr), int), getattr(s, attr)
+assert s.inside(document)
+
+# issue 1647
+style={"background-color":"yellow", "display": "none"}
+d = html.DIV("Hello world", style=style, id="mydiv")
+document <= d
+
+assert dict(d.attrs.items()) == {
+  'style': 'background-color: yellow; display: none;',
+  'id': 'mydiv'
+}
+assert set(d.attrs) == {"style", "id"}
+assert set(d.attrs.keys()) == {"style", "id"}
+assert set(d.attrs.values()) == {
+    'background-color: yellow; display: none;',
+    'mydiv'
+}
+assert "id" in d.attrs
+
+# issue 2014
+d.attrs["height"] = 4.5
+assert d.attrs["height"] == "4.5", d.attrs["height"]
+
+# set function as attribute
+def func():
+    pass
+
+element.foo = func
+assert element.foo == func

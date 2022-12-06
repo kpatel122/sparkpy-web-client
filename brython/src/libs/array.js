@@ -1,15 +1,11 @@
 var $module = (function($B){
 
-var _b_ = $B.builtins,
-    $s = [],
-    i
-for(var $b in _b_){$s.push('var ' + $b +' = _b_["'+$b+'"]')}
-eval($s.join(';'))
+var _b_ = $B.builtins
 
 var typecodes = {
     'b': Int8Array,    // signed char, 1 byte
     'B': Uint8Array,   // unsigned char, 1
-    'u': null,         // Py_UNICODE Unicode character, 2 (deprecated)
+    'u': Uint32Array,  // Py_UNICODE Unicode character, 2 (deprecated)
     'h': Int16Array,   // signed short, 2
     'H': Uint16Array,  // unsigned short, 2
     'i': Int16Array,   //  signed int, 2
@@ -35,8 +31,9 @@ var array = $B.make_class("array",
                 "B, u, h, H, i, I, l, L, q, Q, f or d)")
         }
         if(typecodes[typecode] === null){
+            console.log("array factory, $", $, typecode)
             throw _b_.NotImplementedError.$factory("type code " +
-                typecode + "is not implemented")
+                typecode + " is not implemented")
         }
         var res = {
             __class__: array,
@@ -57,21 +54,46 @@ var array = $B.make_class("array",
 )
 
 array.$buffer_protocol = true
+array.$match_sequence_pattern = true // for Pattern Matching (PEP 634)
 
 array.__getitem__ = function(self, key){
     if(self.obj && self.obj[key] !== undefined){
         return self.obj[key]
     }
-    throw _b_.IndexError("array index out of range")
+    throw _b_.IndexError.$factory("array index out of range")
 }
 
 var array_iterator = $B.make_iterator_class("array_iterator")
 array.__iter__ = function(self){
-    return array_iterator.$factory(self.obj)
+    return array_iterator.$factory(self.obj === null ? [] : self.obj)
 }
 
 array.__len__ = function(self){
-    return self.obj.length
+    return self.obj === null ? 0 : self.obj.length
+}
+
+array.__mul__ = function(self, nb){
+    if(typeof nb == "number" || _b_.isinstance(nb, _b_.int)){
+        var t = [],
+            copy = self.obj.slice()
+        for(var i = 0; i < nb; i++){
+            t = t.concat(copy)
+        }
+        return {
+            __class__: array,
+            typecode: self.typecode,
+            obj: t
+        }
+    }
+    throw _b_.ValueError.$factory("cannot multiply array by " +
+        $B.class_name(nb))
+}
+
+array.__setitem__ = function(_self, index, value){
+    if(_self.obj[index] === undefined){
+        throw _b_.IndexError.$factory("array index out of range")
+    }
+    _self.obj[index] = value
 }
 
 array.__str__ = function(self){
@@ -152,7 +174,7 @@ array.frombytes = function(self, s){
             "not '" + $B.class_name(s) + "'")
     }
     self.obj = new typecodes[self.typecode](s.source)
-    return None
+    return _b_.None
 }
 
 array.fromlist = function(self, list){
@@ -267,6 +289,9 @@ array.tobytes = function(self){
 array.tolist = function(self){
     $B.args("tolist", 1, {self: null},
         ["self"], arguments, {}, null, null)
+    if(self.obj === null){
+        return $B.$list([])
+    }
     return Array.prototype.slice.call(self.obj)
 }
 

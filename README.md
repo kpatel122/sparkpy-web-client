@@ -1,2 +1,0 @@
-# sparkpy
-sparkpy

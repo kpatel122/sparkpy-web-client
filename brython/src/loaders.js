@@ -44,8 +44,10 @@ function idb_load(evt, module){
                 }
                 $B.imported[module] = $B.module.$factory(module, "",
                     __package__)
+                $B.url2name[module] = module
                 try{
-                    var root = $B.py2js(source, module, module),
+                    var root = $B.py2js(
+                            {src:source, filename: module}, module, module),
                         js = root.to_js()
                 }catch(err){
                     $B.handle_error(err)
@@ -55,6 +57,7 @@ function idb_load(evt, module){
                 if($B.debug > 1){console.log("precompile", module)}
 
                 // Store Javascript translation in indexedDB
+                /*
                 var parts = module.split(".")
                 if(parts.length > 1){parts.pop()}
                 if($B.stdlib.hasOwnProperty(parts.join("."))){
@@ -63,6 +66,7 @@ function idb_load(evt, module){
                     $B.tasks.splice(0, 0, [store_precompiled,
                         module, js, source_ts, imports, is_package])
                 }
+                */
             }else{
                 console.log('bizarre', module, ext)
             }
@@ -268,10 +272,15 @@ $B.idb_open = function(obj){
 
 $B.ajax_load_script = function(script){
     var url = script.url,
-        name = script.name
-    if($B.files && $B.files.hasOwnProperty(name)){
-        $B.tasks.splice(0, 0, [$B.run_script, $B.files[name],
-            name, true])
+        name = script.name,
+        rel_path = url.substr($B.script_dir.length + 1)
+
+    if($B.files && $B.files.hasOwnProperty(rel_path)){
+        // File is present in Virtual File System
+        $B.tasks.splice(0, 0, [$B.run_script,
+            atob($B.files[rel_path].content),
+            name, url, true])
+        loop()
     }else if($B.protocol != "file"){
         var req = new XMLHttpRequest(),
             qs = $B.$options.cache ? '' :
@@ -284,7 +293,8 @@ $B.ajax_load_script = function(script){
                     if(script.is_ww){
                         $B.webworkers[name] = src
                     }else{
-                        $B.tasks.splice(0, 0, [$B.run_script, src, name, true])
+                        $B.tasks.splice(0, 0, [$B.run_script, src, name,
+                            url, true])
                     }
                     loop()
                 }else if(this.status == 404){
@@ -338,20 +348,25 @@ var loop = $B.loop = function(){
             while($B.outdated.length > 0){
                 var module = $B.outdated.pop(),
                     req = store.delete(module)
-                req.onsuccess = function(event){
-                    if($B.debug > 1){
-                        console.info("delete outdated", module)
+                req.onsuccess = (function(mod){
+                    return function(event){
+                        if($B.debug > 1){
+                            console.info("delete outdated", mod)
+                        }
+                        document.dispatchEvent(new CustomEvent('precompile',
+                            {detail: 'remove outdated ' + mod +
+                             ' from cache'}))
                     }
-                    document.dispatchEvent(new CustomEvent('precompile',
-                        {detail: 'remove outdated ' + module +
-                         ' from cache'}))
-                }
+                })(module)
             }
             document.dispatchEvent(new CustomEvent('precompile',
                 {detail: "close"}))
             $B.idb_cx.result.close()
             $B.idb_cx.$closed = true
         }
+        // dispatch event "brython_done"
+        document.dispatchEvent(new CustomEvent("brython_done",
+            {detail: $B.obj_dict($B.$options)}))
         return
     }
     var task = $B.tasks.shift(),
@@ -363,27 +378,31 @@ var loop = $B.loop = function(){
             var script = task[1],
                 script_id = script.__name__.replace(/\./g, "_"),
                 module = $B.module.$factory(script.__name__)
-            module.$src = script.$src
             module.__file__ = script.__file__
+            module.__doc__ = script.__doc__
             $B.imported[script_id] = module
-
-            new Function("$locals_" + script_id, script.js)(module)
-
+            var module = new Function(script.js + `\nreturn locals`)()
+            for(var key in module){
+                if(! key.startsWith('$')){
+                    $B.imported[script_id][key] = module[key]
+                }
+            }
         }catch(err){
             // If the error was not caught by the Python runtime, build an
             // instance of a Python exception
             if(err.__class__ === undefined){
-                console.log('Javascript error', err)
-                if($B.is_recursion_error(err)){
-                    err = _b_.RecursionError.$factory("too much recursion")
-                }else{
-                    $B.print_stack()
-                    err = _b_.RuntimeError.$factory(err + '')
+                console.log('Javascript error', err, err.$stack)
+                var stack = $B.frames_stack.slice()
+                var lineNumber = err.lineNumber
+                if(lineNumber !== undefined){
+                    console.log('around line', lineNumber)
+                    console.log(script.js.split('\n').
+                        slice(lineNumber - 4, lineNumber).join('\n'))
+                    console.log('script\n', script.js)
                 }
-            }
-            if($B.debug > 1){
-                console.log("handle error", err.__class__, err.args, err.$stack)
-                console.log($B.frames_stack.slice())
+                $B.print_stack()
+                err = _b_.RuntimeError.$factory(err + '')
+                err.$stack = stack
             }
             $B.handle_error(err)
         }
@@ -400,42 +419,6 @@ var loop = $B.loop = function(){
 
 $B.tasks = []
 $B.has_indexedDB = self.indexedDB !== undefined
-
-$B.handle_error = function(err){
-    // Print the error traceback on the standard error stream
-    if($B.debug > 1){
-        console.log("handle error", err.__class__, err.args)
-    }
-    if(err.__class__ !== undefined){
-        var name = $B.class_name(err),
-            trace = $B.$getattr(err, 'info')
-        if(name == 'SyntaxError' || name == 'IndentationError'){
-            var offset = err.args[3]
-            trace += '\n    ' + ' '.repeat(offset) + '^' +
-                '\n' + name + ': '+err.args[0]
-        }else{
-            trace += '\n' + name
-            if(err.args[0] && err.args[0] !== _b_.None){
-                trace += ': ' + _b_.str.$factory(err.args[0])
-            }
-        }
-    }else{
-        console.log(err)
-        trace = err + ""
-    }
-    try{
-        $B.$getattr($B.stderr, 'write')(trace)
-        try{
-            $B.$getattr($B.stderr, 'flush')()
-        }catch(err){
-            console.log(err)
-        }
-    }catch(print_exc_err){
-        console.log(trace)
-    }
-    // Throw the error to stop execution
-    throw err
-}
 
 function required_stdlib_imports(imports, start){
     // Returns the list of modules from the standard library needed by
@@ -467,3 +450,4 @@ function required_stdlib_imports(imports, start){
 }
 
 })(__BRYTHON__)
+

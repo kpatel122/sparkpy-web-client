@@ -258,11 +258,9 @@ assert lst[-100:100] == [1, 2, 3]
 # issue 1333
 a = ('x', 'y')
 
-assert ('1', (*a)) == ('1', 'x', 'y')
 assert ('1', (*a,)) == ('1', ('x', 'y'))
-assert ('a', (*range(4))) == ('a', 0, 1, 2, 3)
 assert ('a', (*range(4),)) == ('a', (0, 1, 2, 3))
-assert ('1', (((*a)))) == ('1', 'x', 'y')
+assert ('1', (((*a,)))) == ('1', ('x', 'y'))
 
 # issue 1337
 L = [[0], [1]]
@@ -313,5 +311,110 @@ assert a < b
 L = [P(7), P(3), P(5), P(1), P(3)]
 L.sort()
 assert L == [P(1), P(3), P(3), P(5), P(7)]
+
+# issue 1593
+t = [1, 2, 3]
+try:
+    t[1.1]
+    raise Exception("should have raised TypeError")
+except TypeError:
+    pass
+
+# issue 1630
+t = (1, 2)
+try:
+    t.first = 1
+    raise AssertionError("should have raised AttributeError")
+except AttributeError:
+    pass
+
+# issue 1641
+tup = (1, 2, 3)
+
+try:
+    tup[0] = 0
+    raise AssertionError("should have raised TypeError")
+except TypeError as exc:
+    assert exc.args[0] == \
+      "'tuple' object does not support item assignment"
+
+try:
+    tuple.__setitem__ = 0
+    raise AssertionError("should have raised TypeError")
+except TypeError as exc:
+    assert exc.args[0] == \
+        "cannot set '__setitem__' attribute of immutable type 'tuple'"
+
+# issue 1701
+t = [1, 2, 3, 4, 5]
+del t[:0]
+assert t == [1, 2, 3, 4, 5]
+del t[:1]
+assert t == [2, 3, 4, 5]
+
+# issue 1713
+class Foo(list):
+    def __getitem__(self, index):
+        raise NotImplementedError()
+
+    def __delitem__(self, index):
+        raise NotImplementedError()
+
+    def __setitem__(self, index, value):
+        raise NotImplementedError()
+
+f = Foo((1, 2, 3, 4))
+try:
+    f[1:3:2]
+    raise AssertionError('should have raised NotImplementedError')
+except NotImplementedError:
+    pass
+
+try:
+    del f[0:1]
+    raise AssertionError('should have raised NotImplementedError')
+except NotImplementedError:
+    pass
+
+# issue 1714
+nb_calls_init = 0
+
+class Foo(list):
+    def __init__(self, initial):
+        global nb_calls_init
+        nb_calls_init += 1
+        super().__init__(initial)
+
+s = Foo('123456')
+assert s[1::2] == ['2', '4', '6']
+assert nb_calls_init == 1
+
+# issue 1715
+class Foo(list):
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+
+
+s = Foo()
+assert s == []
+
+# issue 1868
+L = [1][::]
+assert L.sort() is None
+
+import copy
+L = copy.copy([1])
+assert L.sort() is None
+
+#
+try:
+    eval('[*12]')
+    raise Exception('should have raised TypeError')
+except TypeError as exc:
+    assert exc.args[0] == 'Value after * must be an iterable, not int'
+
+# issue 2034
+t = [1] * 2
+assert t.sort() is None
 
 print("passed all tests..")

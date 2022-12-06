@@ -23,7 +23,7 @@ var $module = (function($B){
     }
 
     function _info(chr){
-        var ord = chr.codePointAt(0),
+        var ord = _b_.ord(chr),
             hex = ord.toString(16).toUpperCase()
         while(hex.length < 4){hex = "0" + hex}
         var re = new RegExp("^" + hex +";(.+?);(.*?);(.*?);(.*?);(.*?);(.*);(.*);(.*)$",
@@ -209,7 +209,7 @@ var $module = (function($B){
             if(_default){return _default}
             throw _b_.KeyError.$factory(chr)
         }
-        return new Number(eval(search.numeric))
+        return $B.fast_float(eval(search.numeric))
     }
 
     var module = {

@@ -1,4 +1,6 @@
-from tester import assertRaises
+from tester import assertRaises, assert_raises
+
+parser_to_ast = hasattr(__BRYTHON__, 'parser_to_ast')
 
 # issue 5
 assert(isinstance(__debug__, bool))
@@ -120,29 +122,6 @@ assert C.foo.abc == 1
 assert C.foo.xyz == "haha"
 assert C.foo.booh == 42
 
-# issue 118
-class A:
-
-    def toString(self):
-        return "whatever"
-
-assert A().toString() == "whatever"
-
-# issue 126
-class MyType(type):
-
-    def __getattr__(cls, attr):
-        return "whatever"
-
-class MyParent(metaclass=MyType):
-    pass
-
-class MyClass(MyParent):
-    pass
-
-assert MyClass.spam == "whatever"
-assert MyParent.spam == "whatever"
-
 # issue 121
 def recur(change_namespace=0):
     if change_namespace:
@@ -191,29 +170,6 @@ x = 7
 codeobj = compile("x + 4", "<example>", "eval")
 assert eval(codeobj) == 11
 
-# issue 154
-class MyMetaClass(type):
-
-    def __str__(cls):
-        return "Hello"
-
-class MyClass(metaclass=MyMetaClass):
-    pass
-
-assert str(MyClass) == "Hello"
-
-# issue 155
-class MyMetaClass(type):
-    pass
-
-class MyClass(metaclass=MyMetaClass):
-    pass
-
-MyOtherClass = MyMetaClass("DirectlyCreatedClass", (), {})
-
-assert isinstance(MyClass, MyMetaClass), type(MyClass)
-assert isinstance(MyOtherClass, MyMetaClass), type(MyOtherClass)
-
 # traceback objects
 import types
 
@@ -246,16 +202,6 @@ def f():
     return g()
 
 assert f() == 2
-
-# setting __class__
-class A:pass
-class B:
-    x = 1
-
-a = A()
-assert not hasattr(a, 'x')
-a.__class__ = B
-assert a.x == 1
 
 # hashable objects
 class X:
@@ -427,13 +373,6 @@ assert n == 4
 #issue 297
 assert type((1,) * 2) == tuple
 
-t = 1, 2
-try:
-    t[0] = 1
-    raise Exception('should have raised AttributeError')
-except AttributeError:
-    pass
-
 # issue 298
 n = 1
 for n in range(n):
@@ -554,9 +493,9 @@ assertRaises(TypeError, f)
 # issue 342
 try:
     from .spam import eggs
-except SystemError as ie:
+except ImportError as ie:
     assert str(ie) == \
-        "Parent module '' not loaded, cannot perform relative import"
+        "attempted relative import with no known parent package"
 
 # issue 343
 a76gf = 0
@@ -777,11 +716,6 @@ assert True != False
 assert False == False
 assert not (True == None)
 assert True != None
-
-# issue 451
-import copy
-assert copy.copy({1}) == {1}
-assert copy.copy({1: 2}) == {1: 2}
 
 # issue 465
 class A:
@@ -1111,12 +1045,6 @@ def nothing():
 
 assert nothing() == 1
 
-# issue 584
-try:
-    from __future__ import non_existing_feature
-except SyntaxError:
-    pass
-
 # issue 501
 class Test:
     def __iter__(self):
@@ -1175,14 +1103,6 @@ a = A()
 b = B()
 assert a != b
 assert b != a
-
-# issue 603
-import copy
-a = [[1], 2, 3]
-b = copy.copy(a)
-b[0] += [10]
-assert a == [[1, 10], 2, 3]
-assert b == [[1, 10], 2, 3]
 
 # issue 604
 class StopCompares:
@@ -1860,18 +1780,6 @@ assert regex.sub(switch, 'ba') == 'ab'
 # Broken: .finditer()
 #assert [m.group(0) for m in regex.finditer('ab')] == ['a', 'b']
 
-# issue 918
-import copy
-
-class MyClass:
-
-    def __init__(self, some_param):
-        self.x = some_param
-
-
-obj = MyClass("aaa")
-obj2 = copy.copy(obj)
-assert obj2.x == "aaa"
 
 # issue 923
 v = 1
@@ -1944,7 +1852,7 @@ try:
     exec("a = +25, b = 25")
     raise Exception("should have raised SyntaxError")
 except SyntaxError as exc:
-    assert exc.args[0] == "cannot assign to operator"
+    assert exc.args[0] == "invalid syntax. Maybe you meant '==' or ':=' instead of '='?"
 
 # issue 949
 class A(object):
@@ -1990,7 +1898,7 @@ try:
     exec("x + x += 10")
     raise Exception("should have raised SyntaxError")
 except SyntaxError as exc:
-    assert exc.args[0] == "cannot assign to operator"
+    assert exc.args[0] == "'expression' is an illegal expression for augmented assignment"
 
 # issue 965
 assertRaises(SyntaxError, exec, "if:x=2")
@@ -2002,7 +1910,7 @@ try:
     exec("x = 400 - a, y = 400 - b")
     raise Exception("should have raised SyntaxError")
 except SyntaxError as exc:
-    assert exc.args[0] == "cannot assign to operator"
+    assert exc.args[0] == "invalid syntax. Maybe you meant '==' or ':=' instead of '='?"
 
 # issue 975
 l = [1, 2, 3]
@@ -2170,7 +2078,8 @@ assertRaises(SyntaxError, exec, "x{}")
 class Class():
 
     def method(self):
-      return __class__.__name__
+        assert "__class__" not in Class.method.__code__.co_varnames
+        return __class__.__name__
 
 assert Class().method() == "Class"
 
@@ -2471,13 +2380,13 @@ try:
     exec("(x.a < 2) += 100")
     raise Exception("should have raised SyntaxError")
 except SyntaxError as exc:
-    assert exc.args[0] == "cannot assign to comparison"
+    assert exc.args[0] == "'comparison' is an illegal expression for augmented assignment"
 
 try:
     exec("(x.a * 2) += 100")
     raise Exception("should have raised SyntaxError")
 except SyntaxError as exc:
-    assert exc.args[0] == "cannot assign to operator"
+    assert exc.args[0] == "'expression' is an illegal expression for augmented assignment"
 
 # issue 1278
 import textwrap
@@ -2737,7 +2646,10 @@ try:
     exec("not x = 1")
     raise Exception("should have raised SyntaxError")
 except SyntaxError as exc:
-    assert exc.args[0] == "cannot assign to operator"
+    if parser_to_ast:
+        assert exc.args[0] == "cannot assign to expression"
+    else:
+        assert exc.args[0] == "cannot assign to operator"
     pass
 
 # issue 1501
@@ -2761,6 +2673,479 @@ t = []
 for f in funs:
   t.append(f())
 assert t == [0, 1, 2]
+
+# issue 1515
+try:
+    range[0, 8]
+    raise Exception("should have raised TypeError")
+except TypeError as exc:
+    assert exc.args[0] == "'type' object is not subscriptable"
+
+# issue 1529
+assertRaises(SyntaxError, exec, "for x in in range(1):\n pass")
+
+# issue 1531
+try:
+    exec("x =* -1")
+    raise Exception("should have raised SyntaxError")
+except SyntaxError as exc:
+    assert exc.args[0] == "can't use starred expression here"
+
+# issue 1538
+def g(x):
+    if isinstance(x, int):
+        return x
+    return [g(y) for y in x]
+
+assert g([1, [3, 4]]) == [1, [3, 4]]
+
+# issue 1562
+t = *['a', 'b'],
+assert t == ('a', 'b')
+s = *"cde",
+assert s == ('c', 'd', 'e')
+
+try:
+    exec('t = *["a", "b"]')
+    raise Exception("should have raised SyntaxError")
+except SyntaxError:
+    pass
+
+try:
+    exec('s = *"abcd"')
+    raise Exception("should have raised SyntaxError")
+except SyntaxError:
+    pass
+
+spam = ['spam']
+x = *spam[0],
+assert x == ('s', 'p', 'a', 'm')
+
+class Spam:
+  def __neg__(self):
+    return 'spam'
+
+try:
+    exec('x = *-Spam()')
+    raise Exception("should have raised SyntaxError")
+except SyntaxError:
+    pass
+
+x = *-Spam(),
+assert x == ('s', 'p', 'a', 'm')
+
+x = 1, *'two'
+assert x == (1, 't', 'w', 'o')
+
+y = *b'abc',
+assert y == (97, 98, 99)
+
+z = [*'spam']
+assert z == ['s', 'p', 'a', 'm']
+
+# issue 1582
+assert max([1, 2, 3], key=None) == 3
+assert min([1, 2, 3], key=None) == 1
+
+# issue 1596
+x = 0
+y = 0
+def f():
+    x = 1
+    y = 1
+    class C:
+        assert x == 0 # local to a class, unbound : search at module level
+        assert y == 1 # not local, unbound : search in all enclosing scopes
+        x = 2
+f()
+
+# issue 1608
+class Test():
+    def __enter__(self):
+        return (42, 43)
+
+    def __exit__(self, type, value, traceback):
+        pass
+
+with Test() as (a, b):
+    assert type(a) == int
+    assert b == 43
+
+# issue 1618
+assert repr(list[0]) == 'list[0]'
+
+# issue 1621
+english = ["one", "two", "three"]
+español = ["uno", "dos", "tres"]
+
+zip_iter = zip(english, español)
+
+eng, esp = next(zip_iter)
+assert eng == "one"
+assert esp == "uno"
+
+rest = []
+for eng, esp in zip_iter:
+    rest.append([eng, esp])
+assert rest == [["two", "dos"], ["three", "tres"]]
+
+# issue 1632
+def add_seen_k(k, f=lambda x: 0):
+    def inner(z):
+        return k
+    return inner
+
+a = add_seen_k(3)
+assert a(4) == 3
+
+# issue 1638
+def fib_gen():
+    yield from [0, 1]
+    a = fib_gen()
+    next(a)
+    for x, y in zip(a, fib_gen()):
+        yield x + y
+
+fg = fib_gen()
+t = [next(fg) for _ in range(7)]
+assert t == [0, 1, 1, 2, 3, 5, 8]
+
+# issue 1652
+try:
+    ()[0]
+    raise Exception("should have raised IndexError")
+except IndexError as exc:
+    assert exc.args[0] == "tuple index out of range"
+
+# issue 1661
+class A():
+    pass
+
+o = A()
+o.x = 1
+
+t = []
+def f():
+    for o.x in range(5):
+        t.append(o.x)
+
+f()
+assert t == [0, 1, 2, 3, 4]
+
+class A():
+    pass
+
+t = []
+def f():
+    o = A()
+    o.x = 1
+    for o.x in range(5):
+        t.append(o.x)
+
+f()
+assert t == [0, 1, 2, 3, 4]
+
+t = []
+def f():
+    d = {}
+    d['x'] = 1
+    for d['x'] in range(5):
+        t.append(d['x'])
+
+f()
+assert t == [0, 1, 2, 3, 4]
+
+t = []
+def f():
+    d = [1]
+    for d[0] in range(5):
+        t.append(d[0])
+
+f()
+assert t == [0, 1, 2, 3, 4]
+
+# issue 1664
+x = 0
+def f():
+    global x
+    x -= -1
+    assert x == 1
+f()
+
+# issue 1665
+def foo(a, b):
+    c = 10
+    return foo.__code__.co_varnames
+
+assert foo(1, 2) == ('a', 'b', 'c')
+
+# issue 1671
+def f():
+    global x1671
+try:
+    print(x1671)
+    raise Exception("should have raised NameError")
+except NameError:
+    pass
+
+# issue 1685
+assertRaises(TypeError, int.__str__)
+assertRaises(TypeError, int.__str__, 1, 2)
+
+assert int.__str__('a') == "'a'"
+assert int.__str__(int) == "<class 'int'>"
+
+assertRaises(TypeError, int.__repr__, 'x')
+assert int.__repr__(7) == '7'
+
+assertRaises(TypeError, float.__str__)
+assertRaises(TypeError, float.__str__, 1.1, 2.2)
+
+assert float.__str__('a') == "'a'"
+assert float.__str__(int) == "<class 'int'>"
+
+assertRaises(TypeError, float.__repr__, 'x')
+assertRaises(TypeError, float.__repr__, 7)
+assert float.__repr__(7.6) == '7.6'
+
+# issue 1688
+def f(a1688):
+    pass
+
+try:
+    for a1688 in a1688.b:
+        pass
+    raise Exception("should have raised NameError")
+except NameError:
+    pass
+
+# issue 1699
+assertRaises(IndentationError, exec, 'def f():')
+
+# issue 1703
+def get_foobar():
+    global foobar
+    return foobar
+
+global foobar
+foobar = 'foobar'
+
+assert get_foobar() == "foobar"
+
+# issue 1723
+try:
+    type()
+    raise Exception('should have raised TypeError')
+except TypeError:
+    pass
+
+# issue 1729
+assertRaises(SyntaxError, exec,
+'''for i in range(0):
+    if True:
+        f() += 1''')
+
+# issue 1767
+assertRaises(TypeError, chr, '')
+assertRaises(TypeError, chr, 'a')
+
+# issue 1814
+er = IndexError('hello')
+assert str(er) == 'hello'
+assert repr(er) == "IndexError('hello')"
+er = IndexError()
+assert str(er) == ''
+assert repr(er) == 'IndexError()'
+
+# issue 1812
+assertRaises(ValueError, exec,
+    "list(zip(range(3), ['fee', 'fi', 'fo', 'fum'], strict=True))")
+assertRaises(ValueError, exec,
+    "list(zip(range(5), ['fee', 'fi', 'fo', 'fum'], strict=True))")
+
+# issue 1816
+assertRaises(SyntaxError, exec, '@x = 123')
+
+# issue 1821
+class MyRepr:
+    def __init__(self):
+        self.__repr__ = lambda: "obj"
+    def __repr__(self):
+        return "class"
+my_repr = MyRepr()
+assert str(my_repr.__repr__()) == 'obj'
+assert str(my_repr) == 'class'
+assert str(MyRepr.__repr__(my_repr)) == 'class'
+assert str(MyRepr().__repr__()) == 'obj'
+
+# issue 1826
+assertRaises(SyntaxError, exec, """x, if y > 4:
+    pass""")
+assertRaises(SyntaxError, exec, """async def f():
+    await x = 1""")
+
+# issue 1827
+class Vector2:
+
+    def __init__(self, a, b):
+        self.x, self.y = a, b
+
+    def clone(self):
+        return Vector2(self.x, self.y)
+
+    def __imul__(self, k):
+        res = self.clone()
+        res.x *= k
+        res.y *= k
+        return res
+
+vector = Vector2(1.5, 3.7)
+
+vector *= 25.7
+
+assert (vector.x, vector.y) == (38.55, 95.09)
+
+# issue 1830
+def foo(constructor: bool):
+    assert constructor is True
+
+foo(constructor=True)
+
+# issue 1854
+assert 0 != int
+
+# issue 1857
+lines = ["789/",
+         "456*",
+         "123-",
+         "0.=+"]
+
+((x for x in line) for line in lines)
+
+# issue 1860
+try:
+    try:
+        raise ValueError("inner")
+    except Exception as e:
+        raise ValueError("outer") from e
+except Exception as e:
+    assert repr(e.__context__) == "ValueError('inner')"
+
+# issue 1875
+assertRaises(SyntaxError, exec, "(a, b = b, a)")
+
+# issue 1886
+try:
+    exec("[i := i for i in range(5)]")
+except SyntaxError as exc:
+    assert "cannot rebind" in exc.args[0]
+
+# issue 1895
+s = [1, 2, 3]
+
+try:
+    [x1895 for s[0] in s]
+    raise Exception('should have raised NameError')
+except NameError:
+    pass
+
+# issue 1905
+assert [1 for a in [2 for (a, b) in [(3, 4)]]] == [1]
+assert [1 for a in [2 for a, b in [(3, 4)]]] == [1]
+
+# issue 1927
+alist = [1, 2, 3, 4]
+
+def length(alist):
+    match alist:
+        case []: return 0
+        case [x, *xs]: return 1 + length(xs)
+
+assert length(alist) == 4
+
+# issue 1940
+state:str = ""
+
+# issue 1953
+from typing import Callable, List, Tuple, Union
+Callable[[int], tuple[int, int]]
+Callable[[int], Tuple[int, int]]
+Callable[[int], list[int]]
+Callable[[int], List[int]]
+Callable[[int], int | str]
+
+# __future__ not at module level
+assert_raises(SyntaxError,
+    exec,
+    """def f():\n from __future__ import WWW""",
+    msg='from __future__ imports must occur at the beginning of the file')
+
+# issue 1979
+try:
+    exec('x =')
+except SyntaxError as e:
+    assert e.args == ('invalid syntax', ('<string>', 1, 4, 'x =\n', 1, 4))
+
+# issue 1980
+try:
+    exec("x= ")
+except SyntaxError as exc:
+    assert exc.args == ('invalid syntax', ('<string>', 1, 4, 'x= \n', 1, 4))
+
+# issue 2015
+assert_raises(SyntaxError, exec, "f(x=not)")
+
+# not covered in test_patma
+class A:
+
+  class B:
+    def __init__(self, x):
+      pass
+
+x = A.B(1)
+
+ok = False
+match x:
+    case A.B():
+        ok = True
+
+assert ok
+
+# invalid context manager
+test = """x = 'abc'
+with x as y:
+  pass"""
+
+assert_raises(TypeError, exec, test,
+  msg="'str' object does not support the context manager protocol")
+
+# issue 2030
+def f():
+  return 5
+
+def tracefn(frame, event, arg):
+  assert frame.f_back is not None
+
+def main():
+  sys.settrace(tracefn)
+  f()
+  sys.settrace(None)
+
+main()
+
+# issue 2031
+def foo():
+    bar: Bar = 42
+    assert __annotations__ == {}
+    assert bar == 42
+
+foo()
+
+src = """class Foo:
+    bar: Bar = 42"""
+assert_raises(NameError, exec, src)
+
+assert_raises(NameError, exec, 'bar: Bar = 42')
 
 # ==========================================
 # Finally, report that all tests have passed

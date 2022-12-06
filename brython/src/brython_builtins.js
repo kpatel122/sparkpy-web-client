@@ -15,6 +15,7 @@ $B.isWebWorker = ('undefined' !== typeof WorkerGlobalScope) &&
                   (navigator instanceof WorkerNavigator)
 $B.isNode = (typeof process !=='undefined') && (process.release.name==='node')
 
+
 var _window
 if($B.isNode){
     _window = {
@@ -35,6 +36,7 @@ var href = _window.location.href
 $B.protocol = href.split(':')[0]
 
 $B.BigInt = _window.BigInt
+$B.indexedDB = _window.indexedDB
 
 var $path
 
@@ -64,6 +66,13 @@ if($B.brython_path === undefined){
     $path = $B.brython_path
 }
 
+var parts_re = new RegExp('(.*?)://(.*?)/(.*)'),
+    mo = parts_re.exec($B.brython_path)
+if(mo){
+    $B.full_url = {protocol: mo[1],
+                   host: mo[2],
+                   address: mo[3]}
+}
 
 // Get the URL of the directory where the script stands
 var path = _window.location.origin + _window.location.pathname,
@@ -78,11 +87,11 @@ $B.__ARGV = []
 // script name and its source code
 $B.webworkers = {}
 
-// Mapping between a module name and its path (url)
-$B.$py_module_path = {}
-
-// File cache, indexed by module names
+// File cache, indexed by module paths
 $B.file_cache = {}
+
+// Mapping between script url and script name
+$B.url2name = {}
 
 // Mapping between a Python module name and its source code
 $B.$py_src = {}
@@ -106,7 +115,9 @@ $B.precompiled = {}
 $B.frames_stack = []
 
 // Python __builtins__
-$B.builtins = {}
+// Set to Object.create(null) instead of {}
+// to avoid conflicts with JS attributes such as "constructor"
+$B.builtins = Object.create(null)
 
 $B.builtins_scope = {id:'__builtins__', module:'__builtins__', binding: {}}
 
@@ -119,8 +130,9 @@ $B.builtin_classes = []
 $B.__getattr__ = function(attr){return this[attr]}
 $B.__setattr__ = function(attr, value){
     // limited to some attributes
-    if(['debug', 'stdout', 'stderr'].indexOf(attr) > -1){$B[attr] = value}
-    else{
+    if(['debug', 'stdout', 'stderr'].indexOf(attr) > -1){
+        $B[attr] = value
+    }else{
         throw $B.builtins.AttributeError.$factory(
             '__BRYTHON__ object has no attribute ' + attr)
     }
@@ -132,6 +144,23 @@ $B.language = _window.navigator.userLanguage || _window.navigator.language
 
 $B.locale = "C" // can be reset by locale.setlocale
 
+// Set attribute "tz_name", used in module time to return the
+// attribute tm_zone of struct_time instances
+var date = new Date()
+var formatter = new Intl.DateTimeFormat($B.language, {timeZoneName: 'short'}),
+    short = formatter.format(date)
+formatter = new Intl.DateTimeFormat($B.language, {timeZoneName: 'long'})
+var long = formatter.format(date)
+var ix = 0,
+    minlen = Math.min(short.length, long.length)
+while(ix < minlen && short[ix] == long[ix]){
+    ix++
+}
+$B.tz_name = long.substr(ix).trim()
+
+
+$B.PyCF_ONLY_AST = 1024 // compiler flag, used in libs/_ast.js
+
 if($B.isWebWorker){
     $B.charset = "utf-8"
 }else{
@@ -142,6 +171,21 @@ if($B.isWebWorker){
 // minimum and maximum safe integers
 $B.max_int = Math.pow(2, 53) - 1
 $B.min_int = -$B.max_int
+
+$B.max_float = new Number(Number.MAX_VALUE)
+$B.min_float = new Number(Number.MIN_VALUE)
+
+// special repr() for some codepoints, used in py_string.js and py_bytes.js
+$B.special_string_repr = {
+    8: "\\x08",
+    9: "\\t",
+    10: "\\n",
+    11: "\\x0b",
+    12: "\\x0c",
+    13: "\\r",
+    92: "\\\\",
+    160: "\\xa0"
+}
 
 // Used to compute the hash value of some objects (see
 // py_builtin_functions.js)
@@ -215,6 +259,21 @@ $B.scripts = {} // for Python scripts embedded in a JS file
 
 $B.$options = {}
 
+$B.builtins_repr_check = function(builtin, args){
+    // Called when entering method __repr__ of builtin classes, to check the
+    // the number of arguments, and that the only argument is an instance of
+    // the builtin class
+    var $ = $B.args('__repr__', 1, {self: null}, ['self'], args,
+            {}, null, null),
+        self = $.self,
+        _b_ = $B.builtins
+    if(! _b_.isinstance(self, builtin)){
+        throw _b_.TypeError.$factory("descriptor '__repr__' requires a " +
+            `'${builtin.$infos.__name__}' object but received a ` +
+            `'${$B.class_name(self)}'`)
+    }
+}
+
 // Update the Virtual File System
 $B.update_VFS = function(scripts){
     $B.VFS = $B.VFS || {}
@@ -239,16 +298,47 @@ $B.add_files = function(files){
     }
 }
 
-// Can be used in Javascript programs to run Python code
-$B.python_to_js = function(src, script_id){
-    $B.meta_path = $B.$meta_path.slice()
-    if(!$B.use_VFS){$B.meta_path.shift()}
-    if(script_id === undefined){script_id = "__main__"}
+$B.has_file = function(file){
+    // Used to check if a file was added to $B.files
+    return ($B.files && $B.files.hasOwnProperty(file))
+}
 
-    var root = __BRYTHON__.py2js(src, script_id, script_id),
+// Can be used in Javascript programs to run Python code
+var py2js_magic = Math.random().toString(36).substr(2, 8)
+$B.python_to_js = function(src, script_id){
+    /*
+
+    Meant to be used in a Javascript program to execute Python code
+
+    Returns JS source code that, when executed, returns the globals object for
+    the Python program
+
+    Example:
+
+        var ns = eval(__BRYTHON__.python_to_js("x = 1 + 2"))
+        console.log(ns.x) // 3
+
+    */
+    if(! $B.options_parsed){
+        // parse options so that imports succeed
+        $B.parse_options()
+        $B.meta_path = $B.$meta_path.slice()
+        if(!$B.use_VFS){$B.meta_path.shift()}
+    }
+
+    // fake names
+    var filename = '$python_to_js' + $B.UUID()
+    $B.url2name[filename] = filename
+    $B.imported[filename] = {}
+
+    var root = __BRYTHON__.py2js({src, filename},
+                                 script_id, script_id,
+                                 __BRYTHON__.builtins_scope),
         js = root.to_js()
 
-    js = "(function() {\n var $locals_" + script_id + " = {}\n" + js + "\n}())"
+    js = "(function() {\n" + js + "\nreturn locals}())"
+    console.log(js)
+
     return js
 }
 

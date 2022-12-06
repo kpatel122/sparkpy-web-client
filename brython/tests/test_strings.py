@@ -1,5 +1,5 @@
 # strings
-from tester import assertRaises
+from tester import assertRaises, assert_raises
 
 assert 'a'.__class__ == str
 assert isinstance('a', str)
@@ -206,17 +206,6 @@ assert s == "Hello,\tworld!"
 s = bytes("Hello,\\bworld!", "utf-8").decode("unicode-escape")
 assert s == "Hello,\bworld!"
 
-# issue 1047
-from io import StringIO
-s = StringIO()
-s.write(chr(8364))
-assert s.getvalue() == "€"
-s = chr(8364)
-assert s == "€"
-b = s.encode("utf-8")
-assert b == bytes([0xe2, 0x82, 0xac])
-s1 = b.decode("utf-8")
-assert s1 == "€"
 
 # issue 1049
 class Mystring(str):
@@ -248,7 +237,8 @@ assert 'xyz'.maketrans('abc', 'def', 'abd') == {97: None, 98: None, 99: 102,
 assert str() == ""
 
 # issue 1231
-assertRaises(TypeError, sum, ['a', 'b'], '')
+assert_raises(TypeError, sum, ['a', 'b'],
+    msg="unsupported operand type(s) for +: 'int' and 'str'")
 
 # issue 1256
 assert "\U00000065" == "e"
@@ -339,5 +329,137 @@ assert repr(chr(888)) == r"'\u0378'"
 # issue 1500
 s = 'abc'
 assert s.isprintable()
+
+# upper and lower of surrogate strings
+assert '𐐀'.lower() == '𐐨'
+assert '𐐨'.upper() == '𐐀'
+
+# issue 1626
+class Lamb:
+    species_name = "Lamb"
+    scientific_name = "Lambius lambalot"
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return "🐑 : " + self.name
+
+lil = Lamb("lil")
+
+import sys
+
+t = []
+
+class Output:
+
+    def write(self, x):
+        t.append(str(x))
+
+save_stdout = sys.stdout
+sys.stdout = Output()
+
+print(str(lil))
+print(lil)
+
+sys.stdout = save_stdout
+assert t[0] == '🐑 : lil'
+assert t[2] == '🐑 : lil'
+
+assert '🐑 : lil'.replace('🐑 ', 'lamb') == 'lamb: lil'
+assert '🐑 : lil'.count('l') == 2
+assert '🐑 : lil'.count('🐑 ') == 1
+assert '🐑 : lil'.find('🐑 : lil') == 0
+assert '🐑 : lil'.find('🐑 ') == 0
+
+lamb = '🐑 '
+assert f'{lamb}: lil' == '🐑 : lil'
+
+# issue 1637
+try:
+    ''.x = 0
+    raise AssertionError('should have raised AttributeError')
+except AttributeError as exc:
+    assert exc.args[0] == "'str' object has no attribute 'x'"
+
+try:
+    ''.x
+    raise AssertionError('should have raised AttributeError')
+except AttributeError as exc:
+    assert exc.args[0] == "'str' object has no attribute 'x'"
+
+try:
+    ''.__dict__
+    raise AssertionError('should have raised AttributeError')
+except AttributeError as exc:
+    assert exc.args[0] == "'str' object has no attribute '__dict__'"
+
+# tests for partition
+assert ''.partition('.') == ('', '', '')
+assert 'a'.partition('.') == ('a', '', '')
+assert '.'.partition('.') == ('', '.', '')
+assert 'a.'.partition('.') == ('a', '.', '')
+assert 'a.b'.partition('.') == ('a', '.', 'b')
+assert 'a.b.c'.partition('.') == ('a', '.', 'b.c')
+assert 'a__b'.partition('__') == ('a', '__', 'b')
+assert 'a'.partition('__') == ('a', '', '')
+assert 'a__b__c'.partition('__') == ('a', '__', 'b__c')
+
+try:
+    ''.partition('')
+    raise AssertionError('should have raised ValueError')
+except ValueError as exc:
+    assert exc.args[0] == 'empty separator'
+
+try:
+    ''.partition(5)
+    raise AssertionError('should have raised TypeError')
+except TypeError as exc:
+    assert exc.args[0] == "must be str, not int"
+
+# tests for rpartition
+assert ''.rpartition('.') == ('', '', '')
+assert 'a'.rpartition('.') == ('', '', 'a')
+assert '.'.rpartition('.') == ('', '.', '')
+assert 'a.'.rpartition('.') == ('a', '.', '')
+assert 'a.b'.rpartition('.') == ('a', '.', 'b')
+assert 'a.b.c'.rpartition('.') == ('a.b', '.', 'c')
+assert 'a__b'.rpartition('__') == ('a', '__', 'b')
+assert 'a'.rpartition('__') == ('', '', 'a')
+assert 'a__b__c'.rpartition('__') == ('a__b', '__', 'c')
+
+try:
+    ''.rpartition('')
+    raise AssertionError('should have raised ValueError')
+except ValueError as exc:
+    assert exc.args[0] == 'empty separator'
+
+try:
+    ''.rpartition(5)
+    raise AssertionError('should have raised TypeError')
+except TypeError as exc:
+    assert exc.args[0] == "must be str, not int"
+
+# issue 1772
+test = '🤔'
+assert ord(test) == 129300
+assert len(test) == 1
+
+# issue 1815
+assert 'a' * -1 == ''
+
+# PR 1911
+assert 'abc'.startswith('b', 1)
+
+# issue 1995
+assert '5'.isnumeric()
+
+# issue 1997
+class A:
+    def __repr__(self):
+        return 1
+
+assert_raises(TypeError, str, A(),
+    msg="__str__ returned non-string (type int)")
 
 print("passed all tests...")

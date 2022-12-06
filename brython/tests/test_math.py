@@ -1,6 +1,6 @@
 import math
 
-from tester import assertRaises
+from tester import assertRaises, assert_raises
 
 def almost_equal(actual, expected):
     return abs(actual - expected) < 0.00001
@@ -36,7 +36,8 @@ assert math.factorial(0) == 1
 assert math.factorial(1) == 1
 assert math.factorial(2) == 2
 assert math.factorial(5) == 120
-assert math.factorial(5.) == 120
+# issue 1856
+assertRaises(TypeError, math.factorial, 5.)
 
 assert almost_equal(math.acosh(1), 0)
 
@@ -217,7 +218,81 @@ x = Angle(36.9, (1,2))
 y = Angle(53.1, (3,4))
 
 assert (x, x + y, x < y, x ** 0.5) == (36.9, 90.0, True, 6.074537019394976)
-assert (abs(x), int(x), math.sin(x), math.log(x)) == \
-       (36.9, 36, -0.7167370231606575, 3.6082115510464816)
+assert almost_equal(math.sin(x), -0.7167370231606575)
+assert (abs(x), int(x), math.log(x)) == \
+       (36.9, 36, 3.6082115510464816)
+
+# issue 1590
+assert math.acosh(1e155) == 357.593836594637
+
+# issue 1591
+assert math.lgamma(1e3) == 5905.220423209181
+
+# issue 1594
+for x in [-1, -1.0, 0, 0.0, float('-inf')]:
+    assertRaises(ValueError, math.gamma, x)
+
+# issue 1758
+assert math.dist((0,0),(1,0)) == 1.0
+
+# issue 1759
+assert math.ceil(5) == 5
+
+# issue 1784
+assert str(math.pow(1, 1)) == "1.0"
+assert str(math.pow(1, 0.5)) == "1.0"
+
+# issue 1811
+assert math.hypot(1) == 1.0
+assert math.hypot() == 0
+
+# issue 1813
+assert math.log2(1 << 53) == 53.0
+assert math.log2((1<<53) + 657889) == 53.00000000010537
+
+assert math.log2(1 << 1024) == 1024
+assert math.log(1 << 1024) == 709.782712893384
+assert math.log10(1 << 1024) == 308.25471555991675, math.log10(1 << 1024)
+
+assert math.log1p(1 << 1024 - 1) == 709.0895657128241
+try:
+    math.log1p(1 << 1024)
+    raise Exception("should have riased OverflowError")
+except OverflowError:
+    pass
+
+# issue 1842
+assert not math.isclose(0.1, 0)
+
+# issue 1957
+assert math.isclose(math.gamma(-26.7), -9.622839430100812e-28)
+
+assert math.gamma(0.25) == 3.6256099082219087
+assert math.gamma(-0.25) == -4.90166680986071
+
+assert math.gamma(1.25) == 0.9064024770554773
+assert math.gamma(0.75) == 1.2254167024651779
+assert math.gamma(0.25) == 3.6256099082219087
+assert math.gamma(-0.25) == -4.90166680986071, math.gamma(-0.25)
+assert math.gamma(-0.75) == -4.834146544295877
+
+args = [-26.7, 0.25, -0.25, 1.25, 0.75, -0.75]
+expected = [-62.208243223652396,
+1.2880225246980772,
+1.5895753125511862,
+-0.0982718364218127,
+0.203280951431295,
+1.5757045971498584]
+
+for x, r in zip(args, expected):
+    assert math.isclose(math.lgamma(x), r)
+
+# issue 1989
+assert_raises(ValueError, math.log, 0, msg="math domain error")
+assert_raises(ValueError, math.log10, 0, msg="math domain error")
+assert_raises(ValueError, math.log2, 0, msg="math domain error")
+
+# rewriting of math.comb
+math.comb(1200, 575)
 
 print("passed all tests..")

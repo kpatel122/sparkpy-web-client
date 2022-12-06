@@ -2,6 +2,9 @@
 from _sys import *
 import javascript
 
+class Error(Exception):
+    pass
+
 _getframe = Getframe
 
 abiflags = 0 # required in sysconfig
@@ -24,7 +27,10 @@ dont_write_bytecode = True
 
 exec_prefix = __BRYTHON__.brython_path
 
-executable = __BRYTHON__.brython_path + '/brython.js'
+if hasattr(__BRYTHON__, 'full_url'):
+    executable = __BRYTHON__.full_url.address + 'brython.js'
+else:
+    executable = __BRYTHON__.brython_path + 'brython.js'
 
 argv = [__BRYTHON__.script_path]
 
@@ -32,6 +38,8 @@ argv = [__BRYTHON__.script_path]
 def displayhook(value):
     if value is not None:
         stdout.write(repr(value))
+
+__displayhook__ = displayhook
 
 def exit(i=None):
     raise SystemExit('')
@@ -51,14 +59,12 @@ class flag_class:
       self.bytes_warning = 0
       self.quiet = 0
       self.hash_randomization = 1
+      self.isolated = 0
+      self.dev_mode = False
+      self.utf8_mode = 0
+      self.warn_default_encoding = 0
 
 flags = flag_class()
-
-class float_info:
-    mant_dig = 53
-    max = javascript.Number.MAX_VALUE
-    min = javascript.Number.MIN_VALUE
-    radix = 2
 
 def getfilesystemencoding(*args, **kw):
     """getfilesystemencoding() -> string
@@ -84,6 +90,8 @@ maxsize = 2 ** 63 - 1
 maxunicode = 1114111
 
 platform = "brython"
+
+platlibdir = __BRYTHON__.brython_path + 'Lib'
 
 prefix = __BRYTHON__.brython_path
 
@@ -159,23 +167,27 @@ class _version_info:
 #eventually this needs to be the real python version such as 3.0, 3.1, etc
 version_info = _version_info(__BRYTHON__.version_info)
 
-class _implementation:
+class SimpleNamespace:
 
-  def __init__(self):
-      self.name = 'brython'
-      self.version = _version_info(__BRYTHON__.implementation)
-      self.hexversion = self.version.hexversion()
-      self.cache_tag = None
+    def __init__(self, /, **kwargs):
+        self.__dict__.update(kwargs)
 
-  def __repr__(self):
-      return "namespace(name='%s' version=%s hexversion='%s')" % (self.name,
-          self.version, self.hexversion)
+    def __repr__(self):
+        items = (f"{k}={v!r}" for k, v in self.__dict__.items())
+        return "{}({})".format("namespace", ", ".join(items))
 
-  def __str__(self):
-      return "namespace(name='%s' version=%s hexversion='%s')" % (self.name,
-          self.version, self.hexversion)
+    def __eq__(self, other):
+        if isinstance(self, SimpleNamespace) and isinstance(other, SimpleNamespace):
+           return self.__dict__ == other.__dict__
+        return NotImplemented
 
-implementation = _implementation()
+SimpleNamespace.__module__ = "types"
+
+vi = _version_info(__BRYTHON__.implementation)
+implementation = SimpleNamespace(name = "brython",
+    version=vi,
+    hexversion = vi.hexversion(),
+    cache_tag = None)
 
 class _hash_info:
 
@@ -251,10 +263,10 @@ class _float_info:
         self.dig = 15
         self.epsilon = 2 ** -52
         self.mant_dig = 53
-        self.max = javascript.Number.MAX_VALUE
+        self.max = __BRYTHON__.MAX_VALUE
         self.max_exp = 2 ** 10
         self.max_10_exp = 308
-        self.min = 2 ** (-1022)
+        self.min = __BRYTHON__.MIN_VALUE
         self.min_exp = -1021
         self.min_10_exp = -307
         self.radix=2

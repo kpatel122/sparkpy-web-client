@@ -17,6 +17,7 @@ function create_type(obj){
 function clone(obj){
     var res = create_type(obj)
     res.$items = obj.$items.slice()
+    res.$numbers = obj.$numbers.slice()
     for(key in obj.$hashes){
         res.$hashes[key] = obj.$hashes[key]
     }
@@ -33,14 +34,12 @@ var set = {
     $native: true
 }
 
-set.__add__ = function(self,other){
-    throw _b_.TypeError.$factory(
-        "unsupported operand type(s) for +: 'set' and " + typeof other)
-}
-
 set.__and__ = function(self, other, accept_iter){
-    try{$test(accept_iter, other)}
-    catch(err){return _b_.NotImplemented}
+    try{
+        $test(accept_iter, other)
+    }catch(err){
+        return _b_.NotImplemented
+    }
     var res = create_type(self)
     for(var i = 0, len = self.$items.length; i < len; i++){
         if(_b_.getattr(other, "__contains__")(self.$items[i])){
@@ -60,29 +59,32 @@ set.__class_getitem__ = function(cls, item){
 }
 
 set.__contains__ = function(self, item){
-    if(self.$simple){
-        if(typeof item == "number" || item instanceof Number){
-            if(isNaN(item)){ // special case for NaN
-                for(var i = self.$items.length-1; i >= 0; i--){
-                    if(isNaN(self.$items[i])){return true}
+    if(typeof item == "number"){
+        return self.$numbers.indexOf(item) > -1
+    }else if(_b_.isinstance(item, _b_.float)){
+        if(isNaN(item.value)){ // special case for NaN
+            for(var i = self.$items.length-1; i >= 0; i--){
+                if(isNaN(self.$items[i].value)){
+                    return true
                 }
-                return false
-            }else if(item instanceof Number){
-                return self.$numbers.indexOf(item.valueOf()) > -1
-            }else{
-                return self.$items.indexOf(item) > -1
             }
-        }else if(typeof item == "string"){
-            return self.$items.indexOf(item) > -1
+            return false
+        }else{
+            return self.$numbers.indexOf(item.value) > -1
         }
+    }else if(typeof item == "string"){
+        return self.$items.indexOf(item) > -1
     }
-    if(! _b_.isinstance(item, set)){
-        $B.$getattr(item, "__hash__") // raises TypeError if item is not hashable
-        // If item is a set, "item in self" is True if item compares equal to
-        // one of the set items
-    }
-    var hash = _b_.hash(item)
+    var hash = _b_.hash(item), // raises TypeError if item is not hashable
+        item_class = item.__class__ || $B.get_class(item) // === _b_.tuple
     if(self.$hashes[hash]){
+        // test identity first
+        for(var i = 0, len = self.$hashes[hash].length; i < len;i++){
+            if(self.$hashes[hash][i] === item){
+                return true
+            }
+        }
+        // then equality
         for(var i = 0, len = self.$hashes[hash].length; i < len;i++){
             if($B.rich_comp("__eq__", self.$hashes[hash][i], item)){
                 return true
@@ -94,7 +96,9 @@ set.__contains__ = function(self, item){
 
 set.__eq__ = function(self, other){
     // compare class set
-    if(other === undefined){return self === set}
+    if(other === undefined){
+        return self === set
+    }
 
     if(_b_.isinstance(other, [_b_.set, _b_.frozenset])){
       if(other.$items.length == self.$items.length){
@@ -147,6 +151,7 @@ set.__init__ = function(self, iterable, second){
 
     if(_b_.isinstance(iterable, [set, frozenset])){
         self.$items = iterable.$items.slice()
+        self.$numbers = iterable.$numbers.slice()
         self.$hashes = {}
         for(var key in iterable.$hashes){
             self.$hashes[key] = iterable.$hashes[key]
@@ -168,7 +173,13 @@ set.__init__ = function(self, iterable, second){
 
 var set_iterator = $B.make_iterator_class("set iterator")
 set.__iter__ = function(self){
-    self.$items.sort()
+    // Sort items by hash
+    self.$items.sort(function(x, y){
+        var hx = _b_.hash(x),
+            hy = _b_.hash(y)
+        return hx == hy ? 0 :
+               hx < hy ? -1 : 1
+    })
     return set_iterator.$factory(self.$items)
 }
 
@@ -204,9 +215,8 @@ set.__new__ = function(cls){
     }
     return {
         __class__: cls,
-        $simple: true,
         $items: [],
-        $numbers: [], // stores integers, and floats equal to integers
+        $numbers: [], // stores integers and floats
         $hashes: {}
     }
 }
@@ -242,18 +252,14 @@ set.__reduce_ex__ = function(self, protocol){
     return set.__reduce__(self)
 }
 
-set.__rsub__ = function(self, other){
-    // Used when other.__sub__(self) is NotImplemented
-    return set.__sub__(self, other)
+set.__repr__ = function(self){
+    $B.builtins_repr_check(set, arguments) // in brython_builtins.js
+    return set_repr(self)
 }
 
-set.__rxor__ = function(self, other){
-    // Used when other.__xor__(self) is NotImplemented
-    return set.__xor__(self, other)
-}
-
-set.__str__ = set.__repr__ = function(self){
-    var klass_name = $B.class_name(self)
+function set_repr(self){
+    // shared between set and frozenset
+    klass_name = $B.class_name(self)
     if(self.$items.length === 0){
         return klass_name + "()"
     }
@@ -264,7 +270,21 @@ set.__str__ = set.__repr__ = function(self){
     if($B.repr.enter(self)){
         return klass_name + "(...)"
     }
-    self.$items.sort()
+    // try ordering; sets that compare equal have the same repr(), ie with
+    // items in the same order
+    try{
+        self.$items.sort(function(x, y){
+            var hx = _b_.hash(x),
+                hy = _b_.hash(y)
+            return hx > hy ? 1 :
+                   hx == hy ? 0 :
+                   - 1
+            }
+        )
+    }catch(err){
+        // ignore
+        console.log('erreur', err.message)
+    }
     for(var i = 0, len = self.$items.length; i < len; i++){
         var r = _b_.repr(self.$items[i])
         if(r === self || r === self.$items[i]){res.push("{...}")}
@@ -273,6 +293,16 @@ set.__str__ = set.__repr__ = function(self){
     res = res.join(", ")
     $B.repr.leave(self)
     return head + res + tail
+}
+
+set.__rsub__ = function(self, other){
+    // Used when other.__sub__(self) is NotImplemented
+    return set.__sub__(other, self)
+}
+
+set.__rxor__ = function(self, other){
+    // Used when other.__xor__(self) is NotImplemented
+    return set.__xor__(self, other)
 }
 
 set.__sub__ = function(self, other, accept_iter){
@@ -324,30 +354,28 @@ $B.make_rmethods(set)
 function $add(self, item){
     var $simple = false
     if(typeof item === "string" || typeof item === "number" ||
-            item instanceof Number){
+            item.__class__ === _b_.float){
         $simple = true
     }
 
     if($simple){
-        var ix = self.$items.indexOf(item)
-        if(ix == -1){
-            if(item instanceof Number &&
-                    self.$numbers.indexOf(item.valueOf()) > -1){
-                // do nothing
-            }else if(typeof item == "number" &&
-                    self.$numbers.indexOf(item) > -1){
-                // do nothing
-            }else{
+        if(item.__class__ === _b_.float){
+            if(self.$numbers.indexOf(item.value) == -1){
+                self.$numbers.push(item.value)
                 self.$items.push(item)
-                var value = item.valueOf()
-                if(typeof value == "number"){
-                    self.$numbers.push(value)
-                }
+            }
+        }else if(typeof item == "number"){
+            if(self.$numbers.indexOf(item) == -1){
+                self.$numbers.push(item)
+                self.$items.push(item)
             }
         }else{
+            var ix = self.$items.indexOf(item)
             // issue 543 : for some Javascript implementations,
             // [''].indexOf(0) is 0, not -1, so {''}.add(0) is {''}
-            if(item !== self.$items[ix]){self.$items.push(item)}
+            if(item !== self.$items[ix]){
+                self.$items.push(item)
+            }
         }
     }else{
         // Compute hash of item : raises an exception if item is not hashable,
@@ -388,6 +416,7 @@ set.clear = function(){
     var $ = $B.args("clear", 1, {self: null}, ["self"],
         arguments, {}, null, null)
     $.self.$items = []
+    $.self.$numbers = []
     $.self.$hashes = {}
     return $N
 }
@@ -780,11 +809,6 @@ frozenset.__hash__ = function(self) {
    return self.__hashvalue__ = _hash
 }
 
-frozenset.__init__ = function(){
-    // doesn't do anything
-    return $N
-}
-
 frozenset.__new__ = function(cls){
     if(cls === undefined){
         throw _b_.TypeError.$factory(
@@ -797,6 +821,11 @@ frozenset.__new__ = function(cls){
         $numbers: [],
         $hashes: {}
         }
+}
+
+frozenset.__repr__ = function(self){
+    $B.builtins_repr_check(frozenset, arguments) // in brython_builtins.js
+    return set_repr(self)
 }
 
 // Singleton for empty frozensets

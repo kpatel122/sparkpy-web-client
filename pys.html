@@ -1,630 +1,265 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<meta charset="utf-8">
-<title>Sparkpy</title>
+  <!-- sparkpy -->
+  <link rel="stylesheet" href="CSS/sparkpy.css">
+  <!--main styling-->
+  <link rel="stylesheet" href="CSS/dropdowns.css">
+  <!--settings row-->
+  <link rel="stylesheet" href="CSS/settingsRow.css">
+  <!--toggle button-->
+  <title>sparkpy</title>
 
-<!--start BLE includes -->
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <!--brython css-->
 
-<!-- unity style sheet-->
-<!--
-  add to unity line 68
-  parent.unint = unityInstance;
--->
+  <!-- <link rel="stylesheet" href="brython/brython.css"> !-->
+  <link rel="stylesheet" href="brython/console.css">
+
+  <!--brython js includes-->
+  <script type="text/javascript" src="brython/src/brython_builtins.js"></script>
+  <script type="text/javascript" src="brython/src/version_info.js"></script>
+  <script type="text/javascript" src="brython/src/python_tokenizer.js"></script>
+  <script type="text/javascript" src="brython/src/py_ast.js"></script>
+  <script type="text/javascript" src="brython/src/py2js.js"></script>
+  <script type="text/javascript" src="brython/src/loaders.js"></script>
+  <script type="text/javascript" src="brython/src/py_object.js"></script>
+  <script type="text/javascript" src="brython/src/py_type.js"></script>
+  <script type="text/javascript" src="brython/src/py_utils.js"></script>
+  <script type="text/javascript" src="brython/src/py_sort.js"></script>
+  <script type="text/javascript" src="brython/src/py_builtin_functions.js"></script>
+  <script type="text/javascript" src="brython/src/py_exceptions.js"></script>
+  <script type="text/javascript" src="brython/src/py_range_slice.js"></script>
+  <script type="text/javascript" src="brython/src/py_bytes.js"></script>
+  <script type="text/javascript" src="brython/src/py_set.js"></script>
+  <script type="text/javascript" src="brython/src/js_objects.js"></script>
+  <script type="text/javascript" src="brython/src/stdlib_paths.js"></script>
+  <script type="text/javascript" src="brython/src/py_import.js"></script>
+  <script type="text/javascript" src="brython/src/unicode_data.js"></script>
+  <script type="text/javascript" src="brython/src/py_string.js"></script>
+  <script type="text/javascript" src="brython/src/py_int.js"></script>
+  <script type="text/javascript" src="brython/src/py_long_int.js"></script>
+  <script type="text/javascript" src="brython/src/py_float.js"></script>
+  <script type="text/javascript" src="brython/src/py_complex.js"></script>
+  <script type="text/javascript" src="brython/src/py_dict.js"></script>
+  <script type="text/javascript" src="brython/src/py_list.js"></script>
+  <script type="text/javascript" src="brython/src/py_generator.js"></script>
+  <script type="text/javascript" src="brython/src/py_dom.js"></script>
+  <script type="text/javascript" src="brython/src/py_pattern_matching.js"></script>
+  <script type="text/javascript" src="brython/src/builtin_modules.js"></script>
+  <script type="text/javascript" src="brython/src/async.js"></script>
+  <script type="text/javascript" src="brython/src/ast_to_js.js"></script>
+  <script type="text/javascript" src="brython/src/symtable.js"></script>
+
+  <script src="brython/assets/header.brython.js"></script>
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="msapplication-TileColor" content="#2196f3">
-<meta name="msapplication-config" content="browserconfig.xml">
-<meta name="theme-color" content="#2196f3">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="msapplication-starturl" content="./">
-<meta name="description" content="Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices">
+  <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/python3" id="tests_editor">
+
+  from browser import document, window, bind
+  import brython.tests.editor as editor
+         
+  def run(ev):
+    document['console'].value = ''
+    editor.run(editor.editor.getValue())
+    
+  document['run'].bind('click', run)
 
 
-<link rel="manifest" href="manifest.json">
-
-
-<link rel="apple-touch-icon" sizes="180x180" href="icons/Icon-180.png">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-<link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#2196f3">
-<link rel="shortcut icon" href="icons/favicon.ico">
-
-
-<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
-<link href="bleterminal/css/normalize.css" rel="stylesheet">
-<link href="bleterminal/css/styles.css" rel="stylesheet">
-<link href="css/loading.css" rel="stylesheet">
-<link href="css/navbar.css" rel="stylesheet">
-<!-- <link href="css/gui.css" rel="stylesheet"> !-->
-
-<!-- end BLE includes -->
-
-<script>
-  var unint = null;
+  editor.reset()
   
-   
+
+  #samples loader
+  smp = document['samples']
+
+  document.forms['SamplesForm'].reset() #firefox ingnores selected attribute
+
+  def selectSample(ev):
+    filename = smp.value  
+
+    if(filename == ''):
+      return
+
+    fake_qs = '?foo=%s' #%time.time()
+    code = open(filename +fake_qs).read()
+    editor.editor.setValue(code)
   
- </script>
 
-
-<!--Brython start scripts-->
-<!--
-<link rel="stylesheet" href="brython/brython.css">
-<link rel="stylesheet" href="brython/console.css">
-!-->
-
-<script type="text/javascript" src="brython/src/brython_builtins.js"></script>
-<script type="text/javascript" src="brython/src/version_info.js"></script>
-<script type="text/javascript" src="brython/src/py2js.js"></script>
-<script type="text/javascript" src="brython/src/loaders.js"></script>
-<script type="text/javascript" src="brython/src/py_object.js"></script>
-<script type="text/javascript" src="brython/src/py_type.js"></script>
-<script type="text/javascript" src="brython/src/py_utils.js"></script>
-<script type="text/javascript" src="brython/src/py_sort.js"></script>
-<script type="text/javascript" src="brython/src/py_builtin_functions.js"></script>
-<script type="text/javascript" src="brython/src/py_exceptions.js"></script>
-<script type="text/javascript" src="brython/src/py_range_slice.js"></script>
-<script type="text/javascript" src="brython/src/py_bytes.js"></script>
-<script type="text/javascript" src="brython/src/py_set.js"></script>
-<script type="text/javascript" src="brython/src/js_objects.js"></script>
-<script type="text/javascript" src="brython/src/stdlib_paths.js"></script>
-<script type="text/javascript" src="brython/src/py_import.js"></script>
-
-<script type="text/javascript" src="brython/src/unicode_data.js"></script>
-<script type="text/javascript" src="brython/src/py_string.js"></script>
-<script type="text/javascript" src="brython/src/py_int.js"></script>
-<script type="text/javascript" src="brython/src/py_long_int.js"></script>
-<script type="text/javascript" src="brython/src/py_float.js"></script>
-<script type="text/javascript" src="brython/src/py_complex.js"></script>
-<script type="text/javascript" src="brython/src/py_dict.js"></script>
-<script type="text/javascript" src="brython/src/py_list.js"></script>
-<script type="text/javascript" src="brython/src/py_generator.js"></script>
-<script type="text/javascript" src="brython/src/py_dom.js"></script>
-
-<script type="text/javascript" src="brython/src/builtin_modules.js"></script>
-<script type="text/javascript" src="brython/src/py_import_hooks.js"></script>
-<script type="text/javascript" src="brython/src/async.js"></script>
-
-<script type="text/javascript" src="brython/src/brython_stdlib.js"></script>
-
-<script src="brython/assets/header.brython.js"></script>
-
-<script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
-<!-- Brython end sripts-->
-
-
-<!--Top navbar-->
-<style>
-  /* Style buttons */
-
-  </style>
-  <!-- navbar-->
-  <div class="topnav" id="myTopnav">
-      <a href="#home" class="active">Home</a>
-      <a href="#shop">Shop</a>
-      <div class="dropdown">
-        <button class="dropbtn">Learn 
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
-        </div>
-      </div>
-      <a href="#contact">Contact</a> 
-      
-      <a id="login" style="float:right" href="#login">Login</a>
-      <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-    </div>
-    <br>
-
-
-<!-- brython editor start-->
-<script type="text/python3" id="tests_editor">
-
-from browser import document as doc, window,bind
-from browser import html
-import header
-
-import brython.tests.editor as editor
-
-import time
-
-
-qs_lang,language = 'en' #= header.show()         needs to be fixed
-
-doc["test_suite"].href = f"brython/tests/tests.html?lang={language}"
-# other translations
-
-trans = {
-    'report_bugs':{'en':'Please report bugs in the ',
-                   'es':'Poner los bugs en el ',
-                   'fr':"Signalez les bugs dans l'"},
-    'test_page':{'en':'Tests page','es':'P&aacute;gina de pruebas','fr':'Page de tests'},
-    #'run':{'en':'run','es':'ejecutar','fr':'Exécuter'},
-    'clear':{'en':'clear','es':'borrar','fr':'Effacer'}
-}
-
-for key in trans:
-    if key in doc:
-        doc[key].html = trans[key].get(language,trans[key]['en'])
-
-def set_debug(ev):
-    if ev.target.checked:
-        __BRYTHON__.debug = 1
-    else:
-        __BRYTHON__.debug = 0
-
-__BRYTHON__.debug = False #int(doc['set_debug'].checked)
-
-# bindings
-#doc['set_debug'].bind('change',set_debug)
-
-# next functions are defined in editor.py
-#doc['show_js'].bind('click', editor.show_js)
-#doc['share_code'].bind('click', editor.share_code)
-# Create a lambda around editor.run() so that the event object is not passed to it
-doc['run'].bind('click',lambda *args: editor.run())
-#doc['show_console'].bind('click', editor.show_console)
-
-
-#hide animation
-window.hideloader()
-
-#window.blereturn = blereturn
+  smp.bind("change", selectSample)
 
  
-#doc['editor'].value = 'for i in range(10):\n\tprint(i)'
-#editor.value = 'for i in range(10):\n\tprint(i)'
 
 
-
-
- 
-smp = doc['samples']
-
-doc.forms['SamplesForm'].reset() #firefox ingnores selected attribute
-
-def selectSample(ev):
-  filename = smp.value  
-
-  if(filename == ''):
-    return
-
-  fake_qs = '?foo=%s' %time.time()
-  code = open(filename +fake_qs).read()
-  editor.editor.setValue(code)
-  
-
-smp.bind("change", selectSample)
-
-</script>
-
-<script>
-function run_js(){
-    var cons = document.getElementById("console")
-    var jscode = cons.value
-    var t0 = (new Date()).getTime()
-    eval(jscode)
-    var t1 = (new Date()).getTime()
-    console.log("Javascript code run in "+(t1-t0)+" ms")
-}
-</script>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-</head>
-<!--end Head-->
-<!--Body-->
+  </script>
+  <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <body onload="brython({debug:1})">
- 
+  <!-- NAVBAR START !-->
+  <nav class="navbar">
+    <div class="logo-title"><img src="Images/logo.png" width="70%" height="70%"></div>
+    <a href="#" class="navmenu-hamburger" onclick="navMenuClick();"> <!-- navMenuClick() defined in sparkpy.js-->
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </a>
+    <div class="navbar-links sparkpy-fonts" id="navbar-links-id">
+      <ul>
+        <li><a href="pys.html">Home</a></li>
+        <li><a href="Docs\_build\html\index.html">Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="#">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- NAVBAR END-->
 
-<!--loading animation-->
-<div class="center">
-  <div id="loading" class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-</div>
-<!--main logo-->
-<img src="icons/logo.png" style="display: block;margin-left: auto;margin-right: auto;width: 50%;;height:10%; width:20%;">
+  <!-- MAIN GRID START-->
+  <div class="grid-container" id="container">
 
+    <div class="grid-item grid-item-settings">
 
+      <!-- EMBEDDED SETTINGS GRIP START -->
+      <div class="settings-grid">
 
-<!--HIDE BLE for pyspark-->
-<div style="display:none;" name="hideBLE">  
+        <div class="settings-play-icon">
+          <button class="play-icon" id="run" aria-label="run" onclick="unityRestScene()"></button> <!--unityRestScene() defined in pys.html-->
+          <!--play button-->
+        </div>
+        <div class="settings-settings-icon">
 
-  <!-- BE Conections buttons-->
-  <div id="display_ble" style="display: block;">
-    <div style="display:none;" id="bleterminal" class="app"> <!--hide until loaded-->
-
-      <div class="toolbar">
-
-          <div id="device-name" class="name">Terminal</div>
-
-          <div class="buttons">
-              <!-- on click for these buttons are implemented in main.js-->
-
-              <!--ble connect button !-->
-              <button title="bluetooth connect" id="connect" type="button" aria-label="Connect">
-                  <i class="material-icons">bluetooth_connected</i>
-              </button>
-              
-              <!--ble disconnect button !-->
-              <button title="bluetooth disconnect" id="disconnect" type="button" aria-label="Disconnect">
-                  <i class="material-icons">bluetooth_disabled</i>
-              </button>
-
+          <div class="toggle-container" id="settings-toggle-container" onclick="toggleSettings()"> <!--toggleSettings() defined in settingsRow.js-->
+            <span class="toggle" id="toggle-switch"></span>
           </div>
 
-      </div>
+        </div>
+        <div class="settings-themes-dropdown">
+          <!--themes dropdown-->
+          <div id="themes-select" class="theme-select" style="display:none;">
+            <select id="themes" style="max-width:min-content" onchange="themeSelect();">  <!--themeSelect() defined in themes.js-->
+              <optgroup id="group-light" label="Light"></optgroup>
+              <optgroup id="group-dark" label="Dark"></optgroup>
+            </select>
+          </div>
+          <!--samples dropdown-->
+          <div class="theme-select">
+            <form name="SamplesForm" method="POST">
+              <select name="samples" id="samples" style="max-width:min-content;display:block">
+                <optgroup label="Basic">
+                  <option disabled value="" selected>Samples</option>
+                  <option value="Samples/1-CreateEnvironment.py">1-Create Environment</option>
+                  <option value="Samples/2-CreateCharacter.py">2-Create Character</option>
+                  <option value="Samples/3-SetAnimation.py">3-Set Animation</option>
+                  <option value="Samples/4-ControlMode.py">4-Control Mode</option>
+                  <option value="Samples/5-Sounds.py">5-Sounds</option>
+                </optgroup>
+                <optgroup label="Special Effects">
+                  <option value="Samples/7-SimpleEffects.py">1-Simple Effect</option>
+                  <option value="Samples/8-AdvancedEffects.py">2-Advanced Effect</option>
+                </optgroup>
+                <optgroup label="Physics">
+                  <option value="Samples/6-Collisions.py">1-Collisions</option>
+                </optgroup>
+                <optgroup label="Delays">
+                  <option value="Samples/9-PrimitivesWithSleep.py">1-Primivitves with sleep</option>
+                </optgroup>
 
-      <!-- BLE Terminal -->
-      <div id="terminal" class="terminal"></div>
-
-      <form id="send-form" class="send-form">
-
-          <!-- terminal output -->
-          <input id="input" type="text" aria-label="Input" autocomplete="off" placeholder="Type something to send...">
-
-          <!-- terminal send button -->
-          <button title="send to bluetooth" type="submit" aria-label="Send">
-              <i class="material-icons">send</i>
-          </button>
-
-          <!--clear terminal button !--> 
-          <button title="clear terminal" id="clear_ble_terminal" type="button" onclick="clearBLETerminal()">
-              <i class="material-icons">clear_all</i>
-          </button>
-
-      </form>
-    </div>
-  </div>
-
-<!--END HIDE BLE-->
-</div>
-
-<div id="main_window" style="width: 100%; height: 100%; display: none;">
-
-  <!--TABLE Main python table-->   
-  <table style="height: 100%; width: 100%;" id="container" border="0" >
-
-    <!--ROW Main render window-->
-    <tr >
-      <td colspan="2"> <!--ADD SAMPLES HERE -->
-         
-        <form name="SamplesForm" method="POST">
-          <select name="samples" id="samples">
-            <optgroup label="Basic">
-              <option disabled  value="" selected>Samples</option>
-              <option value="PySparkSamples/1-CreateEnvironment.py">1-Create Environment</option>
-              <option value="PySparkSamples/2-CreateCharacter.py">2-Create Character</option>
-              <option value="PySparkSamples/3-SetAnimation.py">3-Set Animation</option>
-              <option  value="PySparkSamples/4-ControlMode.py">4-Control Mode</option>
-              <option  value="PySparkSamples/5-Sounds.py">5-Sounds</option>
-            </optgroup>
-            <optgroup label="Special Effects">
-              <option  value="PySparkSamples/7-SimpleEffects.py">1-Simple Effect</option>
-              <option  value="PySparkSamples/8-AdvancedEffects.py">2-Advanced Effect</option>
-            </optgroup>
-            <optgroup label="Physics">
-              <option  value="PySparkSamples/6-Collisions.py">1-Collisions</option>
-            </optgroup>
-            <optgroup label="Delays">
-              <option  value="PySparkSamples/9-PrimitivesWithSleep.py">1-Primivitves with sleep</option>
-            </optgroup>  
+              </select>
+            </form>
+          </div>
+        </div>
+        <!--Load icon/Font size when load is shown fonts select is hidden and vice versa-->
+        <div class="settings-load-icon">
+          
+          
+          <button class="load-icon" id="load" aria-label="load" onclick="loadFile()"></button> <!--loadFile() defined in sparkpy.js-->
+          <input type="file" accept=".py" onchange="getFileFromUser()" id="loadFileId" style="display: none;" /><!-- hide this field because of its default looks, linked by loadFile() !-->
+          
+          <input id="font-size" class="theme-select" style="width: 40px; padding-top: 2px; display:none;" type="number" min="10" max="20"
+            value="14" onchange="fontSizeChanged();"> <!--fontSizeChanged() defined in settingsRow.js-->
             
-          </select>
-        </form>
-      </td>
-    </tr>
+        </div>
+        <!--Save icon-->
+        <!-- <div class="settings-save-icon"> !-->
+        <div class="settings-save-icon"> 
+            <button class="save-icon" id="save" aria-label="save" onclick="saveFile()"></button> <!--saveFile() defined in sparkpy.js-->
+        </div>
+      </div>
+      <!-- EMBEDDED SETTINGS GRIP END -->
+    </div>
 
-    <tr style="height: 55%;" id="codeditorsize"> <!-- heights on codeditorsize + consolesize + playbuttonsize should = 100%-->
-      <td stle="width:70%;">
-        <div style="width: 100%;" id="editor"></div> <!--python code editor area -->
-      </td>
-      <!-- unity main window -->
-      <td rowspan="2">
-        <iframe src="index.html" style="width: 100%;height: 100%; border: none;">Browser not compatible.</iframe>
-      </td>
-    </tr>
+
+    <div class="grid-item grid-item-code-editor">
+      <div id="editor"></div> </div>
+      <div class=" grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div>
+      <div class="grid-item grid-item-unity">
+        <iframe id="unityiframe" src="index.html" style="width: 100%;height: 100%; border: none; margin-top: 50px;">Browser not
+          compatible.</iframe>
+      </div>
+    </div>
+    <!-- MAIN GRID END -->
+
+
+    <!-- bridge div for linking unity application events with website e.g. collisions, input: Assets/pyslib  !-->
+    <div id="unity_events"></div>
+
+    <!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
+    <div id="unity_return_values"></div>
+
+    <div id="reset_id"></div>
+
+    <script>
+
+    </script>
+    <script type="text/python3">
+    from browser import document,window,bind,aio
+    import sparkpy
     
-    <!--ROW brython left panel- output console-->
-    <tr>
-      <td style="height: 20%; width: 30%;" id="consolesize">
-        <textarea style="display:none" id="console" autocomplete="off"></textarea>
-      </td>
-      <!-- <td id="separator"></td> !-->
-    </tr>
+    
+    @bind(window, "message")
+    def ready(ev):
+      #unity instance variable (window.unint) is now valid
+      sparkpy.SetUnityInstance(window.unint)
+    
+    </script>
 
-
-    <!--ROW  play and settings row-->
-    <tr style="height: 25%; text-align:left;vertical-align:top;padding:0;" id="playbuttonsize;">
-      <td>
-        <button style="float: left;"  title="toggle editor settings"  type="button" aria-label="settings" onclick="toggleSettings();">
-          <i id="settings_icon"  class="material-icons" style="font-size: 30px" >settings</i> &nbsp;&nbsp;
-
-        <button style="float: left;"  title="run code" id="run" type="button" aria-label="run_code" onclick="unityRestScene()">
-          <i  class="material-icons" style="font-size: 30px" >play_arrow</i>
-  
-      </td>
-      <td>
-        <!--disable showing these--> 
-       
-        </td>
-    </tr>
-
-  <!--ROW  Settings Editor drop down-->
-    <tr id="settings_row" style="display: none;"> <!-- editor options row-->
-      <td colspan="2" >
-        <!--editor theme drop down -->
-        <label class="terminal" for="Themes">Theme:</label>
-          <select id="theme_select" name="theme_select" onchange="themeSelect();">
-            <optgroup id="group_light" label="Light"></optgroup>
-            <optgroup id="group_dark" label="Dark"></optgroup>
-          </select>
-        <!-- editor font size-->
-        <label class="terminal" for="FontSize">Font Size:</label>
-        <input type="number" id="fontsize" min="8" max="34" value="12" onchange="fontSizeChanged();">
-      </td>
-    </tr>
-
-      <!--HIDDEN ROW Tests and versions row-->
-      <tr style="display:none">
+    <!-- Need to merge with main grid-->
+    <table>
+      <tr>
+        <td>Brython version: <span id="version"></span></td>
+        <td></td>
         <td>
-          <!-- settings icon -->
-          <span  id="version"></span>  <!--puts the version at the bottom-->
-          <!-- Python code editor uses <a href="https://ace.c9.io/" target="_blank">Ace</a>. !-->
-        </td>
-        <td>
-          <a  href="#" id="test_suite">Tests suite</a>
         </td>
       </tr>
+    </table>
 
-  </table>
-</div>
-<!-- brython editor end-->
+    <!--sparkpy-->
+    <script src="Scripts/sparkpy.js"></script>
+    <script src="Scripts/settingsRow.js"></script>
+    <script src="Scripts/themes.js"></script>
+    <script>
+      const resetEvent = new CustomEvent('resetScene'); //only make this once
+      function unityRestScene() 
+      {
+        //reset the scene. Call the reset scene method in sparkpy via binding to this event
+        document.getElementById("reset_id").dispatchEvent(resetEvent); //event is binded in sparkpy.py
+        //set focus on unity
+        document.getElementById("unityiframe").focus();
+      }
 
- 
+      //one of these for each type of event
+      function inputEventHandler(event) 
+      {
+        //this function is called from pyslib.js from unity
+        //input text is entered
+      }
 
-<!-- <input id="blerec" type="text" > !-->
-<!--this div is a bridge fire ble recieved events-->
-<div id="blerec" ></div>
-<div id="unity_events"></div>
-
-<!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
-<div id="unity_return_values"></div>
-
-<script>
-
-function unityRestScene()
-{
-  unint.SendMessage('Main', "ResetScene");
-  
-
-  
-}
-
-//one of these for each type of event
-function inputEventHandler( event ) 
-{
-
-    /* method 3
-    create custom dispatch here
-    onInputEvent is a function created in the brython script file- see samples/eventhandler.py*/
-    
-    //check if the event handler has been created in the script
-    if( onInputEvent != null )
-    {
-      onInputEvent( event );
-    }
-         
-}
-
- 
-</script>
-
-
-
-
-
-<!--Ble script includes-->
-<script src="bleterminal/BluetoothTerminal.js"></script>
-<script src="bleterminal/main.js"></script>
-<script src="bleterminal/companion.js" data-service-worker="sw.js"></script>
-
-<!--screen loading animations-->
-<script>
-
- 
-
-var themeData = [
-    ["Chrome"         ],
-    ["Clouds"         ],
-    ["Crimson Editor" ],
-    ["Dawn"           ],
-    ["Dreamweaver"    ],
-    ["Eclipse"        ],
-    ["GitHub"         ],
-    ["IPlastic"       ],
-    ["Solarized Light"],
-    ["TextMate"       ],
-    ["Tomorrow"       ],
-    ["Xcode"          ],
-    ["Kuroir"],
-    ["KatzenMilch"],
-    ["SQL Server"           ,"sqlserver"               , "light"],
-    ["Ambiance"             ,"ambiance"                ,  "dark"],
-    ["Chaos"                ,"chaos"                   ,  "dark"],
-    ["Clouds Midnight"      ,"clouds_midnight"         ,  "dark"],
-    ["Dracula"              ,""                        ,  "dark"],
-    ["Cobalt"               ,"cobalt"                  ,  "dark"],
-    ["Gruvbox"              ,"gruvbox"                 ,  "dark"],
-    ["Green on Black"       ,"gob"                     ,  "dark"],
-    ["idle Fingers"         ,"idle_fingers"            ,  "dark"],
-    ["krTheme"              ,"kr_theme"                ,  "dark"],
-    ["Merbivore"            ,"merbivore"               ,  "dark"],
-    ["Merbivore Soft"       ,"merbivore_soft"          ,  "dark"],
-    ["Mono Industrial"      ,"mono_industrial"         ,  "dark"],
-    ["Monokai"              ,"monokai"                 ,  "dark"],
-    ["Nord Dark"            ,"nord_dark"               ,  "dark"],
-    ["Pastel on dark"       ,"pastel_on_dark"          ,  "dark"],
-    ["Solarized Dark"       ,"solarized_dark"          ,  "dark"],
-    ["Terminal"             ,"terminal"                ,  "dark"],
-    ["Tomorrow Night"       ,"tomorrow_night"          ,  "dark"],
-    ["Tomorrow Night Blue"  ,"tomorrow_night_blue"     ,  "dark"],
-    ["Tomorrow Night Bright","tomorrow_night_bright"   ,  "dark"],
-    ["Tomorrow Night 80s"   ,"tomorrow_night_eighties" ,  "dark"],
-    ["Twilight"             ,"twilight"                ,  "dark"],
-    ["Vibrant Ink"          ,"vibrant_ink"             ,  "dark"]
-];
-
-function loadThemes(id, options)
-{
-
-  themesByName = {};
-  
-  themes = options.map(function(data) {
-    
-    
-    var name = data[1] || data[0].replace(/ /g, "_").toLowerCase();
-    var theme = {
-        caption: data[0],
-        theme: "ace/theme/" + name,
-        isDark: data[2] == "dark",
-        name: name
-    };
-    themesByName[name] = theme;
-    return theme;
-    
-  });
-  
-  var light = document.getElementById("group_light");
-  var dark = document.getElementById("group_dark");
- 
-  for(var i=0;i<themes.length;i++)
-  {
-    var opt = themes[i].caption;
-    var val = themes[i].theme
-     
-    var el = document.createElement("option");
-    el.textContent = opt;
-    el.value = val;
-
-    if(themes[i].isDark == true) 
-      dark.appendChild(el);
-    else
-      light.appendChild(el);
-  }
-  
-}
-
-function setDefaultLightTheme(theme_name)
-{
-  
-  document.getElementById('theme_select').value = theme_name;
-  themeSelect();
-}
-
-function hideloader() 
-{
-
-  var DEFAULT_THEME = "ace/theme/chrome";
-  var DEFAULT_FONT_SIZE = '14';
-
-  /* loading instructions */
-  document.getElementById("loading").className = "";
-  document.getElementById("main_window").style="width: 100%; height: 100%; display: block;"
-  document.getElementById("console").style="display:block";
-  document.getElementById("run").style="display:block";
-  document.getElementById("bleterminal").style="display:block";
-  document.getElementById('editor').style.fontSize='14px';
-  loadThemes("theme_select",themeData);
-  setDefaultLightTheme(DEFAULT_THEME);
-
-  document.getElementById('fontsize').value = DEFAULT_FONT_SIZE;
-  fontSizeChanged();
-
-  
-}
-
-function toggleSettings()
-{
-  settings_display = document.getElementById("settings_row").style.display;
-  settings_display = (settings_display == "none") ? "block" : "none"; 
-  document.getElementById("settings_row").style.display = settings_display;
-}
-
-
-function fontSizeChanged()
-{
-  size = parseInt(document.getElementById("fontsize").value);
-  document.getElementById('editor').style.fontSize=size+"px";
-}
-
-function themeSelect()
-{
-  var e = document.getElementById("theme_select");
-  var value = e.options[e.selectedIndex].value;
-  var text = e.options[e.selectedIndex].text;
-  var editor = ace.edit("editor");
-  editor.setTheme(value);
-}
-
-function sendToBle(val) 
-{
-  /* sends to the active bluetooth connection */
-  /* call this function from py files via: 
-  import robotziolib as robotzio
-  robotzio.sendToBle("Hello World")*/
-  send(val);             
-}
-
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function syncsleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
-
-function tester()
-{
-  alert("hello");
-}
-
-// BLE recieved callback
-function bleRecievedHook(bledata){
-
-    const event = new Event('bleReceived');
-    document.getElementById("blerec").value = bledata
-    document.getElementById("blerec").dispatchEvent(event);
-    
-  } 
-  
- 
-</script>  
-
+    </script>
 
 </body>
-
-
 
 </html>

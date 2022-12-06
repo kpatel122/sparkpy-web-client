@@ -1,6 +1,5 @@
 import sys
 import time
-import tb as traceback
 
 from browser import console
 
@@ -15,7 +14,9 @@ def discover_brython_test_modules():
           ("test_decorators.py", "decorators"),
           ("test_descriptors.py", "descriptors"),
           ("test_dict.py", "dicts"),
+          ("test_exceptions.py", "exceptions"),
           ("test_exec.py", "exec / eval"),
+          ("test_file.py", "file open / read"),
           ("test_generators.py", "generators"),
           ("test_import.py", "imports"),
           ("test_iterators.py", "iterators"),
@@ -23,6 +24,7 @@ def discover_brython_test_modules():
           ("test_list.py", "lists"),
           ("test_memoryview.py", "memoryview"),
           ("test_numbers.py", "numbers"),
+          ("test_pattern_matching.py", "pattern matching"),
           ("test_print.py", "print"),
           ("test_set.py", "sets"),
           ("test_special_methods.py", "special methods"),
@@ -40,16 +42,24 @@ def discover_brython_test_modules():
           ("issues.py", "issues")
         ]),
         ("Modules", [
+          ("test_ast.py", "ast"),
           ("test_aio.py", "browser.aio"),
+          ("test_ajax.py", "browser.ajax"),
+          ("test_highlight.py", "browser.highlight"),
+          ("test_browser_html.py", "browser.html"),
           ("test_binascii.py", "binascii"),
           ("test_bisect.py", "bisect"),
+          ("test_builtins.py", "builtins"),
           ("test_code.py", "code"),
           ("test_collections.py", "collections"),
+          ("test_copy.py", "copy"),
           ("test_dataclasses.py", "dataclasses"),
           ("test_datetime.py", "datetime"),
           ("test_decimals.py", "decimals"),
           ("test_functools.py", "functools"),
+          ("test_compression.py", "gzip / zlib"),
           ("test_hashlib.py", "hashlib"),
+          ("test_io.py", "io"),
           ("test_itertools.py", "itertools"),
           ("test_json.py", "json"),
           ("test_math.py", "math"),
@@ -85,16 +95,15 @@ def populate_testmod_input(elem, selected=None):
                 o = html.OPTION(caption, value=filenm)
             g <= o
 
-def run(src, file_path=None):
+def run(src, filename='editor'):
     t0 = time.perf_counter()
     msg = ''
+    ns = {'__name__':'__main__', '__file__': filename}
+    state = 1
     try:
-        ns = {'__name__':'__main__'}
-        if file_path is not None:
-            ns['__file__'] = file_path
         exec(src, ns)
-        state = 1
     except Exception as exc:
+        import traceback
         msg = traceback.format_exc()
         print(msg, file=sys.stderr)
         state = 0
@@ -105,7 +114,6 @@ def run_test_module(filename, base_path=''):
     if base_path and not base_path.endswith('/'):
         base_path += '/'
     file_path = base_path + filename
-    print("file path is " + file_path)
     src = open(file_path).read()
-    return run(src, file_path)
+    return run(src, file_path.replace('/', '__'))
 

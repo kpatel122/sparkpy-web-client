@@ -1,3 +1,0 @@
-import pysparklib
-
-pysparklib.CreateEnvironment(())

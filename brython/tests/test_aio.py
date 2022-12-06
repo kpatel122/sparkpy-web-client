@@ -1,4 +1,4 @@
-from browser import aio
+from browser import aio, timer
 
 results = []
 
@@ -165,6 +165,83 @@ async def test_async_gen(throw, close, expected):
   assert result == expected,(close, result, expected)
   print(throw, close, "async generator ok")
 
+async def test_async_future():
+    """Future is returning value from set_result"""
+    fut = aio.Future()
+    timer.set_timeout(lambda: fut.set_result("OK"), 10)
+    result = await fut
+    assert result == "OK", "Result has not the expected value"
+
+async def test_async_future_exc():
+    """Future is raising exception from set_exception"""
+    fut = aio.Future()
+    timer.set_timeout(lambda: fut.set_exception(ValueError("EXPECTED_ERROR")), 10)
+    try:
+        await fut
+    except ValueError as e:
+        assert str(e) == "EXPECTED_ERROR"
+        return
+    assert False, "Error has not been raised"
+
+n1571 = 0
+t1571 = []
+
+async def test_fstring_with_global():
+    global n1571
+    async def g():
+        global n1571
+        n1571 += 1
+        t1571.append(f'{n1571}')
+    for p in range(3):
+        await g()
+    assert t1571 == ['1', '2', '3']
+    print('fstring with global ok')
+
+answers = {
+    ((1,), (1,), "a1"): -1,
+    ((2,), (2,), "a1"): 1,
+    ((1,), (2,), "a1"): -1,
+    ((2,), (1,), "a1"): 0,
+    ((0,), (0,), "a2"): -1,
+    ((2,), (2,), "a2"): 1,
+    ((0,), (2,), "a2"): -1,
+    ((2,), (0,), "a2"): 0}
+
+class Jump(Exception): pass
+
+
+async def test_issue_1906():
+
+    t = []
+    for a, cs in [("a1", {1, 2}), ("a2", {0, 2})]:
+        t.append(f'Iteration {a}')
+        try:
+            t.append(f'cs in the try is {cs}')
+            async def f(rel, cs1, cs2):
+                if not cs1:
+                    raise Jump(rel)
+                for c1 in [(c,) for c in sorted(cs1)]:
+                    for c2 in [(c,) for c in sorted(cs2)]:
+                        p = answers[(c1, c2, a)]
+                        if rel == 0 or p in (0, rel):
+                             await f(rel or p, cs1.difference(c1), cs2.difference(c2))
+            #cs
+            t.append(f'cs before calling f is {cs}')
+            await f(0, cs, cs)
+        except Jump:
+            pass
+        t.append(f'cs after try is {cs}')
+
+    assert t == ['Iteration a1',
+                 'cs in the try is {1, 2}',
+                 'cs before calling f is {1, 2}',
+                 'cs after try is {1, 2}',
+                 'Iteration a2',
+                 'cs in the try is {0, 2}',
+                 'cs before calling f is {0, 2}',
+                 'cs after try is {0, 2}']
+    print('issue 1906 ok')
+
 async def main(secs, urls):
     print(f"wait {secs} seconds...")
     await aio.sleep(secs)
@@ -184,7 +261,15 @@ async def main(secs, urls):
             [True, True, [1, 2, ZeroDivisionError]]]:
         await test_async_gen(throw, close, expected)
 
+    await test_async_future()
+    await test_async_future_exc()
+
+    await test_fstring_with_global()
+
+    await test_issue_1906()
+
     await raise_error()
+
 
 print("Start...")
 aio.run(main(1, ["test_suite.py", "index.html", "unknown.txt"]),

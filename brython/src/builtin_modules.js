@@ -1,6 +1,6 @@
  ;(function($B) {
      var _b_ = $B.builtins
-    var update = function(mod, data) {
+    var update = $B.update_obj = function(mod, data) {
         for(attr in data) {
             mod[attr] = data[attr]
         }
@@ -78,31 +78,40 @@
         console: self.console && $B.JSObj.$factory(self.console),
         self: $B.win,
         win: $B.win,
-        $$window: $B.win,
+        "window": $B.win,
     }
     browser.__path__ = browser.__file__
 
     if ($B.isNode) {
-        delete browser.$$window
+        delete browser.window
         delete browser.win
     }else if($B.isWebWorker){
         browser.is_webworker = true
         // In a web worker, name "window" is not defined, but name "self" is
-        delete browser.$$window
+        delete browser.window
         delete browser.win
         // browser.send is an alias for postMessage
         browser.self.send = self.postMessage
-    } else {
+        browser.document = _b_.property.$factory(
+            function(){
+                throw _b_.ValueError.$factory(
+                    "'document' is not available in Web Workers")
+            },
+            function(self, value){
+                browser.document = value
+            }
+        )
+    }else{
         browser.is_webworker = false
         update(browser, {
-            $$alert:function(message){
+            "alert":function(message){
                 window.alert($B.builtins.str.$factory(message || ""))
             },
             confirm: $B.JSObj.$factory(window.confirm),
-            $$document:$B.DOMNode.$factory(document),
+            "document": $B.DOMNode.$factory(document),
             doc: $B.DOMNode.$factory(document), // want to use document instead of doc
             DOMEvent:$B.DOMEvent,
-            DOMNode:$B.DOMNode,
+            DOMNode: $B.DOMNode,
             load:function(script_url){
                 // Load and eval() the Javascript file at script_url
                 var file_obj = $B.builtins.open(script_url)
@@ -126,7 +135,6 @@
                         }
                     }
                 })
-                console.log(js_scripts)
                 // Check if imported scripts have been modified
                 for(var mod in $B.imported){
                     if($B.imported[mod].$last_modified){
@@ -141,7 +149,7 @@
                 var $ = $B.args("run_script", 2, {src: null, name: null},
                     ["src", "name"], arguments, {name: "script_" + $B.UUID()},
                     null, null)
-                $B.run_script($.src, $.name, true)
+                $B.run_script($.src, $.name, $B.script_path, true)
             },
             URLParameter:function(name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -165,7 +173,8 @@
                     __class__: _b_.type,
                     $infos:{
                         __name__: tagName,
-                        __module__: "browser.html"
+                        __module__: "browser.html",
+                        __qualname__: tagName
                     }
                 }
 
@@ -200,7 +209,7 @@
                                         console.log("first", first)
                                         console.log(arguments)
                                     }
-                                    $B.handle_error(err)
+                                    throw err
                                 }
                             }
                         }
@@ -240,46 +249,33 @@
                 dict.__mro__ = [$B.DOMNode, $B.builtins.object]
 
                 dict.__new__ = function(cls){
-                    // __new__ must be defined explicitely : it returns an instance of
-                    // DOMNode for the specified tagName
-                    if(cls.$elt_wrap !== undefined) {
-                        // DOMNode is piggybacking on us to autogenerate a node
-                        var elt = cls.$elt_wrap  // keep track of the to wrap element
-                        cls.$elt_wrap = undefined  // nullify for later calls
-                        var res = $B.DOMNode.$factory(elt, true)  // generate the wrapped DOMNode
-                        res._wrapped = true  // marked as wrapped
-                    }else{
-                        var res = $B.DOMNode.$factory(document.createElement(tagName), true)
-                        res._wrapped = false  // not wrapped
+                    // Only called for subclasses of the HTML tag
+                    var res = document.createElement(tagName)
+                    if(cls !== html[tagName]){
+                        // Only set __class__ if it is not browser.html.<tagName>
+                        res.__class__ = cls
                     }
-                    res.__class__ = cls
-                    res.__dict__ = $B.empty_dict()
                     return res
                 }
+
                 $B.set_func_names(dict, "browser.html")
                 return dict
             }
 
             function makeFactory(klass){
+                // Create the factory function for HTML tags.
                 var factory = function(){
-                    if(klass.$elt_wrap !== undefined) {
-                        // DOMNode is piggybacking on us to autogenerate a node
-                        var elt = klass.$elt_wrap  // keep track of the to wrap element
-                        klass.$elt_wrap = undefined  // nullify for later calls
-                        var res = $B.DOMNode.$factory(elt, true)  // generate the wrapped DOMNode
-                        res._wrapped = true  // marked as wrapped
+                    if(klass.$infos.__name__ == 'SVG'){
+                        var res = $B.DOMNode.$factory(
+                            document.createElementNS("http://www.w3.org/2000/svg", "svg"), true)
                     }else{
-                        if(klass.$infos.__name__ == 'SVG'){
-                            var res = $B.DOMNode.$factory(document.createElementNS("http://www.w3.org/2000/svg", "svg"), true)
-                        }else{
-                            var elt = document.createElement(klass.$infos.__name__),
-                                res = $B.DOMNode.$factory(elt, true)
-                        }
-                        res._wrapped = false  // not wrapped
+                        var res = document.createElement(klass.$infos.__name__)
                     }
-                    res.__class__ = klass
                     // apply __init__
-                    klass.__init__(res, ...arguments)
+                    var init = $B.$getattr(klass, "__init__", null)
+                    if(init !== null){
+                        init(res, ...arguments)
+                    }
                     return res
                 }
                 return factory
@@ -309,119 +305,195 @@
                         // HTML5.1 tags
                         'DETAILS','DIALOG','MENUITEM','PICTURE','SUMMARY']
 
+            // Object representing the module browser.html
+            var html = {}
+
             // Module has an attribute "tags" : a dictionary that maps all tag
             // names to the matching tag class factory function.
-            var obj = {tags:$B.empty_dict()},
-                dicts = {}
+            // Implemented as a wrapper around a Javascript object for
+            // performance.
+            html.tags = $B.jsobj_as_pydict.$factory(html,
+                function(attr){
+                    return tags.indexOf(attr) == -1
+                }
+            )
 
-            // register tags in DOMNode to autogenerate tags when DOMNode is invoked
-            $B.DOMNode.tags = obj.tags
-
-            function maketag(tag){
-                if(!(typeof tag == 'string')){
+            function maketag(tagName){
+                // Create a new class associated with the custom HTML tag
+                // "tagName". For instance, "makeTag('P2')" creates the class
+                // that can be used to create tags "<P2></P2>"
+                if(!(typeof tagName == 'string')){
                     throw _b_.TypeError.$factory("html.maketag expects a string as argument")
                 }
-                var klass = dicts[tag] = makeTagDict(tag)
+                if(html[tagName] !== undefined){
+                    throw _b_.ValueError.$factory("cannot reset class for "
+                        + tagName)
+                }
+                var klass = makeTagDict(tagName)
                 klass.$factory = makeFactory(klass)
-                _b_.dict.$setitem(obj.tags, tag, klass)
-
+                html[tagName] = klass
                 return klass
             }
 
-            tags.forEach(function(tag){
-                obj[tag] = maketag(tag)
-            })
+            for(var tagName of tags){
+                maketag(tagName)
+            }
 
             // expose function maketag to generate arbitrary tags (issue #624)
-            obj.maketag = maketag
+            html.maketag = maketag
 
             // expose function to transform parameters (issue #1187)
-            obj.attribute_mapper = function(attr){
+            html.attribute_mapper = function(attr){
                 return attr.replace(/_/g, '-')
             }
 
-            return obj
+            return html
         })(__BRYTHON__)
     }
 
     modules['browser'] = browser
 
     // Class for Javascript "undefined"
-    $B.UndefinedClass = $B.make_class("Undefined",
+    $B.UndefinedType = $B.make_class("UndefinedType",
         function(){return $B.Undefined}
     )
-    $B.UndefinedClass.__mro__ = [_b_.object]
-    $B.UndefinedClass.__bool__ = function(self){
+    $B.UndefinedType.__mro__ = [_b_.object]
+    $B.UndefinedType.__bool__ = function(self){
         return false
     }
-    $B.UndefinedClass.__repr__ = $B.UndefinedClass.__str__ = function(self){
+    $B.UndefinedType.__repr__ = function(self){
         return "<Javascript undefined>"
     }
+    $B.UndefinedType.__str__ = $B.UndefinedType.__repr__;
 
-    $B.Undefined = {__class__: $B.UndefinedClass}
+    $B.Undefined = {__class__: $B.UndefinedType}
 
-    $B.set_func_names($B.UndefinedClass, "javascript")
+    $B.set_func_names($B.UndefinedType, "javascript")
+
+    // Class used by javascript.super()
+    var super_class = $B.make_class("JavascriptSuper",
+        function(){
+            // Use Brython's super() to get a reference to self
+            var b_super = _b_.super.$factory(),
+                b_self = b_super.__self_class__,
+                proto = Object.getPrototypeOf(b_self),
+                parent = proto.constructor.$parent
+            var factory = function(){
+                var p = parent.bind(b_self),
+                    res
+                if(parent.toString().startsWith("class")){
+                    res = new p(...arguments)
+                }else{
+                    res = p(...arguments)
+                }
+                for(key in res){
+                    b_self[key] = res[key]
+                }
+                return res
+            }
+            return {
+                __class__: super_class,
+                __init__: factory,
+                __self_class__: b_self
+            }
+        }
+    )
+
+    super_class.__getattribute__ = function(self, attr){
+        if(attr == "__init__" || attr == "__call__"){
+            return self.__init__
+        }
+        return $B.$getattr(self.__self_class__, attr)
+    }
+
+    $B.set_func_names(super_class, "javascript")
 
     modules['javascript'] = {
-        $$this: function(){
+        "this": function(){
             // returns the content of Javascript "this"
             // $B.js_this is set to "this" at the beginning of each function
             if($B.js_this === undefined){return $B.builtins.None}
             return $B.JSObj.$factory($B.js_this)
         },
-        $$Date: self.Date && $B.JSObj.$factory(self.Date),
-        $$extends: function(js_constr){
+        "Date": self.Date && $B.JSObj.$factory(self.Date),
+        "extends": function(js_constr){
             return function(obj){
-                if(typeof obj == "function"){
-                    var res = function(){
-                        js_constr.call(this, ...arguments)
-                        obj.apply(this, arguments)
-                    }
-                    res.prototype = Object.create(js_constr.prototype)
-                    res.prototype.constructor = res
-                    res.$is_js_func = true
-                    return res
-                }else if(obj.$is_class){
-                    console.log("obj", obj)
-                    if(js_constr.$js_func.name == "Named"){
-                        console.log("-- Named")
-                    }
-                    var res = function(){
-                        console.log("call parent class", obj.$parent_class)
-                        obj.$parent_class.call(this, ...arguments)
-                        if(obj.$$constructor){
-                            var args = [this]
-                            for(var i = 0, len = arguments.length; i < len; i++){
-                                args.push(arguments[i])
-                            }
-                            obj.$$constructor.apply(this, args)
+                if(obj.$is_class){
+                    var factory = function(){
+                        var init = $B.$getattr(obj, "__init__", _b_.None)
+                        if(init !== _b_.None){
+                            init.bind(this, this).apply(this, arguments)
                         }
+                        return this
                     }
-                    res.prototype = Object.create(js_constr.prototype)
-                    res.prototype.constructor = res
-                    res.$is_js_func = true
-                    res.$class = obj
-                    obj.$parent_class = js_constr
-                    for(var attr in obj.__dict__.$string_dict){
-                        var value = obj.__dict__.$string_dict[attr][0]
-                        if(typeof value == "function"){
-                            res.prototype[attr] = (function(x){
+                    factory.prototype = Object.create(js_constr.prototype)
+                    factory.prototype.constructor = factory
+                    factory.$parent = js_constr.$js_func
+                    factory.$is_class = true // for $B.$call
+                    factory.$infos = obj.$infos
+                    for(var key in obj){
+                        if(typeof obj[key] == "function"){
+                            factory.prototype[key] = (function(x){
                                 return function(){
-                                    var args = [this]
-                                    for(var i = 0, len = arguments.length; i < len; i++){
-                                        args.push($B.pyobj2jsobj(arguments[i]))
-                                    }
-                                    return x.apply(this, args)
+                                    // Add "this" as first argument of method
+                                    return obj[x].bind(this, this).apply(this,
+                                        arguments)
                                 }
-                            })(value)
-                        }else{
-                            res.prototype[attr] = $B.pyobj2jsobj(value)
+                            })(key)
                         }
                     }
-                    return res
+                    return factory
                 }
             }
         },
+        import_js: function(url, name){
+            // load JS script at specified url
+            // If it exposes a variable $module, use it as the namespace of imported
+            // module named "name"
+            var $ = $B.args('import_js', 2, {url: null, alias: null},
+                    ['url', 'alias'], arguments, {alias: _b_.None}, null, null),
+                url = $.url
+                alias = $.alias
+            var xhr = new XMLHttpRequest(),
+                result
+            xhr.open('GET', url, false)
+            xhr.onreadystatechange = function(){
+                if(this.readyState == 4){
+                    if(this.status == 200){
+                        eval(this.responseText)
+                        if(typeof $module !== 'undefined'){
+                            result = $B.module.$factory(name)
+                            for(var key in $module){
+                                result[key] = $B.jsobj2pyobj($module[key])
+                            }
+                            result.__file__ = url
+                        }else{
+                            result = _b_.ImportError.$factory('Javascript ' +
+                                `module at ${url} doesn't define $module`)
+                        }
+                    }else{
+                        result = _b_.ModuleNotFoundError.$factory(name)
+                    }
+                }
+            }
+            xhr.send()
+            if(_b_.isinstance(result, _b_.BaseException)){
+                $B.handle_error(result)
+            }else{
+                if(alias === _b_.None){
+                    // set module name from url
+                    alias = url.split('.')
+                    if(alias.length > 1){
+                        alias.pop() // remove extension
+                    }
+                    alias = alias.join('.')
+                }
+                $B.imported[alias] = result
+                var frame = $B.last($B.frames_stack)
+                frame[1][alias] = result
+            }
+        },
+        JSObject: $B.JSObj,
         JSON: {
             __class__: $B.make_class("JSON"),
             parse: function(){
@@ -443,22 +515,28 @@
             var content = $B.$getattr(file_obj, 'read')()
             eval(content)
         },
-        $$Math: self.Math && $B.JSObj.$factory(self.Math),
+        "Math": self.Math && $B.JSObj.$factory(self.Math),
         NULL: null,
-        $$Number: self.Number && $B.JSObj.$factory(self.Number),
+        NullType: $B.make_class('NullType'),
+        "Number": self.Number && $B.JSObj.$factory(self.Number),
         py2js: function(src, module_name){
             if(module_name === undefined){
                 module_name = '__main__' + $B.UUID()
             }
-            return $B.py2js(src, module_name, module_name,
+            var js = $B.py2js({src, filename: '<string>'}, module_name, module_name,
                 $B.builtins_scope).to_js()
+            return $B.format_indent(js, 0)
         },
         pyobj2jsobj:function(obj){return $B.pyobj2jsobj(obj)},
-        $$RegExp: self.RegExp && $B.JSObj.$factory(self.RegExp),
-        $$String: self.String && $B.JSObj.$factory(self.String),
+        "RegExp": self.RegExp && $B.JSObj.$factory(self.RegExp),
+        "String": self.String && $B.JSObj.$factory(self.String),
+        "super": super_class,
         UNDEFINED: $B.Undefined,
-        UndefinedType: $B.UndefinedClass
+        UndefinedType: $B.UndefinedType
     }
+
+    modules.javascript.NullType.$infos.__module__ = 'javascript'
+    modules.javascript.UndefinedType.$infos.__module__ = 'javascript'
 
     var arraybuffers = ["Int8Array", "Uint8Array", "Uint8ClampedArray",
         "Int16Array", "Uint16Array", "Int32Array", "Uint32Array",
@@ -481,8 +559,9 @@
             var $ = $B.args("_getframe", 1, {depth: null}, ['depth'],
                     arguments, {depth: 0}, null, null),
                 depth = $.depth
-            return $B._frame.$factory($B.frames_stack,
-                $B.frames_stack.length - depth - 1)
+            var res = $B.frames_stack[$B.frames_stack.length - depth - 1]
+            res.$pos = $B.frames_stack.indexOf(res)
+            return res
         },
         breakpointhook: function(){
             var hookname = $B.$options.breakpoint,
@@ -523,11 +602,12 @@
         gettrace: function(){
             return $B.tracefunc || _b_.None
         },
+        max_string_length: $B.max_string_length, // in brython_builtins.js
         modules: _b_.property.$factory(
             function(){
                 return $B.obj_dict($B.imported)
             },
-            function(self, obj, value){
+            function(self, value){
                  throw _b_.TypeError.$factory("Read only property 'sys.modules'")
             }
         ),
@@ -535,23 +615,31 @@
             function(){
                 return $B.path
             },
-            function(self, obj, value){
+            function(self, value){
                  $B.path = value;
             }
         ),
         meta_path: _b_.property.$factory(
-            function(){return $B.meta_path},
-            function(self, obj, value){ $B.meta_path = value }
+            function(){
+                return $B.meta_path
+            },
+            function(self, value){
+                $B.meta_path = value
+            }
         ),
         path_hooks: _b_.property.$factory(
-            function(){return $B.path_hooks},
-            function(self, obj, value){ $B.path_hooks = value }
+            function(){
+                return $B.path_hooks
+            },
+            function(self, value){
+                $B.path_hooks = value
+            }
         ),
         path_importer_cache: _b_.property.$factory(
             function(){
                 return _b_.dict.$factory($B.JSObj.$factory($B.path_importer_cache))
             },
-            function(self, obj, value){
+            function(self, value){
                 throw _b_.TypeError.$factory("Read only property" +
                     " 'sys.path_importer_cache'")
             }
@@ -570,25 +658,36 @@
             return _b_.None
         },
         stderr: _b_.property.$factory(
-            function(){return $B.stderr},
-            function(self, value){$B.stderr = value}
+            function(){
+                return $B.stderr
+            },
+            function(self, value){
+                $B.stderr = value
+            }
         ),
         stdout: _b_.property.$factory(
-            function(){return $B.stdout},
+            function(){
+                return $B.stdout
+            },
             function(self, value){
                 $B.stdout = value
             }
         ),
         stdin: _b_.property.$factory(
-            function(){return $B.stdin},
+            function(){
+                return $B.stdin
+            },
             function(self, value){
                 $B.stdin = value
             }
         ),
         vfs: _b_.property.$factory(
             function(){
-                if($B.hasOwnProperty("VFS")){return $B.obj_dict($B.VFS)}
-                else{return _b_.None}
+                if($B.hasOwnProperty("VFS")){
+                    return $B.obj_dict($B.VFS)
+                }else{
+                    return _b_.None
+                }
             },
             function(){
                 throw _b_.TypeError.$factory("Read only property 'sys.vfs'")
@@ -598,12 +697,103 @@
 
     modules._sys.__breakpointhook__ = modules._sys.breakpointhook
 
-    modules._sys.stderr.write = function(data){
-        return $B.$getattr(_sys.stderr.__get__(), "write")(data)
-    }
+    var WarningMessage = $B.make_class("WarningMessage",
+        function(){
+            var $ = $B.make_args("WarningMessage", 8,
+                {message: null, category: null, filename: null, lineno: null,
+                 file: null, line:null, source: null},
+                 ['message', 'category', 'filename', 'lineno', 'file',
+                  'line', 'source'],
+                 arguments, {file: _b_.None, line: _b_.None, source: _b_.None},
+                 null, null)
+            return {
+                __class__: WarningMessage,
+                message: $.message,
+                category: $.category,
+                filename: $.filename,
+                lineno: $.lineno,
+                file: $.file,
+                line: $.line,
+                source: $.source,
+                _category_name: _b_.bool.$factory($.category) ?
+                    $B.$getattr($.category, "__name__") : _b_.None
+            }
+        }
+    )
+    // _warnings provides basic warning filtering support.
+    modules._warnings = {
+        _defaultaction: "default",
+        _filters_mutated: function(){
+        },
+        _onceregistry: $B.empty_dict(),
+        filters: [
+            $B.fast_tuple(['default', _b_.None, _b_.DeprecationWarning, '__main__', 0]),
+            $B.fast_tuple(['ignore', _b_.None, _b_.DeprecationWarning, _b_.None, 0]),
+            $B.fast_tuple(['ignore', _b_.None, _b_.PendingDeprecationWarning, _b_.None, 0]),
+            $B.fast_tuple(['ignore', _b_.None, _b_.ImportWarning, _b_.None, 0]),
+            $B.fast_tuple(['ignore', _b_.None, _b_.ResourceWarning, _b_.None, 0])
+        ],
+        warn: function(message){
+            // Issue a warning, or maybe ignore it or raise an exception.
+            var filters
+            if($B.imported.warnings){
+                filters = $B.imported.warnings.filters
+            }else{
+                filters = modules._warnings.filters
+            }
+            if(filters[0][0] == 'error'){
+                var syntax_error = _b_.SyntaxError.$factory(message.args[0])
+                syntax_error.args[1] = [message.filename, message.lineno,
+                    message.offset, message.line]
+                syntax_error.filename = message.filename
+                syntax_error.lineno = message.lineno
+                syntax_error.offset = message.offset
+                syntax_error.line = message.line
+                throw syntax_error
+            }
+            var frame = $B.imported._sys.Getframe(),
+                f_code = $B._frame.f_code.__get__(frame),
+                lineno = frame.$lineno
+            var category = message.__class__ || $B.get_class(message),
+                warning_message = {
+                    __class__: WarningMessage,
+                    message: message,
+                    category,
+                    filename: message.filename || f_code.co_filename,
+                    lineno: message.lineno || lineno,
+                    file: _b_.None,
+                    line: _b_.None,
+                    source: _b_.None,
+                    _category_name: category.__name__
+                }
+            if($B.imported.warnings){
+                $B.imported.warnings._showwarnmsg_impl(warning_message)
+            }else{
+                var frame = $B.last($B.frames_stack),
+                    file = frame.__file__,
+                    lineno = frame.$lineno,
+                    src = $B.file_cache[file],
+                    trace = ''
+                if(file && lineno){
+                    trace += `${file}:${lineno}: `
+                }
+                trace += $B.class_name(message) + ': ' + message.args[0]
 
-    modules._sys.stdout.write = function(data){
-        return $B.$getattr(_sys.stdout.__get__(), "write")(data)
+                if(src && frame.$lineno){
+                    var line = src.split('\n')[frame.$lineno - 1]
+                    trace += '\n    ' + line.trim()
+                }
+                $B.$getattr($B.stderr, 'write')(trace + '\n')
+                var flush = $B.$getattr($B.stderr, 'flush', _b_.None)
+                if(flush !== _b_.None){
+                    flush()
+                }
+            }
+        },
+        warn_explicit: function(){
+            // Low-level interface to warnings functionality.
+            console.log("warn_explicit", arguments)
+        }
     }
 
     function load(name, module_obj){
@@ -615,11 +805,10 @@
         // set attribute "name" of functions
         for(var attr in module_obj){
             if(typeof module_obj[attr] == 'function'){
-                var attr1 = $B.from_alias(attr)
                 module_obj[attr].$infos = {
                     __module__: name,
-                    __name__: attr1,
-                    __qualname__: name + '.' + attr1
+                    __name__: attr,
+                    __qualname__: name + '.' + attr
                 }
             }
         }
@@ -637,6 +826,13 @@
     for(var attr in _b_){
         _b_.__builtins__[attr] = _b_[attr]
         $B.builtins_scope.binding[attr] = true
+        if(_b_[attr].$is_class){
+            if(_b_[attr].__bases__){
+                _b_[attr].__bases__.__class__ = _b_.tuple
+            }else{
+                _b_[attr].__bases__ = $B.fast_tuple([_b_.object])
+            }
+        }
     }
     _b_.__builtins__.__setattr__ = function(attr, value){
         _b_[attr] = value
@@ -701,7 +897,7 @@
         $B.cell[op] = (function(op){
             return function(self, other){
                 if(! _b_.isinstance(other, $B.cell)){
-                    return NotImplemented
+                    return _b_.NotImplemented
                 }
                 if(self.$cell_contents === null){
                     if(other.$cell_contents === null){
@@ -718,5 +914,69 @@
     })
 
     $B.set_func_names($B.cell, "builtins")
+
+
+    $B.AST = {
+        __class__: _b_.type,
+        __mro__: [_b_.object],
+        $infos:{
+            __qualname__: 'AST',
+            __name__: 'AST'
+        },
+        $is_class: true,
+        $convert: function(js_node){
+            if(js_node === undefined){
+                return _b_.None
+            }
+            var constr = js_node.constructor
+            if(constr && constr.$name){
+                $B.create_python_ast_classes()
+                return $B.python_ast_classes[constr.$name].$factory(js_node)
+            }else if(Array.isArray(js_node)){
+                return js_node.map($B.AST.$convert)
+            }else if(js_node.type){
+                // literal constant
+                switch(js_node.type){
+                    case 'int':
+                        var res = parseInt(js_node.value[1], js_node.value[0])
+                        if(res < $B.min_int || res > $B.max_int){
+                            var res = $B.fast_long_int(BigInt(res))
+                            return res
+                        }
+                        return js_node.sign == '-' ? -res : res
+                    case 'float':
+                        return new Number(js_node.value)
+                    case 'imaginary':
+                        return $B.make_complex(0,
+                            $B.AST.$convert(js_node.value))
+                    case 'ellipsis':
+                        return _b_.Ellipsis
+                    case 'str':
+                        if(js_node.is_bytes){
+                            return _b_.bytes.$factory(js_node.value, 'latin-1')
+                        }
+                        return js_node.value
+                    case 'id':
+                        if(['False', 'None', 'True'].indexOf(js_node.value) > -1){
+                            return _b_[js_node.value]
+                        }
+                        break
+                }
+            }else if(['string', 'number'].indexOf(typeof js_node) > -1){
+                return js_node
+            }else if(js_node.$name){
+                // eg Store(), Load()...
+                return js_node.$name + '()'
+            }else if([_b_.None, _b_.True, _b_.False].indexOf(js_node) > -1){
+                return js_node
+            }else if(js_node.__class__){
+                return js_node
+            }else{
+                console.log('cannot handle', js_node)
+                return js_node
+            }
+        }
+    }
+
 
 })(__BRYTHON__)
