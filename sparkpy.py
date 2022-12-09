@@ -179,6 +179,8 @@ class Character:
     def __str__(self) -> str:
         return str(self.id)
     
+    def GetId(self):
+        return self._characterID 
 
     def Chat(self, text, seconds = -1):
         '''Displays a chat box above the character with 'text' for 'seconds'
