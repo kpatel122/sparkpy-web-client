@@ -22,6 +22,10 @@ AddType application/octet-stream .symbols.json.br
 # The following line improves loading performance for uncompressed builds
 AddType application/wasm .wasm
 
+<FilesMatch "\.data\.br$">
+Header set Content-Type: text/html
+</FilesMatch>
+
 # Uncomment the following line to improve loading performance for gzip-compressed builds with decompression fallback
 # AddEncoding gzip .unityweb
 
