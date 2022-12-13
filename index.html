@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | pyspak</title>
+    <title>Unity WebGL Player | sparkpy-graphics-engine</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
@@ -20,7 +20,7 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">pyspak</div>
+        <div id="unity-build-title">sparkpy-graphics-engine</div>
       </div>
     </div>
     <script>
@@ -58,9 +58,9 @@
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/sparkpy-graphics-engine-build.loader.js";
       var config = {
-        dataUrl: buildUrl + "/sparkpy-graphics-engine-build.data.unityweb",
-        frameworkUrl: buildUrl + "/sparkpy-graphics-engine-build.framework.js.unityweb",
-        codeUrl: buildUrl + "/sparkpy-graphics-engine-build.wasm.unityweb",
+        dataUrl: buildUrl + "/sparkpy-graphics-engine-build.data.br",
+        frameworkUrl: buildUrl + "/sparkpy-graphics-engine-build.framework.js.br",
+        codeUrl: buildUrl + "/sparkpy-graphics-engine-build.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "sparkpy",
         productName: "sparkpy-graphics-engine",
@@ -106,8 +106,8 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          parent.unint = unityInstance; //*add this line*
-          window.parent.postMessage('message');
+          parent.unint = unityInstance; //*add this line* if you get a new unity generated index.html 
+          window.parent.postMessage('message');//tells the parent unity has loaded *add this line* if you get a new unity generated index.html 
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
