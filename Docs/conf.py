@@ -42,5 +42,23 @@ copybutton_copy_empty_lines = False
 html_theme = 'sphinx_rtd_theme' #'sphinx_rtd_theme' 'alabaster'
 html_static_path = ['_static']
 
+html_theme_options = {
+    'analytics_id': 'G-W3QCQRGS7F',  #  Provided by Google in your dashboard
+    'analytics_anonymize_ip': False,
+    'logo_only': False,
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': False,
+    'vcs_pageview_mode': '',
+   # 'style_nav_header_background': 'navy',
+    # Toc options
+    'collapse_navigation': False,
+    #'sticky_navigation': True,
+    'navigation_depth': -1,
+    #'includehidden': True,
+    #'titles_only': False
+}
+
+
 
 smart_quotes =  'no'

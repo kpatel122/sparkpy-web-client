@@ -55,6 +55,7 @@
 <li><a class="reference internal" href="#character-hide-and-show">Character hide and show</a></li>
 <li><a class="reference internal" href="#character-chat">Character chat</a></li>
 <li><a class="reference internal" href="#control-character-with-keyboard">Control character with keyboard</a></li>
+<li><a class="reference internal" href="#control-character-with-keyboard-3rd-person">Control character with keyboard 3rd Person</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#user-input">User Input</a><ul>
@@ -271,7 +272,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>you will notice that the character’s animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED]</p>
+<p>you will notice that the character’s animation continues to play after the movement ends. This is behaviour can resolved using  <a class="reference external" href="index.html#wait-for-seconds">waits</a></p>
 </div>
 </section>
 <section id="character-rotation">
@@ -369,6 +370,25 @@ A character can be controlled in third person mode using ‘third_person’ as t
 </span></pre></div>
 </div>
 </section>
+<section id="control-character-with-keyboard-3rd-person">
+<h5>Control character with keyboard 3rd Person<a class="headerlink" href="#control-character-with-keyboard-3rd-person" title="Permalink to this heading"></a></h5>
+<p>To move a character with the keyboard, use the  <a class="reference external" href="Source/sparkpy.html#sparkpy.Character.ControlMode">ControlMode()</a> method
+A character can be controlled in third person mode using ‘third_person’ as the SetControlMode parameter</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#control character with keyboard example</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Forest&quot;</span><span class="p">)</span>
+
+<span class="c1">#create robot character</span>
+<span class="n">robot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+
+<span class="c1">#set control mode to keyboard</span>
+<span class="hll"><span class="n">robot</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="s2">&quot;third_person&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
 </section>
 <section id="user-input">
 <h4>User Input<a class="headerlink" href="#user-input" title="Permalink to this heading"></a></h4>
@@ -412,7 +432,7 @@ You can hide an input box using <a class="reference external" href="Source/spark
 <p class="admonition-title">Note</p>
 <p><a class="reference external" href="Source/sparkpy.html#sparkpy.ShowInputBox">ShowInputBox()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the ShowInputBox() will continue
 to run regardless if text has been entered or not. To make input from the user <em>synchronous</em> (blocking) meaning any code <em>after</em> the ShowInputBox() can only
-be run <em>after</em> input has been entered, you can use python input(see below)- though this will block the entire application including any animations and character movement or async await for input event() [LINK NEEDED]</p>
+be run <em>after</em> input has been entered, you can use python input(see below)- though this will block the entire application including any animations and character movement or <a class="reference external" href="index.html#wait-for-input">async await for input event().</a></p>
 </div>
 </section>
 <section id="input-box-blocking">
@@ -480,12 +500,12 @@ To retrieve a character object from the ids, use <a class="reference external" h
 <p class="admonition-title">Note</p>
 <p><a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the SetCollisionHandler will continue
 to run regardless of if a collision has occured or not. To make collision detection <em>synchronous</em> (blocking) meaning any code <em>after</em> a collision can only
-be run <em>after</em> a collision has occured, use async await for collision event() [LINK NEEDED]</p>
+be run <em>after</em> a collision has occured, use async await for <a class="reference external" href="index.html#wait-for-collision">collision event()</a></p>
 </div>
 </section>
 <section id="collision-blocking">
 <h5>Collision (blocking)<a class="headerlink" href="#collision-blocking" title="Permalink to this heading"></a></h5>
-<p>TODO</p>
+<p><a class="reference external" href="index.html#wait-for-collision">See wait for collision</a></p>
 </section>
 </section>
 <section id="sounds">
@@ -1161,7 +1181,18 @@ by default primitives are rotated around their y (up) axis</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W3QCQRGS7F', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>

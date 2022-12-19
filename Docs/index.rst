@@ -158,8 +158,8 @@ A character can be moved using the `Move() <Source/sparkpy.html#sparkpy.Characte
 
    #move the robot for 5 seconds
    robot.Move(5)
-   
-.. note:: you will notice that the character's animation continues to play after the movement ends. This is behaviour can resolved using waits [LINK NEEDED] 
+         
+.. note:: you will notice that the character's animation continues to play after the movement ends. This is behaviour can resolved using  `waits <index.html#wait-for-seconds>`_
 
 """"""""""""""""""""""""""""""""
 Character rotation
@@ -275,6 +275,29 @@ A character can be controlled in third person mode using 'third_person' as the S
    #set control mode to keyboard
    robot.ControlMode("keyboard")
 
+""""""""""""""""""""""""""""""""""""""""""""
+Control character with keyboard 3rd Person
+""""""""""""""""""""""""""""""""""""""""""""
+
+To move a character with the keyboard, use the  `ControlMode()  <Source/sparkpy.html#sparkpy.Character.ControlMode>`_ method
+A character can be controlled in third person mode using 'third_person' as the SetControlMode parameter
+
+.. code-block:: python
+   :emphasize-lines: 12
+   
+   import sparkpy
+
+   #control character with keyboard example
+
+   #create an environment
+   sparkpy.Environment("Forest")
+
+   #create robot character
+   robot = sparkpy.Character("YBot")
+
+   #set control mode to keyboard
+   robot.ControlMode("third_person")
+
 
 
 ~~~~~~~~~~
@@ -322,8 +345,8 @@ You can hide an input box using `HideInputBox() <Source/sparkpy.html#sparkpy.Hid
    #any code after ShowInputBox() continues to run regardless if text has been entered 
    
 .. note:: `ShowInputBox() <Source/sparkpy.html#sparkpy.ShowInputBox>`_ is *asynchronous* (non-blocking) meaning any code *after* the ShowInputBox() will continue
-   to run regardless if text has been entered or not. To make input from the user *synchronous* (blocking) meaning any code *after* the ShowInputBox() can only
-   be run *after* input has been entered, you can use python input(see below)- though this will block the entire application including any animations and character movement or async await for input event() [LINK NEEDED]
+   to run regardless if text has been entered or not. To make input from the user *synchronous* (blocking) meaning any code *after* the ShowInputBox() can only     
+   be run *after* input has been entered, you can use python input(see below)- though this will block the entire application including any animations and character movement or `async await for input event(). <index.html#wait-for-input>`_
 
 """"""""""""""""""""""""
 Input box (blocking)
@@ -395,14 +418,14 @@ Collision (non blocking)
 
 .. note:: `SetCollisionHandler() <Source/sparkpy.html#sparkpy.SetCollisionHandler>`_ is *asynchronous* (non-blocking) meaning any code *after* the SetCollisionHandler will continue
    to run regardless of if a collision has occured or not. To make collision detection *synchronous* (blocking) meaning any code *after* a collision can only
-   be run *after* a collision has occured, use async await for collision event() [LINK NEEDED]
+   be run *after* a collision has occured, use async await for `collision event() <index.html#wait-for-collision>`_ 
 
-
+ 
 """"""""""""""""""""
 Collision (blocking)
 """"""""""""""""""""
 
-TODO
+`See wait for collision <index.html#wait-for-collision>`_ 
 
 ~~~~~~
 Sounds

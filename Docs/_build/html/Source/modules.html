@@ -78,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.Character"><code class="docutils literal notranslate"><span class="pre">Character</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Character.Chat"><code class="docutils literal notranslate"><span class="pre">Character.Chat()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Character.ControlMode"><code class="docutils literal notranslate"><span class="pre">Character.ControlMode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Character.GetId"><code class="docutils literal notranslate"><span class="pre">Character.GetId()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Character.Hide"><code class="docutils literal notranslate"><span class="pre">Character.Hide()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Character.Move"><code class="docutils literal notranslate"><span class="pre">Character.Move()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Character.PlaySound"><code class="docutils literal notranslate"><span class="pre">Character.PlaySound()</span></code></a></li>
@@ -121,10 +122,12 @@
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Primitive.StopRotation"><code class="docutils literal notranslate"><span class="pre">Primitive.StopRotation()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.ResetEvent"><code class="docutils literal notranslate"><span class="pre">ResetEvent()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.ResetScene"><code class="docutils literal notranslate"><span class="pre">ResetScene()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.Run"><code class="docutils literal notranslate"><span class="pre">Run()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.SetCollisionHandler"><code class="docutils literal notranslate"><span class="pre">SetCollisionHandler()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.SetInputBoxHandler"><code class="docutils literal notranslate"><span class="pre">SetInputBoxHandler()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.SetUnityInstance"><code class="docutils literal notranslate"><span class="pre">SetUnityInstance()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.ShowInputBox"><code class="docutils literal notranslate"><span class="pre">ShowInputBox()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.Sleep"><code class="docutils literal notranslate"><span class="pre">Sleep()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.Trails"><code class="docutils literal notranslate"><span class="pre">Trails</span></code></a><ul>
@@ -132,6 +135,7 @@
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Backward"><code class="docutils literal notranslate"><span class="pre">Trails.Backward()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.FD"><code class="docutils literal notranslate"><span class="pre">Trails.FD()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Forward"><code class="docutils literal notranslate"><span class="pre">Trails.Forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Hide"><code class="docutils literal notranslate"><span class="pre">Trails.Hide()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.LT"><code class="docutils literal notranslate"><span class="pre">Trails.LT()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Left"><code class="docutils literal notranslate"><span class="pre">Trails.Left()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.PD"><code class="docutils literal notranslate"><span class="pre">Trails.PD()</span></code></a></li>
@@ -142,6 +146,8 @@
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.PenUp"><code class="docutils literal notranslate"><span class="pre">Trails.PenUp()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.RT"><code class="docutils literal notranslate"><span class="pre">Trails.RT()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Right"><code class="docutils literal notranslate"><span class="pre">Trails.Right()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Show"><code class="docutils literal notranslate"><span class="pre">Trails.Show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparkpy.html#sparkpy.Trails.Speed"><code class="docutils literal notranslate"><span class="pre">Trails.Speed()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="sparkpy.html#sparkpy.Version"><code class="docutils literal notranslate"><span class="pre">Version()</span></code></a></li>
@@ -176,7 +182,18 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W3QCQRGS7F', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>

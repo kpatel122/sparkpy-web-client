@@ -47,6 +47,7 @@
 <li><a class="reference internal" href="#sparkpy.Character"><code class="docutils literal notranslate"><span class="pre">Character</span></code></a><ul>
 <li><a class="reference internal" href="#sparkpy.Character.Chat"><code class="docutils literal notranslate"><span class="pre">Character.Chat()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.ControlMode"><code class="docutils literal notranslate"><span class="pre">Character.ControlMode()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Character.GetId"><code class="docutils literal notranslate"><span class="pre">Character.GetId()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.Hide"><code class="docutils literal notranslate"><span class="pre">Character.Hide()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.Move"><code class="docutils literal notranslate"><span class="pre">Character.Move()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Character.PlaySound"><code class="docutils literal notranslate"><span class="pre">Character.PlaySound()</span></code></a></li>
@@ -90,10 +91,12 @@
 <li><a class="reference internal" href="#sparkpy.Primitive.StopRotation"><code class="docutils literal notranslate"><span class="pre">Primitive.StopRotation()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#sparkpy.ResetEvent"><code class="docutils literal notranslate"><span class="pre">ResetEvent()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ResetScene"><code class="docutils literal notranslate"><span class="pre">ResetScene()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Run"><code class="docutils literal notranslate"><span class="pre">Run()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetCollisionHandler"><code class="docutils literal notranslate"><span class="pre">SetCollisionHandler()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.SetInputBoxHandler"><code class="docutils literal notranslate"><span class="pre">SetInputBoxHandler()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.SetUnityInstance"><code class="docutils literal notranslate"><span class="pre">SetUnityInstance()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.ShowInputBox"><code class="docutils literal notranslate"><span class="pre">ShowInputBox()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Sleep"><code class="docutils literal notranslate"><span class="pre">Sleep()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails"><code class="docutils literal notranslate"><span class="pre">Trails</span></code></a><ul>
@@ -101,6 +104,7 @@
 <li><a class="reference internal" href="#sparkpy.Trails.Backward"><code class="docutils literal notranslate"><span class="pre">Trails.Backward()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.FD"><code class="docutils literal notranslate"><span class="pre">Trails.FD()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.Forward"><code class="docutils literal notranslate"><span class="pre">Trails.Forward()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Hide"><code class="docutils literal notranslate"><span class="pre">Trails.Hide()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.LT"><code class="docutils literal notranslate"><span class="pre">Trails.LT()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.Left"><code class="docutils literal notranslate"><span class="pre">Trails.Left()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.PD"><code class="docutils literal notranslate"><span class="pre">Trails.PD()</span></code></a></li>
@@ -111,6 +115,8 @@
 <li><a class="reference internal" href="#sparkpy.Trails.PenUp"><code class="docutils literal notranslate"><span class="pre">Trails.PenUp()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.RT"><code class="docutils literal notranslate"><span class="pre">Trails.RT()</span></code></a></li>
 <li><a class="reference internal" href="#sparkpy.Trails.Right"><code class="docutils literal notranslate"><span class="pre">Trails.Right()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Show"><code class="docutils literal notranslate"><span class="pre">Trails.Show()</span></code></a></li>
+<li><a class="reference internal" href="#sparkpy.Trails.Speed"><code class="docutils literal notranslate"><span class="pre">Trails.Speed()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#sparkpy.Version"><code class="docutils literal notranslate"><span class="pre">Version()</span></code></a></li>
@@ -197,6 +203,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Character.GetId">
+<span class="sig-name descname"><span class="pre">GetId</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Character.GetId" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sparkpy.Character.Hide">
@@ -666,6 +677,11 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.ResetEvent">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ResetEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ResetEvent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.ResetScene">
 <span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">ResetScene</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.ResetScene" title="Permalink to this definition"></a></dt>
 <dd><p>Resets the scene- removes environment and all characters</p>
@@ -712,6 +728,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sparkpy.SetUnityInstance">
+<span class="sig-prename descclassname"><span class="pre">sparkpy.</span></span><span class="sig-name descname"><span class="pre">SetUnityInstance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.SetUnityInstance" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sparkpy.ShowInputBox">
@@ -779,6 +800,12 @@
 <dd class="field-odd"><p><strong>distance</strong> (<em>float</em>) – distance to move forward</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Hide">
+<span class="sig-name descname"><span class="pre">Hide</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Hide" title="Permalink to this definition"></a></dt>
+<dd><p>Hides the trails character</p>
 </dd></dl>
 
 <dl class="py method">
@@ -874,6 +901,23 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Show">
+<span class="sig-name descname"><span class="pre">Show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Show" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the trails character</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sparkpy.Trails.Speed">
+<span class="sig-name descname"><span class="pre">Speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sparkpy.Trails.Speed" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the speed of the trail</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>speed</strong> (<em>float</em>) – speed of the trails character</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -909,7 +953,18 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W3QCQRGS7F', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>
