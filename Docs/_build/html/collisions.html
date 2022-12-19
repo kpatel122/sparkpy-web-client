@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Sparkpy ! &mdash; Sparkpy  documentation</title>
+  <title>Collision (non blocking) &mdash; Sparkpy  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -23,7 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Create an environment" href="environment.html" /> 
+    <link rel="next" title="Background music" href="sounds.html" />
+    <link rel="prev" title="Input box (non blocking)" href="input.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,7 +32,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> Sparkpy
+            <a href="index.html" class="icon icon-home"> Sparkpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -63,9 +64,11 @@
 <li class="toctree-l1"><a class="reference internal" href="input.html#input-box-blocking">Input box (blocking)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Collisions</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="collisions.html">Collision (non blocking)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="collisions.html#collision-blocking">Collision (blocking)</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Collision (non blocking)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#collision-blocking">Collision (blocking)</a><ul class="simple">
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Sounds</span></p>
 <ul>
@@ -108,17 +111,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Sparkpy</a>
+          <a href="index.html">Sparkpy</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Welcome to Sparkpy !</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Collision (non blocking)</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/collisions.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -126,80 +129,60 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-sparkpy">
-<h1>Welcome to Sparkpy !<a class="headerlink" href="#welcome-to-sparkpy" title="Permalink to this heading"></a></h1>
-<section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference external" href="Source/sparkpy.html">Full API Reference</a></p></li>
-</ul>
-<section id="introduction">
-<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h3>
-<p>Sparkpy is a platform to learn and create Python programming projects using interactive 3D graphics.</p>
-<dl class="simple">
-<dt><a class="reference internal" href="environment.html"><span class="doc">Create an environment</span></a></dt><dd><p>How to make a background environment</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
+  <section id="collision-non-blocking">
+<h1>Collision (non blocking)<a class="headerlink" href="#collision-non-blocking" title="Permalink to this heading"></a></h1>
+<p>Collisions can be captured between two characters or primitives, using a callback function set with <a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a>
+when a collision occurs, the callback function is called. The callback function must have two parameters which will be set to the ids of the two objects that collided.
+To retrieve a character object from the ids, use <a class="reference external" href="Source/sparkpy.html#sparkpy.GetCharacterFromID">GetCharacterFromID()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#collision example</span>
+
+<span class="c1">#create collision handler function</span>
+<span class="k">def</span> <span class="nf">collision</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="n">id2</span><span class="p">):</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Handled &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id2</span><span class="p">))</span>
+   <span class="n">collidedCharacter</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">GetCharacterFromID</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span>
+   <span class="n">collidedCharacter</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;I collided&quot;</span><span class="p">)</span>
+
+<span class="c1">#assign the collision handler function</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">SetCollisionHandler</span><span class="p">(</span><span class="n">collision</span><span class="p">)</span>
+
+<span class="c1">#create an office environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+
+<span class="c1">#create first character</span>
+<span class="n">robot1</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;YBot&quot;</span><span class="p">)</span>
+
+
+<span class="c1">#create seconf character</span>
+<span class="n">robot2</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;XBot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#control character by keyboard</span>
+<span class="n">robot1</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
-<dl class="simple">
-<dt><a class="reference internal" href="character.html"><span class="doc">Create a character</span></a></dt><dd><p>Creating and animating characters</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="input.html"><span class="doc">Input box (non blocking)</span></a></dt><dd><p>User input</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="collisions.html"><span class="doc">Collision (non blocking)</span></a></dt><dd><p>Detecting collisions between characters and objects</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="sounds.html"><span class="doc">Background music</span></a></dt><dd><p>Making sounds</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="effects.html"><span class="doc">Creating effects</span></a></dt><dd><p>Special effects</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="wait.html"><span class="doc">Wait for seconds</span></a></dt><dd><p>Pausing your program and waiting for events</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="primitives.html"><span class="doc">Create Primitive</span></a></dt><dd><p>Creating different primitive shapes</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="trails.html"><span class="doc">Create Trails</span></a></dt><dd><p>Trails is sparkpy’s implementation of the Logo programming similiar to python turtles using 3D graphics</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="Source/sparkpy.html#sparkpy.SetCollisionHandler">SetCollisionHandler()</a> is <em>asynchronous</em> (non-blocking) meaning any code <em>after</em> the SetCollisionHandler will continue
+to run regardless of if a collision has occured or not. To make collision detection <em>synchronous</em> (blocking) meaning any code <em>after</em> a collision can only
+be run <em>after</em> a collision has occured, use async await for <a class="reference external" href="wait.html#wait-for-collision">collision event()</a></p>
 </div>
 </section>
-</section>
+<section id="collision-blocking">
+<h1>Collision (blocking)<a class="headerlink" href="#collision-blocking" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="wait.html#wait-for-collision">See wait for collision</a></p>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="environment.html" class="btn btn-neutral float-right" title="Create an environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="input.html" class="btn btn-neutral float-left" title="Input box (non blocking)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sounds.html" class="btn btn-neutral float-right" title="Background music" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

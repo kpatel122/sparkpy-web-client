@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wait for seconds &mdash; Sparkpy  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Create Primitive" href="primitives.html" />
+    <link rel="prev" title="Creating effects" href="effects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Sparkpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Environments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Create an environment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Characters</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="character.html">Create a character</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-animation">Character animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-movement">Character movement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-rotation">Character rotation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-scale">Character scale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-hide-and-show">Character hide and show</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-chat">Character chat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#control-character-with-keyboard">Control character with keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#control-character-with-keyboard-3rd-person">Control character with keyboard 3rd Person</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Input</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input.html">Input box (non blocking)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input.html#input-box-blocking">Input box (blocking)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Collisions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="collisions.html">Collision (non blocking)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collisions.html#collision-blocking">Collision (blocking)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sounds</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sounds.html">Background music</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sounds.html#character-sound-fx">Character sound FX</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Effects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="effects.html">Creating effects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Wait</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wait for seconds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#wait-for-collision">Wait for collision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#wait-for-input">Wait for input</a><ul class="simple">
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Primitives</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html">Create Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html#set-primitive-colour">Set Primitive Colour</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html#destroy-primitive">Destroy Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html#scale-primitive">Scale Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html#rotate-primitive">Rotate Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html#move-primitive">Move Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="primitives.html#loop-primitive-move">Loop Primitive Move</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">LOGO programming with Trails</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="trails.html">Create Trails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#movement">Movement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#rotation">Rotation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#pen-up-pen-down">Pen Up &amp; Pen Down</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#trail-colour">Trail Colour</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#trail-size">Trail Size</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sparkpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Wait for seconds</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/wait.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wait-for-seconds">
+<h1>Wait for seconds<a class="headerlink" href="#wait-for-seconds" title="Permalink to this heading"></a></h1>
+<p>To pause your program for a specific amount of time, use <em>aio.sleep</em>
+In order to use aio.sleep your program must be written in an <em>async</em> function, this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> (see last line of example). Waits are performed using <em>await aio.sleep()</em> which is available after an import of the aio module from browser</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#must import aio for await to work</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+</span>
+<span class="c1">#programs with sleep with be written inside an async function</span>
+<span class="hll"><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span>
+   <span class="c1">#create office environment</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">)</span>
+
+   <span class="c1">#create robot character at position x=0 y0 z=3</span>
+   <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+   <span class="c1">#set animation to walk</span>
+   <span class="n">xbot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;Walk&quot;</span><span class="p">)</span>
+
+   <span class="c1">#move the character for 3 seconds</span>
+   <span class="n">xbot</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+   <span class="c1">#sleep for 3 seconds</span>
+<span class="hll">   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span>
+   <span class="c1">#set the animation back to idle</span>
+   <span class="n">xbot</span><span class="o">.</span><span class="n">SetAnimation</span><span class="p">(</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
+
+<span class="c1">#run the async function</span>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="wait-for-collision">
+<h1>Wait for collision<a class="headerlink" href="#wait-for-collision" title="Permalink to this heading"></a></h1>
+<p>To pause your program until a collision has occured use <em>await aio.event(SPARKPY_EVENT, EVENT_COLLISION)</em>
+In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function , this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> .  <em>await aio.event</em> is available after the aio module is imported from browser</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#must import aio for await to work</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+</span>
+<span class="c1">#collision example</span>
+
+<span class="c1">#create collision handler function, the two ids represent the ids of the objects that collided</span>
+<span class="k">def</span> <span class="nf">collision</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="n">id2</span><span class="p">):</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collision occured between &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">id2</span><span class="p">))</span>
+
+<span class="c1">#programs with await must be written inside an async function</span>
+<span class="hll"><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span>   <span class="c1">#assign the collision handler function</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">SetCollisionHandler</span><span class="p">(</span><span class="n">collision</span><span class="p">)</span>
+
+   <span class="c1">#create an office environment</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s2">&quot;Office&quot;</span><span class="p">)</span>
+
+   <span class="c1">#create first character</span>
+   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+
+   <span class="c1">#create seconf character</span>
+   <span class="n">xbot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;xbot&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+   <span class="c1">#set control mode to keyboard</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">ControlMode</span><span class="p">(</span><span class="s2">&quot;keyboard&quot;</span><span class="p">)</span>
+
+   <span class="c1">#wait for the collision to occur, no code below this will run until a collision happens</span>
+<span class="hll">   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT</span><span class="p">,</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT_COLLISION</span><span class="p">)</span>
+</span>
+   <span class="c1">#this can only run after a collsion event has happened</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;I have collided!&quot;</span><span class="p">)</span>
+
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="wait-for-input">
+<h1>Wait for input<a class="headerlink" href="#wait-for-input" title="Permalink to this heading"></a></h1>
+<p>To pause your program until user has entered text use <em>await aio.event(SPARKPY_EVENT, EVENT_INPUT)</em>
+In order to use <em>await aio.event</em> your program must be written in an <em>async</em> function , this function should be called with
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Run">Run()</a> .  <em>await aio.event</em> is available after the aio module is imported from browser
+Text entered into the input box can be retrieved using <a class="reference external" href="Source/sparkpy.html#sparkpy.GetInputBoxValue">GetInputBoxValue()</a> .</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#must import aio for await to work</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+</span>
+<span class="c1">#programs with await must be written inside an async function</span>
+<span class="hll"><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span>   <span class="c1">#create desert environment test</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">);</span>
+
+   <span class="c1">#create first character</span>
+   <span class="n">ybot</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Character</span><span class="p">(</span><span class="s2">&quot;ybot&quot;</span><span class="p">)</span>
+
+   <span class="c1">#ask the user a question</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Hi, What&#39;s your name ? &quot;</span><span class="p">)</span>
+
+   <span class="c1">#show an input box, for the user to enter an answer</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">ShowInputBox</span><span class="p">()</span>
+
+   <span class="c1">#wait until text has been entered. Code below this line will not execute until text is entered</span>
+<span class="hll">   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT</span><span class="p">,</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">EVENT_INPUT</span><span class="p">)</span>
+</span>
+   <span class="c1">#text has been entered, retrieve the value that was entered</span>
+<span class="hll">   <span class="n">name</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">GetInputBoxValue</span><span class="p">()</span>
+</span>
+   <span class="c1">#out message to user, with the value they entered</span>
+   <span class="n">ybot</span><span class="o">.</span><span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Welcome to sparkpy &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+   <span class="c1">#hide the input box</span>
+   <span class="n">sparkpy</span><span class="o">.</span><span class="n">HideInputBox</span><span class="p">()</span>
+
+<span class="c1">#run the async function</span>
+<span class="hll"><span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="effects.html" class="btn btn-neutral float-left" title="Creating effects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="primitives.html" class="btn btn-neutral float-right" title="Create Primitive" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sparkpy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W3QCQRGS7F', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

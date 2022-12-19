@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Sparkpy'
-copyright = '2022, KP'
+copyright = '2023, Sparkpy'
 author = 'KP'
 
 # -- General configuration ---------------------------------------------------
@@ -40,7 +40,7 @@ copybutton_copy_empty_lines = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme' #'sphinx_rtd_theme' 'alabaster'
-html_static_path = ['_static']
+#html_static_path = ['_static']
 
 html_theme_options = {
     'analytics_id': 'G-W3QCQRGS7F',  #  Provided by Google in your dashboard
@@ -52,10 +52,10 @@ html_theme_options = {
     'vcs_pageview_mode': '',
    # 'style_nav_header_background': 'navy',
     # Toc options
-    'collapse_navigation': False,
-    #'sticky_navigation': True,
+    'collapse_navigation': True,
+    'sticky_navigation': True,
     'navigation_depth': -1,
-    #'includehidden': True,
+    'includehidden': True,
     #'titles_only': False
 }
 

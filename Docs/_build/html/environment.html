@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Sparkpy ! &mdash; Sparkpy  documentation</title>
+  <title>Create an environment &mdash; Sparkpy  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -23,7 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Create an environment" href="environment.html" /> 
+    <link rel="next" title="Create a character" href="character.html" />
+    <link rel="prev" title="Welcome to Sparkpy !" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,7 +32,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> Sparkpy
+            <a href="index.html" class="icon icon-home"> Sparkpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -42,8 +43,10 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Environments</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="environment.html">Create an environment</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create an environment</a><ul class="simple">
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Characters</span></p>
 <ul>
@@ -108,17 +111,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Sparkpy</a>
+          <a href="index.html">Sparkpy</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Welcome to Sparkpy !</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Create an environment</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/environment.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -126,80 +129,50 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-sparkpy">
-<h1>Welcome to Sparkpy !<a class="headerlink" href="#welcome-to-sparkpy" title="Permalink to this heading"></a></h1>
-<section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference external" href="Source/sparkpy.html">Full API Reference</a></p></li>
-</ul>
-<section id="introduction">
-<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h3>
-<p>Sparkpy is a platform to learn and create Python programming projects using interactive 3D graphics.</p>
-<dl class="simple">
-<dt><a class="reference internal" href="environment.html"><span class="doc">Create an environment</span></a></dt><dd><p>How to make a background environment</p>
-</dd>
-</dl>
+  <section id="create-an-environment">
+<h1>Create an environment<a class="headerlink" href="#create-an-environment" title="Permalink to this heading"></a></h1>
+<p>To create a scene an <a class="reference external" href="Source/sparkpy.html#sparkpy.Environment">Environment()</a> object is needed</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create a desert enviroment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;desert&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A list of all current environments</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 19%" />
+<col style="width: 17%" />
+<col style="width: 13%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;Desert&quot;</p></td>
+<td><p>&quot;Forest&quot;</p></td>
+<td><p>&quot;AlienPlanet&quot;</p></td>
+<td><p>&quot;GasPlanet&quot;</p></td>
+<td><p>&quot;Office&quot;</p></td>
+<td><p>&quot;SciFi&quot;</p></td>
+<td><p>&quot;Default&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="toctree-wrapper compound">
 </div>
-<dl class="simple">
-<dt><a class="reference internal" href="character.html"><span class="doc">Create a character</span></a></dt><dd><p>Creating and animating characters</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="input.html"><span class="doc">Input box (non blocking)</span></a></dt><dd><p>User input</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="collisions.html"><span class="doc">Collision (non blocking)</span></a></dt><dd><p>Detecting collisions between characters and objects</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="sounds.html"><span class="doc">Background music</span></a></dt><dd><p>Making sounds</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="effects.html"><span class="doc">Creating effects</span></a></dt><dd><p>Special effects</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="wait.html"><span class="doc">Wait for seconds</span></a></dt><dd><p>Pausing your program and waiting for events</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="primitives.html"><span class="doc">Create Primitive</span></a></dt><dd><p>Creating different primitive shapes</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="simple">
-<dt><a class="reference internal" href="trails.html"><span class="doc">Create Trails</span></a></dt><dd><p>Trails is sparkpy’s implementation of the Logo programming similiar to python turtles using 3D graphics</p>
-</dd>
-</dl>
-<div class="toctree-wrapper compound">
-</div>
-</section>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="environment.html" class="btn btn-neutral float-right" title="Create an environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Sparkpy !" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="character.html" class="btn btn-neutral float-right" title="Create a character" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

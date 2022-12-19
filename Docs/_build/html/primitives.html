@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Primitive &mdash; Sparkpy  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Create Trails" href="trails.html" />
+    <link rel="prev" title="Wait for seconds" href="wait.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Sparkpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Environments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Create an environment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Characters</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="character.html">Create a character</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-animation">Character animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-movement">Character movement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-rotation">Character rotation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-scale">Character scale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-hide-and-show">Character hide and show</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#character-chat">Character chat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#control-character-with-keyboard">Control character with keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="character.html#control-character-with-keyboard-3rd-person">Control character with keyboard 3rd Person</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Input</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input.html">Input box (non blocking)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input.html#input-box-blocking">Input box (blocking)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Collisions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="collisions.html">Collision (non blocking)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collisions.html#collision-blocking">Collision (blocking)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sounds</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sounds.html">Background music</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sounds.html#character-sound-fx">Character sound FX</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Effects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="effects.html">Creating effects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Wait</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="wait.html">Wait for seconds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wait.html#wait-for-collision">Wait for collision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wait.html#wait-for-input">Wait for input</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Primitives</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#set-primitive-colour">Set Primitive Colour</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#destroy-primitive">Destroy Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#scale-primitive">Scale Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#rotate-primitive">Rotate Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#move-primitive">Move Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#loop-primitive-move">Loop Primitive Move</a><ul class="simple">
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">LOGO programming with Trails</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="trails.html">Create Trails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#movement">Movement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#rotation">Rotation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#pen-up-pen-down">Pen Up &amp; Pen Down</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#trail-colour">Trail Colour</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trails.html#trail-size">Trail Size</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sparkpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Create Primitive</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/primitives.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="create-primitive">
+<h1>Create Primitive<a class="headerlink" href="#create-primitive" title="Permalink to this heading"></a></h1>
+<p>Primitives are simple shapes that have no animations attached to them.
+To create a primitive use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive">Primitive()</a> object</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube at position x=0 , y=0, z=0</span>
+<span class="hll"><span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current list of primitive:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 31%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;sphere&quot;</p></td>
+<td><p>&quot;capsule&quot;</p></td>
+<td><p>&quot;cylinder&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p>&quot;plane&quot;</p></td>
+<td><p>&quot;quad&quot;</p></td>
+<td><p>&quot;cube&quot;</p></td>
+</tr>
+</tbody>
+</table>
+<p>To hide a created primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Hide">Hide()</a> method
+To show a previously hidden primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Show">Show()</a> method</p>
+</div>
+</section>
+<section id="set-primitive-colour">
+<h1>Set Primitive Colour<a class="headerlink" href="#set-primitive-colour" title="Permalink to this heading"></a></h1>
+<p>To set the colour of a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.SetColour">SetColour()</a> method.
+The method accepts the levels of red, green and blue was values between 0-1. The transparancy of a primitive can also be set as a avlue between 0 (fully invisible) to 1 (fully opaque)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube at position x=0 , y=0, z=0</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#set the colour to red (1=Red, 0=Blue, 0=Green)</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">SetColour</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#1=Red, 0=Blue, 0=Green</span>
+</span></pre></div>
+</div>
+</section>
+<section id="destroy-primitive">
+<h1>Destroy Primitive<a class="headerlink" href="#destroy-primitive" title="Permalink to this heading"></a></h1>
+<p>If a primitive is no longer needed in the program <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Destroy">Destroy()</a>
+will remove the primitive completely</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#must import aio for await to work</span>
+<span class="kn">from</span> <span class="nn">browser</span> <span class="kn">import</span> <span class="n">aio</span>
+
+<span class="c1">#programs with await with be written inside an async function</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+   <span class="c1">#create an environment</span>
+<span class="hll">   <span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+</span>
+   <span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+   <span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+   <span class="c1">#sleep for 3 seconds</span>
+   <span class="k">await</span> <span class="n">aio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+   <span class="c1">#the cube is no longer needed, remove it</span>
+   <span class="n">cube</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+
+<span class="c1">#run main</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scale-primitive">
+<h1>Scale Primitive<a class="headerlink" href="#scale-primitive" title="Permalink to this heading"></a></h1>
+<p>To make a primitive bigger or smaller, use the
+<a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Scale">Scale()</a> method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#double the size of the cube</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>to scale in a specific direction (non-uniform scale), provide the sizes
+of the x,y,z when using <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.ScaleNonUniform">ScaleNonUniform()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#double the size of the cube, along the x and z axis</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">ScaleNonUniform</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</div>
+</section>
+<section id="rotate-primitive">
+<h1>Rotate Primitive<a class="headerlink" href="#rotate-primitive" title="Permalink to this heading"></a></h1>
+<p>To rotate a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Rotate">Rotate()</a>
+by default primitives are rotated around their y (up) axis</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#rotate the cube at a speed of 90 degrees per second</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="move-primitive">
+<h1>Move Primitive<a class="headerlink" href="#move-primitive" title="Permalink to this heading"></a></h1>
+<p>To move a primitive, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.Move">Move()</a> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube at position x=0 , y=1, z=0</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#move the cube to right at a speed of 4 for 1 seconds</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>direction values can be:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>&quot;up&quot;</p></td>
+<td><p>&quot;down&quot;</p></td>
+<td><p>&quot;left&quot;</p></td>
+<td><p>&quot;right&quot;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="loop-primitive-move">
+<h1>Loop Primitive Move<a class="headerlink" href="#loop-primitive-move" title="Permalink to this heading"></a></h1>
+<p>To make a primitive continuously move between two points, use the <a class="reference external" href="Source/sparkpy.html#sparkpy.Primitive.LoopMove">LoopMove()</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sparkpy</span>
+
+<span class="c1">#create an environment</span>
+<span class="n">sparkpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span><span class="s1">&#39;office&#39;</span><span class="p">)</span>
+
+<span class="c1">#make a cube</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">sparkpy</span><span class="o">.</span><span class="n">Primitive</span><span class="p">(</span><span class="s1">&#39;cube&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#loop move from right to left and back again for 2 seconds at a speed of 1.</span>
+<span class="hll"><span class="n">cube</span><span class="o">.</span><span class="n">LoopMove</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="wait.html" class="btn btn-neutral float-left" title="Wait for seconds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="trails.html" class="btn btn-neutral float-right" title="Create Trails" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sparkpy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W3QCQRGS7F', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
