@@ -167,7 +167,7 @@
 
 /* SETTINGS ENDS */
 
-@media (max-width: 500px) /* mobile breakpoint*/
+@media (max-width: 480px ) /* mobile breakpoint*/
 {
     .navbar {
         flex-direction: column;
