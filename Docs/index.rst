@@ -29,7 +29,7 @@
 
 
 ====================
-Welcome to Sparkpy !
+Welcome to sparkpy !
 ====================
 
 
