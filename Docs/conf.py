@@ -45,7 +45,7 @@ html_theme = 'sphinx_rtd_theme' #'sphinx_rtd_theme' 'alabaster'
 html_theme_options = {
     'analytics_id': 'G-W3QCQRGS7F',  #  Provided by Google in your dashboard
     'analytics_anonymize_ip': False,
-    'logo_only': False,
+    'logo_only': True,
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
@@ -59,6 +59,7 @@ html_theme_options = {
     #'titles_only': False
 }
 
-
+html_favicon = 'favicon.ico'
+html_logo = 'Icon-96.png'
 
 smart_quotes =  'no'
