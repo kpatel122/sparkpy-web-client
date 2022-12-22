@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- sparkpy -->
+        <link rel="stylesheet" href="CSS/sparkpy.css">
+        <title>sparkpy</title>
+        <link rel="icon" type="image/x-icon" href="Images/logo-icons/favicon.ico">
+    </head>
+     
+
+
+    <body>
+        <!-- NAVBAR START !-->
+        <nav class="navbar">
+            <div class="logo-title"><img src="Images/logo.png" width="70%" height="70%"></div>
+            <a href="#" class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            </a>
+            <div class="navbar-links sparkpy-fonts">
+            <ul>
+                <li><a href="pys.html">Home</a></li>
+                <li><a href="Docs\_build\html\index.html">Help</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+            </div>
+        </nav>
+        <!-- NAVBAR ENDS -->
+
+        <!-- useful links 
+            https://developers.google.com/identity/gsi/web/guides/display-button#html
+            https://developers.google.com/identity/gsi/web/guides/display-button#javascript
+            https://developers.google.com/identity/gsi/web/guides/handle-credential-responses-js-functions
+
+        -->
+
+        <!-- <div class="sparkpy-fonts" style="text-align:center">
+        </div>!-->
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <!-- PRODUCTION
+        <div id="g_id_onload"
+         data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com"
+         data-login_uri= "https://sparkpy.net/login_res.html"
+         data-auto_prompt="false">
+        </div>
+        -->
+        <!-- Development callback to javascript handleCredentialsResponse -->
+        <!--
+        <div id="g_id_onload"
+         data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com"
+         data-login_uri= "http://localhost:5500/login_res.html"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+        </div>
+        -->
+         <!-- Development callback to login_res.php -->
+        <div id="g_id_onload"
+        data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com"
+        data-login_uri= "http://localhost:5500/login_res.php"
+        data-auto_prompt="false">
+       </div>
+
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+      </div>
+
+
+      
+    <div id="buttonDiv"></div> 
+
+    <script>
+    function handleCredentialResponse(response) {
+
+        console.log("Encoded JWT ID token: " + response.credential);
+
+        /*
+        const responsePayload = decodeJwtResponse(response.credential);
+
+        console.log("ID: " + responsePayload.sub);
+        console.log('Full Name: ' + responsePayload.name);
+        console.log('Given Name: ' + responsePayload.given_name);
+        console.log('Family Name: ' + responsePayload.family_name);
+        console.log("Image URL: " + responsePayload.picture);
+        console.log("Email: " + responsePayload.email);
+        */
+    }
+    </script>
+      
+
+
+
+
+        <script src="Scripts/sparkpy.js"></script>
+
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-W3QCQRGS7F');
+        </script>
+
+    </body>
+</html>

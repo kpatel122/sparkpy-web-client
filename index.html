@@ -1,3 +1,4 @@
+<!--DEV BUILD ONLY!-->
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
@@ -20,7 +21,7 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">sparkpy-graphics-engine</div>
+        <div id="unity-build-title">sparkpy-graphics-engine-dev</div>
       </div>
     </div>
     <script>
@@ -55,15 +56,15 @@
         updateBannerVisibility();
       }
 
-      var buildUrl = "Build_Pro";
-      var loaderUrl = buildUrl + "/sparkpy-graphics-engine-build.loader.js";
+      var buildUrl = "Build_Dev";
+      var loaderUrl = buildUrl + "/sparkpy-graphics-engine-build-dev.loader.js";
       var config = {
-        dataUrl: buildUrl + "/sparkpy-graphics-engine-build.data.br",
-        frameworkUrl: buildUrl + "/sparkpy-graphics-engine-build.framework.js.br",
-        codeUrl: buildUrl + "/sparkpy-graphics-engine-build.wasm.br",
+        dataUrl: buildUrl + "/sparkpy-graphics-engine-build-dev.data.unityweb",
+        frameworkUrl: buildUrl + "/sparkpy-graphics-engine-build-dev.framework.js.unityweb",
+        codeUrl: buildUrl + "/sparkpy-graphics-engine-build-dev.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "sparkpy",
-        productName: "sparkpy-graphics-engine",
+        productName: "sparkpy-graphics-engine-Dev",
         productVersion: "0.1",
         showBanner: unityShowBanner,
       };
@@ -100,14 +101,13 @@
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
-       
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          parent.unint = unityInstance; //*add this line* if you get a new unity generated index.html 
-          window.parent.postMessage('message');//tells the parent unity has loaded *add this line* if you get a new unity generated index.html 
+          parent.unint = unityInstance; //*add this line* if you get a new unity generated index.html
+          window.parent.postMessage('message');//tells the parent unity has loaded *add this line* if you get a new unity generated index.html
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
