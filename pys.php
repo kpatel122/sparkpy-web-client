@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+function set_session_variables()
+{
+  $_SESSION["config_file"] = "sparkpy.ini";
+
+}
+ 
+$user_name = NULL;
+
+if(isset($_SESSION["user_id"]))
+{
+  $pic = $_SESSION["pic"];
+  $user_name = "<img src='$pic' width='25px' height='25px' referrerpolicy='no-referrer'>"; //$_SESSION["user_name"];
+}
+else
+{
+  $user_name = "Login";
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -120,7 +143,7 @@
         <!-- <li><a href="pys.html">Home</a></li>!-->
         <li><a href="Docs\_build\html\index.html">Start Here</a></li>
         <li><a href="about.html">About</a></li> 
-        <!-- <li><a href="login.html">Login</a></li> !-->
+        <li><a href="login.html"><?php echo $user_name; ?></a></li>
       </ul>
     </div>
   </nav>
