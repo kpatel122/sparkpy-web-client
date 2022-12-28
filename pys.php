@@ -1,22 +1,27 @@
 <?php
 session_start();
 
-function set_session_variables()
-{
-  $_SESSION["config_file"] = "sparkpy.ini";
+require_once 'php_scripts/database.php';
+require_once 'php_scripts/spark.php';
 
-}
- 
 $user_name = NULL;
 
 if(isset($_SESSION["user_id"]))
 {
   $pic = $_SESSION["pic"];
-  $user_name = "<img src='$pic' width='25px' height='25px' referrerpolicy='no-referrer'>"; //$_SESSION["user_name"];
+  $user_name = "<img src='$pic' width='25px' height='25px' referrerpolicy='no-referrer'>";
 }
 else
 {
   $user_name = "Login";
+}
+
+$code = "NOT SET";
+if(isset($_GET['s']))
+{
+  $id = $_GET['s'];
+  Spark::getSpark($id);
+  $code = Spark::getCode();
 }
 
 ?>
@@ -84,6 +89,8 @@ else
   <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
+  
+
   <script type="text/python3" id="tests_editor">
 
   from browser import document, window, bind
@@ -118,7 +125,7 @@ else
           '#create robot character\nrobot = sparkpy.Character(\"ybot\")\n\n' \
           '#set animation to talk\nrobot.SetAnimation(\"talking1\")\n\n'\
           '#create a speech box\nrobot.Chat(\"Hello World\")'
-  editor.editor.setValue(code)
+  #editor.editor.setValue(code)
 
   smp.bind("change", selectSample)
 
@@ -130,6 +137,7 @@ else
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <body onload="brython({debug:1})">
+  <button type="button" onclick="saveCode()">save</button>
   <!-- NAVBAR START !-->
   <nav class="navbar">
     <div class="logo-title"><a href="/"> <img src="Images/logo.png" width="70%" height="70%"></a></div>
@@ -228,12 +236,12 @@ else
       <!-- EMBEDDED SETTINGS GRIP END -->
     </div>
 
-
-    <div class="grid-item grid-item-code-editor">
+    <!-- ACE editor-->
+    <div class="grid-item grid-item-code-editor" style="border: var(--border_size) var(--border_colour) solid ;" >
       <div id="editor"></div> </div>
       <div class=" grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div>
-      <div class="grid-item grid-item-unity">
-        <iframe id="unityiframe" src="index.html" style="width: 100%;height: 100%; border: none; margin-top: 50px;">Browser not
+      <div class="grid-item grid-item-unity" >
+        <iframe id="unityiframe" src="index.html" style="width: 100%;height: 100%; border: none; margin-top: 50px; ">Browser not
           compatible.</iframe>
       </div>
     </div>
@@ -264,15 +272,9 @@ else
     </script>
 
     <!-- Need to merge with main grid-->
-    <table>
-      <tr>
-        <td>Brython version: <span id="version"></span></td>
-        <td></td>
-        <td>
-        </td>
-      </tr>
-    </table>
-
+    
+    <td>Brython version: <span id="version"></span></td>
+    
     <!--sparkpy-->
     <script src="Scripts/sparkpy.js"></script>
     <script src="Scripts/settingsRow.js"></script>
@@ -295,6 +297,41 @@ else
       }
 
     </script>
+
+<script>
+    var editor = ace.edit("editor");
+   
+
+  
+    
+    <?php
+    $txt = json_encode($code);
+    echo "var out={$txt};";
+    ?>
+    
+    editor.setValue(out);
+
+    function saveCode()
+    {
+      //"use strict";   
+ 
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", "save_code.php", true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState === 4 || this.status === 200){ 
+              console.log(this.responseText); // echo from php
+          }       
+      };
+
+      var editor = ace.edit("editor");
+
+      var code = editor.getValue();
+      xmlhttp.send("id=1&code="+code);
+       
+    }
+
+</script>
 
 
   <!-- Google tag (gtag.js) -->
