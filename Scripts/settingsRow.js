@@ -1,5 +1,15 @@
 
 //get the settings elements
+
+const toggle = document.getElementById("toggle-switch");
+	const toggleContainer = document.getElementById("settings-toggle-container");
+	function toggleSettings()
+	{
+		toggle.classList.toggle("toggle-active");
+		toggleContainer.classList.toggle("toggle-container-active"); 
+	}
+
+/*
 const toggleContainer = document.getElementById("settings-toggle-container");
 const toggle = document.getElementById("toggle-switch");
 
@@ -59,7 +69,7 @@ function setDefaultSettings()
   fontSizeChanged();
 }
 
-
+*/
  
 
 

@@ -42,6 +42,7 @@ var themeData = [
 function loadThemes(id, options)
 {
 
+  /*
   themesByName = {};
   
   themes = options.map(function(data) {
@@ -76,24 +77,26 @@ function loadThemes(id, options)
     else
       light.appendChild(el);
   }
-  
+  */
 }
 
 function setDefaultLightTheme(theme_name)
 {
   
-  document.getElementById('themes').value = theme_name;
-  themeSelect();
+  //document.getElementById('themes').value = theme_name;
+  //themeSelect();
 }
 
 
 function themeSelect()
 {
+  /*
   var e = document.getElementById("themes");
   var value = e.options[e.selectedIndex].value;
   var text = e.options[e.selectedIndex].text;
   var editor = ace.edit("editor");
   editor.setTheme(value);
+  */
 }
 
 function defaultSettings()
@@ -101,13 +104,13 @@ function defaultSettings()
   var DEFAULT_THEME = "ace/theme/chrome";
   var DEFAULT_FONT_SIZE = '14';
 
-  
+ /* 
   loadThemes("theme-select",themeData);
   setDefaultLightTheme(DEFAULT_THEME);
 
   document.getElementById('font-size').value = DEFAULT_FONT_SIZE;
   fontSizeChanged();
-
+*/
 }
 
 defaultSettings();
