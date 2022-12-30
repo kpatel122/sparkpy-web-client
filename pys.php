@@ -13,7 +13,10 @@ if(isset($_SESSION["user_id"]))
 }
 else
 {
-  $user_name = "Login";
+  //$user_name = "Login";
+  $user_name = "<div   class=\"g_id_signin\" data-type=\"standard\" data-size=\"small\" data-theme=\"outline\"
+                  data-text=\"sign_in_with\" data-shape=\"rectangular\" data-logo_alignment=\"left\">
+                  </div>";
 }
 
 $code = "NOT SET";
@@ -32,14 +35,12 @@ if(isset($_GET['s']))
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="Images/logo-icons/favicon.ico">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   
 
   <!-- sparkpy -->
   <link rel="stylesheet" href="CSS/sparkpy.css">
-  <!--main styling-->
-  <link rel="stylesheet" href="CSS/dropdowns.css">
-  <!--settings row-->
-  <link rel="stylesheet" href="CSS/settingsRow.css">
+
   <!--toggle button-->
   <title>sparkpy</title>
 
@@ -134,7 +135,13 @@ if(isset($_GET['s']))
   <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
+ 
 <body onload="brython({debug:1})">
+ 
+
+<div id="g_id_onload" data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com"
+        data-login_uri="http://localhost/login_res.php" data-auto_prompt="false">
+    </div>
   <!-- <button type="button" onclick="saveCode()">save</button> !-->
   <!-- NAVBAR START !-->
   <nav class="navbar">
@@ -167,7 +174,7 @@ if(isset($_GET['s']))
               <div class="grid-cell-menu-play" title="Run Code" id="run" onclick="unityRestScene()">
                   <button class="play-icon"  aria-label="run" >
                    </button><!--unityRestScene() defined in pys.html-->
-                  <span style="margin-top:10px;  margin-right:0px;" class="sparkpy-fonts">Run</span>
+                  <span style="margin-top:10px;  margin-right:0px;" class="run-text">Run</span>
               </div>
               <!-- filename input box !-->
               <div class="grid-cell-menu-filename" title="filename">
@@ -197,15 +204,15 @@ if(isset($_GET['s']))
               </div>
 
               <!--cloud load !-->
-              <div class="grid-cell-menu-cloud-load" title="Load from user account">
-                  <button class="cloud-load-icon" id="cloud-load" aria-label="save" onclick="saveFile()"></button>
-                  <!--saveFile() defined in sparkpy.js-->
-              </div>
+              
+              <!--cloud load !-->
+			        <div class="grid-cell-menu-cloud-load" title="Load from user account" id="cloud-load"  >
+				          <button class="cloud-load-icon" aria-label="save" onclick="cloudLoad()"></button> <!--saveFile() defined in sparkpy.js-->
+			        </div>
 
               <!--cloud save !-->
               <div class="grid-cell-menu-cloud-save" title="Save to user account">
                   <button class="cloud-save-icon" id="cloud-save" aria-label="save" onclick="saveFile()"></button>
-                  <!--saveFile() defined in sparkpy.js-->
               </div>
 
               <!--font size !-->
@@ -218,11 +225,23 @@ if(isset($_GET['s']))
               <div class="grid-cell-menu-status1"> <span class="status1"></span></div>
               <div class="grid-cell-menu-status2"> </div>
 
+              <div class="login_form sparkpy-fonts" id="loginButton">
+                  <h3 style="text-align:center;">Sign in to use <br>cloud features</h3>
+                
+                  <div   class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                  data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
+                  </div>
+
+                  <button class="login_form_cancel_btn" onClick="closeLogin();" >Cancel</button>
+              </div>
+
           </div>
           <!--END MAIN MENU GRID !-->
-        
+
       </div>
       <!-- MENU CONTAINER END-->
+
+
 
       <!-- ACE EDITOR START-->
       <div class="grid-item grid-item-code-editor" style="border: var(--border_size_editor) var(--border_colour_editor) solid ;" >
@@ -245,6 +264,33 @@ if(isset($_GET['s']))
 
   </div>
   <!-- MAIN GRID END -->
+   
+ 
+    
+  <script>
+
+  function closeLogin()
+  {
+    var loginForm = document.getElementById('loginButton');
+		loginForm.style.display = "none";
+  }
+          
+  function cloudLoad()
+  {
+             
+    var loginForm = document.getElementById('loginButton');
+    var cloudLoad = document.getElementById('cloud-load');
+    loginForm.style.display = "block";
+      
+    var rect = cloudLoad.getBoundingClientRect();
+     
+    loginForm.style.marginLeft = rect.left+ "px";
+    loginForm.style.marginTop = (rect.bottom-rect.top) +3  +"px";
+                  
+  }
+      
+            
+  </script>
 
     <!-- bridge div for linking unity application events with website e.g. collisions, input: Assets/pyslib  !-->
     <div id="unity_events"></div>
@@ -254,9 +300,8 @@ if(isset($_GET['s']))
 
     <div id="reset_id"></div>
 
-    <script>
+ 
 
-    </script>
     <script type="text/python3">
     from browser import document,window,bind,aio
     import sparkpy
@@ -275,10 +320,7 @@ if(isset($_GET['s']))
     
     <!--sparkpy-->
     <script src="Scripts/sparkpy.js"></script>
-    <!--
-    <script src="Scripts/settingsRow.js"></script>
-    <script src="Scripts/themes.js"></script>
-    !-->
+
     <script>
       const resetEvent = new CustomEvent('resetScene'); //only make this once
       function unityRestScene() 

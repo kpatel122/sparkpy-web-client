@@ -12,7 +12,6 @@
     --border_colour_menu: rgb(132, 132, 132);
 
     --menu_gaps: 15px;
-
 }
 
 /*NAVBAR*/ 
@@ -124,7 +123,7 @@
     grid-template-rows: 1fr;
     grid-column-gap: 5px;
     grid-row-gap: 0px;
-    /*border: var(--border_size_menu) solid var(--border_colour_menu);*/ 
+    border: var(--border_size_menu) solid var(--border_colour_menu);
     
     width: min-content;
     height: min-content;
@@ -159,6 +158,19 @@
     /*padding-right: 40px;*/
     transform: scale(1);
   }
+  .play-icon:hover
+  {
+    background: url("/Images/icons/play_icon_h.svg")  no-repeat;
+  }
+
+  .run-text
+  {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  }
+  .run-text:hover
+  {
+    color: #4d4d4d;
+  }
 
   .filename-box
   {
@@ -179,11 +191,15 @@
     border: none;
     cursor: pointer;
     float: left;
-    /*padding-right: 40px;*/
     margin-left: 2px;
     margin-top: 12px;
     transform: scale(1);
   }
+
+  .load-icon:hover
+    {
+        background: url("/Images/icons/load_icon_h.svg")  no-repeat;
+    }
 
   .save-icon {
     width: 1.8em;
@@ -197,6 +213,20 @@
     margin-right: var(--menu_gaps);
     transform: scale(1);
   }
+  .save-icon:hover {
+    background: url("/Images/icons/save_icon_h.svg")  no-repeat;
+  }
+
+
+  .parent-login{
+    position: relative;
+     
+}
+.child-login{
+    display: block;
+    position: absolute;
+    z-index: 9;
+}
 
   .cloud-load-icon {
     width: 1.8em;
@@ -208,7 +238,14 @@
     margin-left: 2px;
     margin-top: 12px;
     transform: scale(1);
+     
+    
   }
+  .cloud-load-icon:hover {
+    background: url("/Images/icons/cloud_load_icon_h.svg")  no-repeat;
+  }
+
+ 
 
   .cloud-save-icon {
     width: 1.8em;
@@ -221,9 +258,12 @@
     
     margin-top: 12px;
     transform: scale(1);
-    margin-right: var(--menu_gaps);
+    margin-right: var(--menu_gaps);  
   }
-
+  .cloud-save-icon:hover {
+    background: url("/Images/icons/cloud_save_icon_h.svg")  no-repeat;
+  }
+  
   .grid-cell-menu-font-size
   {
     margin-left: 0px;
@@ -242,7 +282,37 @@
     margin-left: 0px;
   }
 
-   
+/* sign in with gooogle button*/
+  .login_form
+  {
+      display: none;
+      border: 3px solid #181818;
+      z-index: 9;
+       
+      height: min-content;
+      background-color:#f3f3f3;
+      position: absolute;
+      width:fit-content;
+       
+  }
+
+  .login_form_cancel_btn
+  {
+
+      background-color: #555;
+      color: white;
+      padding: 10px 10px;
+      margin-top: 5px;
+       
+      width:100%;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+  }
+  /* Add some hover effects to buttons */
+.login_form_cancel_btn:hover {
+    opacity: 1;
+  }
 
 
   
