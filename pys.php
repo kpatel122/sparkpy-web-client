@@ -40,6 +40,7 @@ if(isset($_GET['s']))
 
   <!-- sparkpy -->
   <link rel="stylesheet" href="CSS/sparkpy.css">
+  <link rel="stylesheet" href="CSS/animations.css">
 
   <!--toggle button-->
   <title>sparkpy</title>
@@ -225,7 +226,8 @@ if(isset($_GET['s']))
               <div class="grid-cell-menu-status1"> <span class="status1"></span></div>
               <div class="grid-cell-menu-status2"> </div>
 
-              <div class="login_form sparkpy-fonts" id="loginButton">
+              <!-- login form !-->
+              <div class="login_form sparkpy-fonts" id="loginButton" >
                   <h3 style="text-align:center;">Sign in to use <br>cloud features</h3>
                 
                   <div   class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
@@ -234,6 +236,7 @@ if(isset($_GET['s']))
 
                   <button class="login_form_cancel_btn" onClick="closeLogin();" >Cancel</button>
               </div>
+              <!-- login form end !-->
 
           </div>
           <!--END MAIN MENU GRID !-->
@@ -269,20 +272,44 @@ if(isset($_GET['s']))
     
   <script>
 
-  function closeLogin()
-  {
-    var loginForm = document.getElementById('loginButton');
-		loginForm.style.display = "none";
-  }
-          
+  const   loginForm = document.getElementById('loginButton');
+  const cloudLoadIcon = document.getElementById('cloud-load');
+  const   enterAnim = "anim_login_enter";
+  const   exitAnim = "anim_login_exit";
+  
+
   function cloudLoad()
   {
+    openLogin();
+  }
+
+  function closeLogin()
+  {
+    loginForm.classList.remove(exitAnim);
+    loginForm.classList.remove(enterAnim);
+    
+    window.setTimeout(function() {
+      loginForm.classList.add(exitAnim);
+    }, 50);
+
+    window.setTimeout(function() {
+      loginForm.style.display = "none";
+    }, 1000);
+     
+  }
+          
+  function openLogin()
+  {
              
-    var loginForm = document.getElementById('loginButton');
-    var cloudLoad = document.getElementById('cloud-load');
-    loginForm.style.display = "block";
+    
+    loginForm.classList.remove(exitAnim);
+    loginForm.classList.remove(enterAnim);
+    window.setTimeout(function() {
+      loginForm.style.display = "block";
+      loginForm.classList.add(enterAnim);
+    }, 50);
       
-    var rect = cloudLoad.getBoundingClientRect();
+    let rect = cloudLoadIcon.getBoundingClientRect();  
      
     loginForm.style.marginLeft = rect.left+ "px";
     loginForm.style.marginTop = (rect.bottom-rect.top) +3  +"px";
