@@ -14,8 +14,8 @@ if(isset($_SESSION["user_id"]))
 else
 {
   //$user_name = "Login";
-  $user_name = "<div   class=\"g_id_signin\" data-type=\"standard\" data-size=\"small\" data-theme=\"outline\"
-                  data-text=\"sign_in_with\" data-shape=\"rectangular\" data-logo_alignment=\"left\">
+  $user_name = "<div   class=\"g_id_signin\" data-type=\"standard\" data-size=\"small\" data-theme=\"filled_blue\"
+                  data-text=\"signin\" data-shape=\"rectangular\" data-logo_alignment=\"left\">
                   </div>";
 }
 
@@ -230,7 +230,7 @@ if(isset($_GET['s']))
               <div class="login_form sparkpy-fonts" id="loginButton" >
                   <h3 style="text-align:center;">Sign in to use <br>cloud features</h3>
                 
-                  <div   class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                  <div   class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black"
                   data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
                   </div>
 
