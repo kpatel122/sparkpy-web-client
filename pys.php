@@ -155,6 +155,7 @@ if(isset($_GET['s']))
     <div class="navbar-links sparkpy-fonts" id="navbar-links-id">
       <ul>
         <!-- <li><a href="pys.html">Home</a></li>!-->
+        <li><a href="#" onclick="samplesClicked();">Samples</a></li>
         <li><a href="Docs\_build\html\index.html">Start Here</a></li>
         <li><a href="about.html">About</a></li> 
         <li><a href="login.html"><?php echo $user_name; ?></a></li>
@@ -164,7 +165,7 @@ if(isset($_GET['s']))
   <!-- NAVBAR END-->
 
   <!-- MAIN GRID START-->
-  <div class="grid-container" id="container">
+  <div class="main-grid-container" id="container">
 
       <!-- MENU CONTAINER START-->
       <div class="grid-item grid-item-settings">
@@ -264,12 +265,173 @@ if(isset($_GET['s']))
             compatible.</iframe>
       </div>
       <!-- GRAPHICS END-->
-
   </div>
   <!-- MAIN GRID END -->
+
+  <!-- SAMPLES START !-->
+  <div class="samples_container center_element sparkpy-fonts" id="samples_container" >
+      <h3 style="text-align:center;">Samples</h3>
+      <div class="grid-samples-parent">
+          
+          <div class="grid-samples-div1"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/environment.mp4" type="video/mp4" ></source>
+              </video>
+              <div class="samples_description samples_category_basic"> 
+                    1.Create Environment
+              </div>
+          </div>
+          
+          <div class="grid-samples-div2"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/character.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic"> 
+                    2.Create Character
+              </div>
+          </div>
+          <div class="grid-samples-div3 "> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/set_animation.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    3.Set Animation
+              </div>
+          </div>
+          <div class="grid-samples-div4"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/keyboard_control.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic"> 
+                    4.Keyboard Control
+              </div>
+          </div>
+          <div class="grid-samples-div5"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/third_person.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    5.Third Person Control
+              </div>
+          </div>
+          <div class="grid-samples-div6"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/sounds.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    6.Sounds
+              </div>
+          </div>
+          <div class="grid-samples-div7"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/effects.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    7.Effects
+              </div>
+          </div>
+          <div class="grid-samples-div8"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/primitives.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    8.Primitives
+              </div>
+          </div>
+          <div class="grid-samples-div9"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/quiz.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    9.Quiz Game
+              </div>
+          </div>
+          <div class="grid-samples-div10"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/number_guessing.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    10.Number Guessing Game
+              </div>
+          </div>
+          <div class="grid-samples-div11"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/trails_line.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    11.Trails-Line
+              </div>
+          </div>
+          <div class="grid-samples-div12"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/trails_square.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    12.Trails-Square
+              </div>
+          </div>
+          <div class="grid-samples-div13"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/multi_coloured_square.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    13.Trails-Multi Colour Square
+              </div>
+          </div>
+          <div class="grid-samples-div14"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/set_anim_r.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    14.Trails-Triangle
+              </div>
+          </div>
+          <div class="grid-samples-div15"> 
+              <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
+                  <source src="Vids/set_anim_r.mp4" type="video/mp4"></source>
+              </video>
+              <div class="samples_description samples_category_basic">  
+                    15.Trails-Triangle
+              </div>
+          </div>
+      </div>
+
+      <button class="login_form_cancel_btn" onClick="samplesClicked();" >Close</button>
+</div>
+  <!-- SAMPLES END !--> 
    
+  <!-- Sample JS !-->
+  
+  <script>
+  const samplesContainer = document.getElementById('samples_container');
+
+  const mainGridContainer = document.getElementById('container');
+  const blueAmount = "10px";
+  let samplesOpened = false;
+
  
     
+  function samplesClicked()
+  {
+    mainGridContainer.classList.toggle("blur_element"); 
+    if(samplesOpened == false)
+    {
+      samplesContainer.style.display = "block";
+      samplesOpened = true;
+
+    }
+    else
+    {
+      samplesContainer.style.display = "none";
+      samplesOpened = false;
+
+    } 
+  }
+  </script>
+  <!-- End Samples JS !-->
+
+
+  <!-- Login JS !-->
   <script>
 
   const   loginForm = document.getElementById('loginButton');
@@ -316,8 +478,9 @@ if(isset($_GET['s']))
                   
   }
       
-            
   </script>
+
+  <!-- END login js !-->
 
     <!-- bridge div for linking unity application events with website e.g. collisions, input: Assets/pyslib  !-->
     <div id="unity_events"></div>
@@ -368,12 +531,10 @@ if(isset($_GET['s']))
 
     </script>
 
+<!--Save cloud  code !-->
 <script>
     var editor = ace.edit("editor");
    
-
-  
-    
     <?php
     $txt = json_encode($code);
     echo "var out={$txt};";

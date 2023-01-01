@@ -1051,11 +1051,8 @@ def _Hide(characterID):
         ErrorMsg(methodName,"parameter characterID was not an int. characterID=\'"+ str(characterID) + "\'")
         return 0
 
-    #create parameter string
-    params = str(characterID)  
-
     #call the unity function
-    unityInstance.SendMessage(sparkpyClass, "Hide",uid) #pass the int version of the characterID
+    unityInstance.SendMessage(sparkpyClass, methodName,uid) #pass the int version of the characterID
 
     #check the return value(unity function modifies this div's value to store the return value)
     result = int(document[SPARKPY_RETURN_VALUE_DIV].value)
@@ -1064,7 +1061,8 @@ def _Hide(characterID):
     if(result == INVALID_CHARACTER):
         ErrorMsg(methodName,"Invalid characterID. characterID=\'"+ str(characterID) + "\'")
 
-    return result 
+    #return result 
+    return result
 
 def _Rotate(characterID, degrees, seconds, direction = "right"):
 
