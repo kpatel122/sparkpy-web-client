@@ -14,9 +14,9 @@
 
     --samples_border_size: 2px;
     --samples_border_colour: rgb(132, 132, 132);;  
-     
 
-
+    --menu_icon_default_opacity: 1;
+    --menu_icon_hover_opacity: 0.6;
 }
 
 /*NAVBAR*/ 
@@ -159,22 +159,22 @@
     float: left;
     margin-left: 5px;
     margin-top: 10px;
-    
-    /*padding-right: 40px;*/
     transform: scale(1);
+    opacity: var(--menu_icon_default_opacity)
   }
   .play-icon:hover
   {
-    background: url("/Images/icons/play_icon_h.svg")  no-repeat;
+    opacity: var(--menu_icon_hover_opacity);
   }
 
   .run-text
   {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    opacity: var(--menu_icon_default_opacity)
   }
   .run-text:hover
   {
-    color: #4d4d4d;
+    opacity: var(--menu_icon_hover_opacity);
   }
 
   .filename-box
@@ -199,12 +199,13 @@
     margin-left: 2px;
     margin-top: 12px;
     transform: scale(1);
+    opacity: var(--menu_icon_default_opacity)
   }
 
   .load-icon:hover
-    {
-        background: url("/Images/icons/load_icon_h.svg")  no-repeat;
-    }
+  {
+      opacity: var(--menu_icon_hover_opacity)
+  }
 
   .save-icon {
     width: 1.8em;
@@ -217,9 +218,12 @@
     margin-top: 12px;
     margin-right: var(--menu_gaps);
     transform: scale(1);
+    opacity: var(--menu_icon_default_opacity)
   }
-  .save-icon:hover {
-    background: url("/Images/icons/save_icon_h.svg")  no-repeat;
+
+  .save-icon:hover
+  {
+    opacity: var(--menu_icon_hover_opacity)
   }
 
 
@@ -243,11 +247,12 @@
     margin-left: 2px;
     margin-top: 12px;
     transform: scale(1);
-     
-    
+    opacity: var(--menu_icon_default_opacity)
   }
-  .cloud-load-icon:hover {
-    background: url("/Images/icons/cloud_load_icon_h.svg")  no-repeat;
+
+  .cloud-load-icon:hover
+  {
+      opacity: var(--menu_icon_hover_opacity)
   }
 
  
@@ -260,13 +265,16 @@
     cursor: pointer;
     float: left;
     margin-left: 2px;
-    
     margin-top: 12px;
     transform: scale(1);
     margin-right: var(--menu_gaps);  
+
+    opacity: var(--menu_icon_default_opacity)
   }
-  .cloud-save-icon:hover {
-    background: url("/Images/icons/cloud_save_icon_h.svg")  no-repeat;
+
+  .cloud-save-icon:hover
+  {
+      opacity: var(--menu_icon_hover_opacity)
   }
   
   .grid-cell-menu-font-size
@@ -439,21 +447,21 @@ background-color: aqua;
 
   }
   
-  .grid-samples-div1 { grid-area: 1 / 1 / 2 / 2; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div2 { grid-area: 1 / 2 / 2 / 3; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div3 { grid-area: 1 / 3 / 2 / 4; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div4 { grid-area: 1 / 4 / 2 / 5; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div5 { grid-area: 1 / 5 / 2 / 6; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div6 { grid-area: 2 / 1 / 3 / 2; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div7 { grid-area: 2 / 2 / 3 / 3; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div8 { grid-area: 2 / 3 / 3 / 4; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div9 { grid-area: 2 / 4 / 3 / 5; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div10 { grid-area: 2 / 5 / 3 / 6; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div11 { grid-area: 3 / 1 / 4 / 2; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div12 { grid-area: 3 / 2 / 4 / 3; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div13 { grid-area: 3 / 3 / 4 / 4; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div14 { grid-area: 3 / 4 / 4 / 5; border: var(--samples_border_size) solid var(--samples_border_colour);}
-  .grid-samples-div15 { grid-area: 3 / 5 / 4 / 6; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div1 { grid-area: 1 / 1 / 2 / 2; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div2 { grid-area: 1 / 2 / 2 / 3; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div3 { grid-area: 1 / 3 / 2 / 4; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div4 { grid-area: 1 / 4 / 2 / 5; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div5 { grid-area: 1 / 5 / 2 / 6; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div6 { grid-area: 2 / 1 / 3 / 2; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div7 { grid-area: 2 / 2 / 3 / 3; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div8 { grid-area: 2 / 3 / 3 / 4; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div9 { grid-area: 2 / 4 / 3 / 5; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div10 { grid-area: 2 / 5 / 3 / 6; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div11 { grid-area: 3 / 1 / 4 / 2; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div12 { grid-area: 3 / 2 / 4 / 3; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div13 { grid-area: 3 / 3 / 4 / 4; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div14 { grid-area: 3 / 4 / 4 / 5; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
+  .grid-samples-div15 { grid-area: 3 / 5 / 4 / 6; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
 
 
 

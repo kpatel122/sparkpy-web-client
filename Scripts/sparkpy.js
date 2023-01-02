@@ -49,7 +49,7 @@ var isLightTheme = true;
 const LIGHT_THEME = "ace/theme/chrome";
 const DARK_THEME = "ace/theme/chaos";
 const DEFAULT_FONT_SIZE = '14';
-var editor = ace.edit("editor");
+//var editor = ace.edit("editor");
 
 const toggle = document.getElementById("toggle-switch");
 const toggleContainer = document.getElementById("settings-toggle-container");
@@ -64,12 +64,12 @@ function toggleEditorTheme()
   
   if(isLightTheme == true)
   {
-    editor.setTheme(DARK_THEME);
+    codeEditor.setTheme(DARK_THEME);
     isLightTheme = false;
   }
   else
   {
-    editor.setTheme(LIGHT_THEME);
+    codeEditor.setTheme(LIGHT_THEME);
     isLightTheme = true;
   }
 }
@@ -84,7 +84,7 @@ function setDefaultSettings()
  
   
   document.getElementById("font-size").value = DEFAULT_FONT_SIZE;
-  editor.setTheme(LIGHT_THEME);
+  codeEditor.setTheme(LIGHT_THEME);
   fontSizeChanged();
 }
 
