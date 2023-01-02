@@ -234,124 +234,124 @@ if(isset($_GET['s']))
       <h3 style="text-align:center;">Samples</h3>
       <div class="grid-samples-parent">
 
-          <div class="grid-samples-div1" onclick="openSample('CreateEnvironment.py')">
+          <div class="grid-samples-div1 samples_category_basic" onclick="openSample('CreateEnvironment.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/environment.mp4" type="video/mp4" ></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     1.Create Environment
               </div>
           </div>
-
-          <div class="grid-samples-div2" onclick="openSample('CreateCharacter.py')">
+          
+          <div class="grid-samples-div2 samples_category_basic" onclick="openSample('CreateCharacter.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/character.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description ">
                     2.Create Character
               </div>
           </div>
-          <div class="grid-samples-div3 " onclick="openSample('SetAnimation.py')">
+          <div class="grid-samples-div3 samples_category_basic" onclick="openSample('SetAnimation.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/set_animation.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     3.Set Animation
               </div>
           </div>
-          <div class="grid-samples-div4" onclick="openSample('KeyboardControl.py')">
+          <div class="grid-samples-div4 samples_category_basic" onclick="openSample('KeyboardControl.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/keyboard_control.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     4.Keyboard Control
               </div>
           </div>
-          <div class="grid-samples-div5" onclick="openSample('ThirdPersonControl.py')">
+          <div class="grid-samples-div5 samples_category_basic" onclick="openSample('ThirdPersonControl.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/third_person.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     5.Third Person Control
               </div>
           </div>
-          <div class="grid-samples-div6" onclick="openSample('Sounds.py')">
+          <div class="grid-samples-div6 samples_category_basic" onclick="openSample('Sounds.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/sounds.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     6.Sounds
               </div>
           </div>
-          <div class="grid-samples-div7" onclick="openSample('Effects.py')">
+          <div class="grid-samples-div7 samples_category_basic" onclick="openSample('Effects.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/effects.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     7.Effects
               </div>
           </div>
-          <div class="grid-samples-div8" onclick="openSample('Primitives.py')">
+          <div class="grid-samples-div8 samples_category_basic" onclick="openSample('Primitives.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/primitives.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     8.Primitives
               </div>
           </div>
-          <div class="grid-samples-div9" onclick="openSample('Quiz.py')">
+          <div class="grid-samples-div9 samples_category_basic" onclick="openSample('Quiz.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/quiz.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     9.Quiz Game
               </div>
           </div>
-          <div class="grid-samples-div10" onclick="openSample('Numbers.py')">
+          <div class="grid-samples-div10 samples_category_basic" onclick="openSample('Numbers.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/number_guessing.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     10.Number Guessing Game
               </div>
           </div>
-          <div class="grid-samples-div11" onclick="openSample('TrailsBasicLine.py')">
+          <div class="grid-samples-div11 samples_category_basic" onclick="openSample('TrailsBasicLine.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/trails_line.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     11.Trails-Line
               </div>
           </div>
-          <div class="grid-samples-div12" onclick="openSample('TrailsSquare.py')">
+          <div class="grid-samples-div12 samples_category_basic" onclick="openSample('TrailsSquare.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/trails_square.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     12.Trails-Square
               </div>
           </div>
-          <div class="grid-samples-div13" onclick="openSample('TrailsMuSquare.py')">
+          <div class="grid-samples-div13 samples_category_basic" onclick="openSample('TrailsMuSquare.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/multi_coloured_square.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     13.Trails-Multi Colour Square
               </div>
           </div>
-          <div class="grid-samples-div14" onclick="openSample('TrailsMuSquare.py')">
+          <div class="grid-samples-div14 samples_category_basic" onclick="openSample('TrailsMuSquare.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/multi_coloured_square.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     14.Trails-Triangle
               </div>
           </div>
-          <div class="grid-samples-div15" onclick="openSample('TrailsMuSquare.py')">
+          <div class="grid-samples-div15 samples_category_basic" onclick="openSample('TrailsMuSquare.py')">
               <video muted="muted" onmouseover="this.play()"  onmouseout="this.pause();" loop class="samples_video">
                   <source src="Vids/multi_coloured_square.mp4" type="video/mp4"></source>
               </video>
-              <div class="samples_description samples_category_basic">
+              <div class="samples_description">
                     15.Trails-Triangle
               </div>
           </div>
@@ -366,6 +366,9 @@ if(isset($_GET['s']))
   <script>
   const editor = ace.edit("editor");
   const samplesContainer = document.getElementById('samples_container');
+  const samplesEnterAnim = "anim_samples_enter";
+  const samplesExitAnim = "anim_samples_exit";
+
 
   const mainGridContainer = document.getElementById('container');
   const blueAmount = "10px";
@@ -385,21 +388,62 @@ if(isset($_GET['s']))
     //close the samples box
     samplesClicked()
   }
+
+  function openSamples()
+  {
+         
+    samplesContainer.classList.remove(samplesEnterAnim);
+    samplesContainer.classList.remove(samplesExitAnim);
+    window.setTimeout(function() {
+      samplesContainer.style.display = "block";
+      samplesContainer.classList.add(samplesEnterAnim);
+    }, 50);
+         
+  }
+
+  function closeSamples()
+  {
+         
+    samplesContainer.classList.remove(samplesEnterAnim);
+    samplesContainer.classList.remove(samplesExitAnim);
+
+    samplesContainer.classList.remove(samplesEnterAnim);
+    samplesContainer.classList.remove(samplesExitAnim);
+    
+    window.setTimeout(function() {
+      samplesContainer.classList.add(samplesExitAnim);
+    }, 50);
+
+
+    window.setTimeout(function() {
+      mainGridContainer.classList.toggle("blur_element");
+      
+    }, 500);
+    
+
+    window.setTimeout(function() {
+      samplesContainer.style.display = "none";
+      
+    }, 1000);
+         
+  }
  
     
   function samplesClicked()
   {
-    mainGridContainer.classList.toggle("blur_element"); 
+    
     if(samplesOpened == false)
     {
-      samplesContainer.style.display = "block";
+      mainGridContainer.classList.toggle("blur_element"); 
       samplesOpened = true;
+      openSamples();
 
     }
     else
     {
-      samplesContainer.style.display = "none";
+      
       samplesOpened = false;
+      closeSamples()
 
     } 
   }
@@ -439,7 +483,6 @@ if(isset($_GET['s']))
   function openLogin()
   {
              
-    
     loginForm.classList.remove(exitAnim);
     loginForm.classList.remove(enterAnim);
     window.setTimeout(function() {
@@ -476,18 +519,16 @@ if(isset($_GET['s']))
     def run(ev):
       document['console'].value = ''
       editor.run(editor.editor.getValue())
-      
-   
+         
     editor.reset()
 
-
-    
     @bind(window, "message")
     def ready(ev):
       #unity instance variable (window.unint) is now valid
       sparkpy.SetUnityInstance(window.unint)
       window.engineLoaded() #if you need to call JS after the engine is loaded.
       document['run'].bind('click', run)
+
     </script>
 
     <script>

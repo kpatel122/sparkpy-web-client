@@ -13,7 +13,7 @@
     --menu_gaps: 15px;
 
     --samples_border_size: 2px;
-    --samples_border_colour: rgb(132, 132, 132);;  
+    --samples_border_colour: rgb(24, 24, 24);  
 
     --menu_icon_default_opacity: 1;
     --menu_icon_hover_opacity: 0.6;
@@ -397,11 +397,12 @@
     
 
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 15%;
+    left: 10%;
+    /*
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-
+*/
 }
 
 .blur_element
@@ -416,8 +417,8 @@
 
 .samples_category_basic
 { 
-background-color: aqua;
-}
+background-color: rgb(197, 197, 197);
+} 
 
 .samples_description 
 {
@@ -428,23 +429,15 @@ background-color: aqua;
 
 .grid-samples-parent {
   display: grid;
-
-  
   grid-template-columns: repeat(5,  auto);
   grid-template-rows: repeat(5, auto);
-
-  
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   /*border: var(--samples_border_size) solid */
-  border: var(--samples_border_size) solid var(--samples_border_colour);
+  /*border: var(--samples_border_size) solid var(--samples_border_colour); */
 
-
-  
-  padding-bottom: 0px;
+  padding: 10px;
   margin-bottom: 0px;
-
-
   }
   
   .grid-samples-div1 { grid-area: 1 / 1 / 2 / 2; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
