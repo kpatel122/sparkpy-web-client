@@ -27,6 +27,33 @@ if(isset($_GET['s']))
   $code = Spark::getCode();
 }
 
+function userFilesTable()
+{
+    $html = "";
+    $table = "<table id='table-useraccount'>";
+    $heading = "<th colspan='2'>File</th><th>Modified</th><th colspan='3'>Actions</th>";
+
+    $row = "<tr>
+        <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td>
+        <td class ='grid-cell-useraccount-file-name'>spark1.py</td>
+        <td class ='grid-cell-useraccount-file-mod-date'>03/02/23</td>
+        <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td>
+        <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/delete_icon.svg'></td>
+        <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td>
+        </tr>";            
+            
+    $html.=$table;
+    $html.=$heading;
+    for ($x = 0; $x < 5; $x++)
+    {
+        $html.=$row;
+    }   
+    $html.="</TABLE>";
+    
+    return $html;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -360,6 +387,17 @@ if(isset($_GET['s']))
       <button class="login_form_cancel_btn" onClick="samplesClicked();" >Close</button>
   </div>
   <!-- SAMPLES END !--> 
+
+<!--USER ACCOUNT START !-->
+<div class="grid-useraccount-parent center_element sparkpy-fonts">
+  <div class="grid-cell-useraccount-heading">My Account</div>
+  <div class="grid-cell-useraccount-settings">Settings</div>
+  <div class="grid-cell-useraccount-files"> 
+      <?php echo userFilesTable(); ?>
+  </div>
+  <div class="grid-cell-useraccount-footer"> footer </div>
+</div>
+<!--USER ACCOUNT END !-->
    
   <!-- Sample JS !-->
   

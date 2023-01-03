@@ -456,10 +456,71 @@ background-color: rgb(197, 197, 197);
   .grid-samples-div14 { grid-area: 3 / 4 / 4 / 5; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
   .grid-samples-div15 { grid-area: 3 / 5 / 4 / 6; cursor: pointer; border: var(--samples_border_size) solid var(--samples_border_colour);}
 
+/*************************** SETTINGS ENDS ***************************/
 
 
+/*************************** USER ACCOUNT START ***************************/
+#table-useraccount {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+}
+#table-useraccount tr,#table-useraccount th, #table-useraccount td 
+{
+border: 1px solid #ddd; 
+}
 
-/* SETTINGS ENDS */
+
+#table-useraccount th
+{
+    
+    text-align: left; 
+}
+
+#table-useraccount tr:nth-child(even){background-color: #f2f2f2;}
+
+#table-useraccount tr:hover {background-color: #ddd;}
+
+.grid-cell-useraccount-file-icon
+{
+    padding: 0px;
+}
+
+.grid-cell-useraccount-file-name
+{
+    padding: 8px;
+    padding-right: 50px;
+}
+.grid-cell-useraccount-file-mod-date
+{
+    padding: 8px;
+}
+
+.grid-cell-useraccount-actions-icon
+{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+
+.grid-useraccount-parent {
+display: grid;
+grid-template-columns: repeat(2, fit-content);
+grid-template-rows: repeat(3, auto);
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+border: 2px solid black;
+margin: 0px;
+padding: 0px;
+width: min-content;
+background-color: #ffffff;
+ 
+}
+
+.grid-cell-useraccount-heading {text-align: center; border: 2px solid black; grid-area: 1 / 1 / 2 / 3; }
+.grid-cell-useraccount-settings {border: 2px solid black; grid-area: 2 / 1 / 3 / 2; }
+.grid-cell-useraccount-files {border: 2px solid black; grid-area: 2 / 2 / 3 / 3; }
+.grid-cell-useraccount-footer {border: 2px solid black; grid-area: 3 / 1 / 4 / 3; }
+/*************************** USER ACCOUNT END ***************************/
 
 @media (max-width: 480px ) /* mobile breakpoint*/
 {
