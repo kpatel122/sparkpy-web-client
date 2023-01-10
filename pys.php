@@ -5,11 +5,15 @@ require_once 'php_scripts/database.php';
 require_once 'php_scripts/spark.php';
 
 $user_name = NULL;
+$loggedIn = "";
+$userid = -1;
 
 if(isset($_SESSION["user_id"]))
 {
   $pic = $_SESSION["pic"];
   $user_name = "<img src='$pic' width='25px' height='25px' referrerpolicy='no-referrer'>";
+  $loggedIn = "1";
+  $userid = $_SESSION["user_id"];
 }
 else
 {
@@ -17,15 +21,25 @@ else
   $user_name = "<div   class=\"g_id_signin\" data-type=\"standard\" data-size=\"small\" data-theme=\"filled_blue\"
                   data-text=\"signin\" data-shape=\"rectangular\" data-logo_alignment=\"left\">
                   </div>";
+  $loggedIn = "0";
 }
 
 $code = "";
+$filename = "";
+$isSparkOwner=false; //is the currently logged in user the owner of the spark
+$sparkId = -1;
+
+//has a spark been set
 if(isset($_GET['s']))
 {
-  $id = $_GET['s'];
-  Spark::getSpark($id);
+  $sparkId = $_GET['s'];
+  Spark::getSpark($sparkId);
   $code = Spark::getCode();
+  $filename = Spark::getName();
+
+  
 }
+ 
 
 function userFilesTable()
 {
@@ -168,7 +182,7 @@ function userFilesTable()
               </div>
               <!-- filename input box !-->
               <div class="grid-cell-menu-filename" title="filename">
-                  <input class="filename-box" value="untitled.py">
+                  <input class="filename-box" value="untitled.py" id="filename-id">
               </div>
 
               <!-- theme light/dark toggle !-->
@@ -202,7 +216,7 @@ function userFilesTable()
 
               <!--cloud save !-->
               <div class="grid-cell-menu-cloud-save" title="Save to user account">
-                  <button class="cloud-save-icon" id="cloud-save" aria-label="save" onclick="saveFile()"></button>
+                  <button class="cloud-save-icon" id="cloud-save" aria-label="save" onclick="cloudSave()"></button>
               </div>
 
               <!--font size !-->
@@ -227,8 +241,8 @@ function userFilesTable()
               </div>
               <!-- login form end !-->
 
-          </div>
-          <!--END MAIN MENU GRID !-->
+        </div>	
+        <!-- MENU CONTAINER END-->
 
       </div>
       <!-- MENU CONTAINER END-->
@@ -389,26 +403,112 @@ function userFilesTable()
   <!-- SAMPLES END !--> 
 
 <!--USER ACCOUNT START !-->
-<div class="grid-useraccount-parent center_element sparkpy-fonts">
-  <div class="grid-cell-useraccount-heading">My Account</div>
-  <div class="grid-cell-useraccount-settings">Settings</div>
-  <div class="grid-cell-useraccount-files"> 
-      <?php echo userFilesTable(); ?>
+<div class="account_container center_element sparkpy-fonts" id="account_container">	
+  <div class="grid-useraccount-parent">	
+    <div class="grid-cell-useraccount-heading">My Account</div>	
+    <div class="grid-cell-useraccount-settings">Settings</div>	
+    <div class="grid-cell-useraccount-files"> 	
+        <?php echo userFilesTable(); ?>	
+    </div>	
+    <div class="grid-cell-useraccount-footer"> <button class="login_form_cancel_btn" onClick="closeAccount();" >Close</button> </div>
+
   </div>
-  <div class="grid-cell-useraccount-footer"> footer </div>
 </div>
 <!--USER ACCOUNT END !-->
    
-  <!-- Sample JS !-->
+  <!-- global script variables start !-->	
+  <script>	
+    const mainGridContainer = document.getElementById('container');	
+    	
+    var accountOpened = false;
+ 
+    var loggedIn = (<?php echo $loggedIn ?> == "1");
+
+    const editor = ace.edit("editor");
   
+  function cloudSave()
+  {
+    loggedIn = true; //TMP ONLY
+    if(loggedIn==false)
+    {
+      openLogin();
+    }
+    else
+    {
+      let filename = document.getElementById("filename-id").value;
+      let code = editor.getValue();
+
+      saveCode();
+      //console.log("filename is " + filename);
+      //console.log("code is " + code);
+    }
+
+  }  
+  	
+  function cloudLoad()	
+  {	
+     	
+    //todo check if use is logged in 	
+    //openLogin();	
+    //if code is not loaded from db by user, load default
+    //if(codeLoaded != "1")
+
+    if(loggedIn==false)
+    {
+      openLogin();
+    }
+    else if(loggedIn==true && this.accountOpened == false)	
+    {	
+      openAccount();	
+      this.accountOpened = true;	
+    }	
+  }	
+    const accountContainer = document.getElementById("account_container");	
+    const accountEnterAnim = "anim_samples_enter";	
+    const accountExitAnim = "anim_samples_exit";	
+    	
+    async function openAccount()	
+    {	
+      mainGridContainer.classList.toggle("blur_element"); 	
+       	
+      accountContainer.classList.remove(accountEnterAnim);	
+      accountContainer.classList.remove(accountExitAnim);	
+      window.setTimeout(function() {	
+        accountContainer.style.display = "block";	
+        accountContainer.classList.add(accountEnterAnim);	
+         	
+    }, 50);	
+    }	
+    function closeAccount()	
+    {	
+      accountContainer.classList.remove(accountEnterAnim);	
+      accountContainer.classList.remove(accountExitAnim);	
+      accountContainer.classList.remove(accountEnterAnim);	
+      accountContainer.classList.remove(accountExitAnim);	
+    	
+      window.setTimeout(function() {	
+        accountContainer.classList.add(accountExitAnim);	
+      }, 50);	
+      window.setTimeout(function() {	
+      mainGridContainer.classList.toggle("blur_element");	
+      }, 500);	
+    	
+      window.setTimeout(function() {	
+        accountContainer.style.display = "none";	
+      }, 1000);	
+      this.accountOpened = false;	
+    }	
+  </script>	
+  	
+  <!-- Sample JS !-->	
   <script>
-  const editor = ace.edit("editor");
+  //const editor = ace.edit("editor");
   const samplesContainer = document.getElementById('samples_container');
   const samplesEnterAnim = "anim_samples_enter";
   const samplesExitAnim = "anim_samples_exit";
 
 
-  const mainGridContainer = document.getElementById('container');
+  //const mainGridContainer = document.getElementById('container');
   const blueAmount = "10px";
   let samplesOpened = false;
 
@@ -497,12 +597,6 @@ function userFilesTable()
   const   enterAnim = "anim_login_enter";
   const   exitAnim = "anim_login_exit";
   
-
-  function cloudLoad()
-  {
-    openLogin();
-  }
-
   function closeLogin()
   {
     loginForm.classList.remove(exitAnim);
@@ -643,10 +737,11 @@ function userFilesTable()
       //"use strict";   
  
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", "save_code.php", true);
+      xmlhttp.open("POST", "cloud_save.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.onreadystatechange = function() {
-          if (this.readyState === 4 || this.status === 200){ 
+          if (this.readyState === 4 && this.status === 200){ 
+              console.log("response is "); 
               console.log(this.responseText); // echo from php
           }       
       };
@@ -654,7 +749,20 @@ function userFilesTable()
       //var editor = ace.edit("editor");
 
       var code = editor.getValue();
-      xmlhttp.send("id=1&code="+code);
+      let filename = document.getElementById("filename-id").value;
+      let sparkId = (<?php echo $sparkId ?>)  
+      let querystring = "code="+code+"&filename="+filename;
+    
+      if(sparkId != -1) //check if spark id was set in the url param
+      {
+        querystring +="&sparkid="+sparkId;
+      }
+       
+
+      console.log("sending query string " + querystring);
+      
+      
+      xmlhttp.send(querystring);
        
     }
 

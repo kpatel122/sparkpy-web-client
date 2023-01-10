@@ -382,14 +382,9 @@
   display: none;
   border: 3px solid #181818;
   z-index: 9;
-     
-  
   background-color:#f3f3f3;
   position: absolute;
-  
-  /*height: min-content;
-  width:fit-content;*/
-     
+
 }
 
 .center_element
@@ -514,6 +509,16 @@ padding: 0px;
 width: min-content;
 background-color: #ffffff;
  
+}
+
+.account_container
+{
+  display: none;
+  border: 3px solid #181818;
+  z-index: 9;
+  background-color:#f3f3f3;
+  position: absolute;
+
 }
 
 .grid-cell-useraccount-heading {text-align: center; border: 2px solid black; grid-area: 1 / 1 / 2 / 3; }

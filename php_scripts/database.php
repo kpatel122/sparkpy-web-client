@@ -87,7 +87,7 @@ class Database {
         
             echo "runProc error is ".$e->getMessage();
             echo "<BR>";
-            self::$closeConn();
+            self::closeConn();
             exit();
         }
 
