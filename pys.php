@@ -427,7 +427,7 @@ function userFilesTable()
         <button class="alert_btn" onClick="overwriteClose()">No</button>
       </span>
       <div style="padding-top: 10px;">
-      <input type="checkbox" id="overwrite" name="overwrite">
+      <input type="checkbox" id="overwrite_checkbox" name="overwrite">
       <label for="overwrite">remember my choice</label>
       </div>
     </div>
@@ -470,8 +470,11 @@ function userFilesTable()
   
   function overwriteSave()
   {
+    alert( "remember choice " + document.getElementById("overwrite_checkbox").checked ); 
+
     saveCode(false);
     overwriteClose();
+
   }
   function overwriteClose()
   {
