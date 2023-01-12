@@ -14,22 +14,22 @@ if(isset($_SESSION["user_id"]))
 {
     $user_id = $_SESSION["user_id"];
     $userLoggedIn = true;
-    $res .= " userLoggedIn true \n";
+    //$res .= " userLoggedIn true \n";
 }
 else
 {
-    $res .= " userLoggedIn false \n";
+    //$res .= " userLoggedIn false \n";
 }
 
 if(isset($_POST['sparkid']))
 {
     $sparkExists = true;
     $spark_id = $_POST['sparkid'];
-    $res .= " sparkExists true value is '$spark_id' \n";
+    //$res .= " sparkExists true value is '$spark_id' \n";
 }
 else
 {
-    $res .= " sparkExists false \n";
+    //$res .= " sparkExists false \n";
 }
 
 
@@ -39,71 +39,109 @@ if($userLoggedIn == false)
     $userLoggedIn = true;
     $user_id = 11;
 
-    $res .= "TMP setting userLoggedIn true \n";
-    $res .= "TMP setting userid '$user_id' \n";
+    //$res .= "TMP setting userLoggedIn true \n";
+    //$res .= "TMP setting userid '$user_id' \n";
 }
 /****** REMOVE ME ********* */
 
 
 $code = $_POST['code'];
 $filename = $_POST['filename'];
-
-$res .= "filename '$filename' \n";
-
+$overwritemode = $_POST['overwrite']; //either check for overwrite or just overwrite if the filename exists
  
 if($sparkExists == true)
 {
 
     $sparkowner_id = Spark::getOwnerIdFromSparkId($spark_id); 
-    $res .= "\n\n spark owner is:'$sparkowner_id' \n\n";
+//    $res .= "\n\n spark owner is:'$sparkowner_id' \n\n";
 }
-
-
-
-
 
 if($userLoggedIn == false)
 {
     //user has not logged in and attempting to save, shouldnt happen
+    $res .=  "save_attempted_but_user_not_logged_in";
      
-    $res .=  " running 0 "; // the return value for pys.php this.responseText
+//    $res .=  " running 0 "; // the return value for pys.php this.responseText
 }
 else if($sparkExists == false) //new spark
 {
-    //todo check for the same filename
-    //new spark
-    
-    //Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
-    $res .=  " running 1"; 
-     
+
+    $filenameExists = Spark::checkDuplicateName($user_id,$filename);
+    if($overwritemode == "check")
+    {
+        
+        if($filenameExists == true)
+        {
+          $res = "confirm_overite";
+        }
+        else
+        {
+            Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
+            $res .=  "created_ok";
+        }
+    }
+    else
+    {
+        if($filenameExists == true)
+        {
+            //get id from filename
+            $id = Spark::getSparkIdFromFilename($filename);
+            $res .="updated_ok";
+            Spark::updateSpark($id,$filename,$code); //no spark id for spark doesnt exist
+        }
+        else
+        {
+            $res .="no_action_shouldnt_happen";
+        }
+        
+    }     
 }
 else if(($sparkExists == true) && ($sparkowner_id == $user_id))
 {
+    //todo check for filename change
+    //todo make the filename read only for this
     //spark exists and the logged in user is the owner so update the current spark
     
-    //Spark::updateSpark($spark_id,$filename,$code);
-    $res .=  " running 2";
+    $res .="updated_ok";
+    Spark::updateSpark($spark_id,$filename,$code);
+    
 }
 else if(($sparkExists == true) && ($sparkowner_id != $user_id))
 {
     //the spark exists but is not owned by the current logged in user (might have come from a url for example)
     //so copy it over to the user area by creating a new spark for the logged in user
     
-    //Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
-    $res .=  " running 3";
+
+    //$res .=  "\n\ **spark exists but the owner is different from the logged in user** \n";
+
+    $filenameExists = Spark::checkDuplicateName($user_id,$filename);
+ 
+    if($overwritemode == "check")
+    {
+        if($filenameExists == true)
+        {
+            $res = "confirm_overite";
+            //$res .=  "\n\nfile exists for the user- confirm overwrite\n\n";
+        }
+        else
+        {
+            $res = "create_spark";
+            Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
+            //$res .=  "\n\nfile does not exist, create new \n\n";
+        }
+    }
+    else
+    {
+        if($filenameExists == true)
+        {
+            $res = "update_spark";
+            Spark::updateSpark($spark_id,$filename,$code);
+        }
+    }
 }
 
 
-
-//updateSpark($id,$name,$code)
-//createSpark($owner_id,$name,$description,$code)
-
-
-//Spark::saveCode($spark_id,"test",$code);
-
 echo $res;
 http_response_code(200);
-
-//echo "ok"; // the return value for pys.php this.responseText
 
 ?>

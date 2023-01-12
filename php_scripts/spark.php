@@ -38,14 +38,44 @@ public static function getOwnerId()
     return self::$owner_id;
 }
 
+public static function checkDuplicateName($user_id,$filename)
+{
+    /* return if the filename already exists for the user */
+    $query= "CALL spark_get_count_on_id_and_name(?,?)"; 
+    Database::prepare($query);
+    Database::getPrepared()->bind_param("is", $user_id,$filename); 
+    $res = Database::runPrepared();
+
+    return ($res[0]["num"] == 1);
+}
+
 //update an exisiting 
 public static function updateSpark($spark_id,$name,$code)
 {
-    $query= "CALL spark_save_code(?,?,?)"; 
+    $query= "CALL spark_save_code_on_id(?,?,?)"; 
     Database::prepare($query);
     Database::getPrepared()->bind_param("iss", $spark_id,$name,$code); 
     Database::execPrepared();
 }
+
+public static function getSparkIdFromFilename($filename)
+{
+    //without calling the entire get spark query
+
+    $query= "CALL spark_get_id_on_filename(?)"; 
+    Database::prepare($query);
+    Database::getPrepared()->bind_param("s", $filename); 
+    $res = Database::runPrepared();
+
+    if($res == null)
+    {
+        return null;
+    }
+
+    return $res[0]["spark_id"];
+
+}
+
 
 public static function getOwnerIdFromSparkId($spark_id)
 {

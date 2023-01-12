@@ -36,8 +36,6 @@ if(isset($_GET['s']))
   Spark::getSpark($sparkId);
   $code = Spark::getCode();
   $filename = Spark::getName();
-
-  
 }
  
 
@@ -415,6 +413,29 @@ function userFilesTable()
   </div>
 </div>
 <!--USER ACCOUNT END !-->
+
+<!-- ALERT BOX START !-->
+<div class="alertbox_container warning center_element sparkpy-fonts" id="alertbox_container_id">
+  <div class="grid-alertbox-parent">
+    <div class="grid-cell-alertbox-header">  
+      <span style="width: 100%; margin-left: 0px; padding: 10px;" > <img src="Images/icons/warning_icon.svg" > File Exists </span>
+    </div>
+    <div id="alert_message_id" class="grid-cell-alertbox-body"  style="padding-top: 10px;padding-bottom: 10px;" >Overwrite ?</div>
+    <div class="grid-cell-alertbox-footer">
+      <span >
+        <button class="alert_btn" onClick="overwriteSave()">Yes</button>
+        <button class="alert_btn" onClick="overwriteClose()">No</button>
+      </span>
+      <div style="padding-top: 10px;">
+      <input type="checkbox" id="overwrite" name="overwrite">
+      <label for="overwrite">remember my choice</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ALERT BOX END !-->
    
   <!-- global script variables start !-->	
   <script>	
@@ -438,13 +459,79 @@ function userFilesTable()
       let filename = document.getElementById("filename-id").value;
       let code = editor.getValue();
 
-      saveCode();
+      saveCode(true);
       //console.log("filename is " + filename);
       //console.log("code is " + code);
     }
+  }
 
-  }  
-  	
+  const alertBoxContainer = document.getElementById("alertbox_container_id");
+  const alertMessage = document.getElementById("alert_message_id");
+  
+  function overwriteSave()
+  {
+    saveCode(false);
+    overwriteClose();
+  }
+  function overwriteClose()
+  {
+    alertBoxContainer.style.display="none";
+  }
+  
+  function confirmOverwrite()
+  {
+    let filename = document.getElementById("filename-id").value;
+    
+    alertBoxContainer.style.display = "block";
+    alertMessage.innerHTML = "Overwrite " + filename + "?"
+
+  }
+  
+  function saveCode(checkForOverwrite)
+  {
+      //"use strict"; 
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", "cloud_save.php", true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState === 4 && this.status === 200){ 
+              console.log("response is "); 
+              console.log(this.responseText); // echo from php
+              if(this.responseText == "confirm_overite")
+              {
+                confirmOverwrite();
+                //alert("confirm overite!");
+              }
+          }       
+      };
+
+      //var editor = ace.edit("editor");
+
+      var code = editor.getValue();
+      let filename = document.getElementById("filename-id").value;
+      let sparkId = (<?php echo $sparkId ?>)  
+      let querystring = "code="+code+"&filename="+filename;
+    
+      if(sparkId != -1) //check if spark id was set in the url param
+      {
+        querystring +="&sparkid="+sparkId;
+      }
+      
+      if(checkForOverwrite == true)
+      {
+        querystring+="&overwrite=check";
+      }
+      else
+      {
+        querystring+="&overwrite=yes";
+      }
+
+      console.log("sending query string " + querystring);
+      xmlhttp.send(querystring);
+       
+  }
+
+
   function cloudLoad()	
   {	
      	
@@ -732,39 +819,7 @@ function userFilesTable()
     
     editor.setValue(out);
 
-    function saveCode()
-    {
-      //"use strict";   
- 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", "cloud_save.php", true);
-      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.onreadystatechange = function() {
-          if (this.readyState === 4 && this.status === 200){ 
-              console.log("response is "); 
-              console.log(this.responseText); // echo from php
-          }       
-      };
 
-      //var editor = ace.edit("editor");
-
-      var code = editor.getValue();
-      let filename = document.getElementById("filename-id").value;
-      let sparkId = (<?php echo $sparkId ?>)  
-      let querystring = "code="+code+"&filename="+filename;
-    
-      if(sparkId != -1) //check if spark id was set in the url param
-      {
-        querystring +="&sparkid="+sparkId;
-      }
-       
-
-      console.log("sending query string " + querystring);
-      
-      
-      xmlhttp.send(querystring);
-       
-    }
 
 </script>
 

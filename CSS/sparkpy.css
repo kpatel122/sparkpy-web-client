@@ -394,10 +394,7 @@
     position: absolute;
     top: 15%;
     left: 10%;
-    /*
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-*/
+    
 }
 
 .blur_element
@@ -526,6 +523,59 @@ background-color: #ffffff;
 .grid-cell-useraccount-files {border: 2px solid black; grid-area: 2 / 2 / 3 / 3; }
 .grid-cell-useraccount-footer {border: 2px solid black; grid-area: 3 / 1 / 4 / 3; }
 /*************************** USER ACCOUNT END ***************************/
+
+/**************************** ALERT BOX START ***************************/
+
+.warning
+{
+  background-color: #f3f3f3;
+  border-color: #faebcc;
+ 
+  border: 3px solid #181818;
+}
+
+.alertbox_container
+{
+  display: none;
+  z-index: 9;
+  position: absolute;
+  width: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+}
+.grid-alertbox-parent {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, min-content);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  text-align: center;
+  }
+  
+  .grid-cell-alertbox-header { grid-area: 1 / 1 / 2 / 2; }
+  .grid-cell-alertbox-body { grid-area: 2 / 1 / 3 / 2; }
+  .grid-cell-alertbox-footer { grid-area: 3 / 1 / 4 / 2; }
+
+  .alert_btn
+  {
+
+      background-color: #555;
+      color: white;
+      padding: 10px 10px;
+      margin-top: 5px;
+      width:100px;
+       /*
+      width:50%;
+      */
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+  }
+
+/**************************** ALERT BOX END *****************************/
 
 @media (max-width: 480px ) /* mobile breakpoint*/
 {
