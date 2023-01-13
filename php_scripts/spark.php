@@ -58,13 +58,13 @@ public static function updateSpark($spark_id,$name,$code)
     Database::execPrepared();
 }
 
-public static function getSparkIdFromFilename($filename)
+public static function getSparkIdFromFilename($userid, $filename)
 {
     //without calling the entire get spark query
 
-    $query= "CALL spark_get_id_on_filename(?)"; 
+    $query= "CALL spark_get_id_on_filename(?,?)"; 
     Database::prepare($query);
-    Database::getPrepared()->bind_param("s", $filename); 
+    Database::getPrepared()->bind_param("is", $userid, $filename); 
     $res = Database::runPrepared();
 
     if($res == null)
