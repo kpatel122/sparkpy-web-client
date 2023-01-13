@@ -36,6 +36,7 @@ if(isset($_GET['s']))
   Spark::getSpark($sparkId);
   $code = Spark::getCode();
   $filename = Spark::getName();
+  echo "<script>sessionStorage.setItem(\"sparkid\", $sparkId);</script>";
 }
  
 
