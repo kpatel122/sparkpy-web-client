@@ -471,9 +471,30 @@ function userFilesTable()
   
   function overwriteSave()
   {
-    alert( "remember choice " + document.getElementById("overwrite_checkbox").checked ); 
+    //get checkbox value
+    let remember_my_choice = document.getElementById("overwrite_checkbox").checked;
+    let hasSparkid = false;
+    //user has selected to remember overwrite choice, store the spark id for the coice in session storage
+    if(remember_my_choice == true)
+    {
 
-    saveCode(false);
+      //check if there is a sparkid 
+      sid = sessionStorage.getItem("sparkid");
+
+      if(sid !== null)
+      {
+        hasSparkid = true;
+        //the spark exists check if a choice exists
+        sessionStorage.setItem("overwrite_no_prompt",sid);
+      }
+    }
+
+   
+    let alertForOverwrite = false;
+    let rememberChoice = remember_my_choice;
+    
+    
+    saveCode(alertForOverwrite,rememberChoice,hasSparkid);
     overwriteClose();
 
   }
@@ -491,7 +512,7 @@ function userFilesTable()
 
   }
   
-  function saveCode(checkForOverwrite)
+  function saveCode(checkForOverwrite,overwriteNoPrompt,hasSparkid)
   {
       //"use strict"; 
       var xmlhttp = new XMLHttpRequest();
@@ -501,10 +522,29 @@ function userFilesTable()
           if (this.readyState === 4 && this.status === 200){ 
               console.log("response is "); 
               console.log(this.responseText); // echo from php
-              if(this.responseText == "confirm_overite")
+              let resp = this.responseText;
+              if(resp == "confirm_overite")
               {
                 confirmOverwrite();
-                //alert("confirm overite!");
+                 
+              }
+              else
+              {
+                
+                if(overwriteNoPrompt == true)
+                {
+                  let vals = resp.split("|");
+                  let action = vals[0];
+                  let sparkid = vals[1]
+                  console.log("vals " + vals);
+
+                  if(action == "updated" || action == "created")
+                  {
+                    sessionStorage.setItem("overwrite_no_prompt",sparkid);
+                    sessionStorage.setItem("sparkid",sparkid);
+                  }
+
+                } 
               }
           }       
       };

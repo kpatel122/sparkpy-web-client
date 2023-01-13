@@ -59,6 +59,8 @@ if($sparkExists == false)
 
     //new spark
 
+    
+
     //check if the user already has the same filename in their account
     $filenameExists = Spark::checkDuplicateName($user_id,$filename);
     
@@ -74,8 +76,8 @@ if($sparkExists == false)
         else
         {
             //the filename does not exist and the spark does not exist, so we create a new spark
-            Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
-            $res .=  "created_ok";
+            $id = Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
+            $res .=  "created|".$id;
         }
     }
     else
@@ -83,10 +85,12 @@ if($sparkExists == false)
         //overwrite was confirmed and there was no check to overwrite an existing filename
         if($filenameExists == true)
         {
+            //nosparkid->newspark existing filename->confirmed overwrite by user->update spark->sparkid=db sparkid for the filename
+
             //the file exists, so we overwrite it(update)
             //get id from filename
             $id = Spark::getSparkIdFromFilename($user_id,$filename);
-            $res .="updated_ok";
+            $res .="updated|".$id;
             Spark::updateSpark($id,$filename,$code); //no spark id for spark doesnt exist
         }
         else
@@ -105,9 +109,9 @@ else if(($sparkExists == true) && ($sparkowner_id == $user_id))
     //todo make the filename read only for this
     //spark exists and the logged in user is the owner so update the current spark
     
-    $res .="updated_ok";
-    Spark::updateSpark($spark_id,$filename,$code);
     
+    Spark::updateSpark($spark_id,$filename,$code);
+    $res .="updated|".$spark_id;
 }
 else if(($sparkExists == true) && ($sparkowner_id != $user_id))
 {
@@ -129,8 +133,9 @@ else if(($sparkExists == true) && ($sparkowner_id != $user_id))
         {
             //the filename does not exist, create a new spark. Essentially copy the spark over to the  
             //logged in user area
-            $res = "create_spark";
-            Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
+            
+            $id = Spark::createSpark($user_id,$filename,"",$code); //todo, "" is description
+            $res = "created|".$id;
             //$res .=  "\n\nfile does not exist, create new \n\n";
         }
     }
@@ -139,8 +144,9 @@ else if(($sparkExists == true) && ($sparkowner_id != $user_id))
         //overwrite confirmed, so update the spark
         if($filenameExists == true)
         {
-            $res = "update_spark";
+            
             Spark::updateSpark($spark_id,$filename,$code);
+            $res = "updated|".$spark_id;
         }
     }
 }

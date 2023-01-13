@@ -104,8 +104,8 @@ public static function createSpark($owner_id,$name,$description,$code)
     $query= "CALL spark_create(?,?,?,?)"; 
     Database::prepare($query);
     Database::getPrepared()->bind_param("isss", $owner_id,$name,$description,$code); 
-    Database::execPrepared();
-
+    $res = Database::runPrepared();
+    return $res[0]["new_id"];
 }
 
 public static function print()
