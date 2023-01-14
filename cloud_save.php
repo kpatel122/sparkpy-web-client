@@ -70,8 +70,9 @@ if($sparkExists == false)
         //the filenmae already exists in the user account and we have to check if the user wants to overwrite    
         if($filenameExists == true)
         {
+          $ids = Spark::getSparkIdFromFilename($user_id,$filename);
           //return a confirm overwrite message, this will prompt the 'overwrite existing file?' message on the client
-          $res = "confirm_overite";
+          $res = "confirm_overwrite|".$ids;
         }
         else
         {
@@ -126,8 +127,9 @@ else if(($sparkExists == true) && ($sparkowner_id != $user_id))
         //the filename exists
         if($filenameExists == true)
         {
+            $idspark = Spark::getSparkIdFromFilename($user_id,$filename);
             //send confirm overwrite alert box
-            $res = "confirm_overite";
+            $res = "confirm_overwrite|".$idspark;
         }
         else
         {
