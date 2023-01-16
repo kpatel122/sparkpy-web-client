@@ -26,15 +26,6 @@ $filename = "";
 $isSparkOwner = false; //is the currently logged in user the owner of the spark
 $sparkId = -1;
 
-//has a spark been set
-if (isset($_GET['s'])) {
-  $sparkId = $_GET['s'];
-  Spark::getSpark($sparkId);
-  $code = Spark::getCode();
-  $filename = Spark::getName();
-  echo "<script>sessionStorage.setItem(\"sparkid\", $sparkId);</script>";
-}
-
 
 function userFilesTable()
 {
@@ -445,6 +436,20 @@ function userFilesTable()
   <!-- ALERT BOX END !-->
 
   <!-- global script variables start !-->
+
+  <?php
+  //has a spark been set
+  if (isset($_GET['s'])) {
+  $sparkId = $_GET['s'];
+  Spark::getSpark($sparkId);
+  $code = Spark::getCode();
+  $filename = Spark::getName();
+  //echo "<script>sessionStorage.setItem(\"sparkid\", $sparkId); </script>";
+  echo "<script> document.getElementById(\"filename-id\").value = '$filename'; </script>";
+  
+  }
+  ?>
+
   <script>
     const mainGridContainer = document.getElementById('container');
 
@@ -453,6 +458,13 @@ function userFilesTable()
     var loggedIn = (<?php echo $loggedIn ?> == "1");
 
     const editor = ace.edit("editor");
+
+    //called when the spark id is given in the url
+    function setFilename(filename)
+    {
+      alert("filename is " + filename);
+      document.getElementById("filename-id").value = filename; 
+    }
 
     function cloudSave() {
 
@@ -496,7 +508,7 @@ function userFilesTable()
 
       //user has selected to remember overwrite choice, store the spark id for the coice in session storage
       if (remember_my_choice == true) {
-        sessionStorage.setItem("overwrite_no_prompt_name", filename);
+        sessionStorage.setItem("overwrite_no_prompt_name", filename); //this filename will not prompt an alert box
       }
 
       //the user has confirmed they want to overwrite so no need for an alertbox
@@ -523,13 +535,16 @@ function userFilesTable()
         {
           console.log("response is ");
           console.log(this.responseText); // echo from php
+          let action = this.responseText;
+          /*
           let resp = this.responseText;
 
           let vals = resp.split("|");
           let action = vals[0];
-          let sparkid = vals[1]
+          let sparkid = vals[1]; //TODO sparkid is not needed
+          */
 
-          sessionStorage.setItem("sparkid", sparkid);
+          //sessionStorage.setItem("sparkid", sparkid);
 
           //an existing filename exists, display an alerbox geting the user to confirm they want to overwrite
           if (action == "confirm_overwrite") {
@@ -545,12 +560,11 @@ function userFilesTable()
       let filename = document.getElementById("filename-id").value;
       let querystring = "code=" + code + "&filename=" + filename;
 
-     
       if (checkForOverwrite == true) {
         querystring += "&overwrite=check";
-        console.log("&overwrite=check");
+        console.log("&overwrite=check");//check with the user for overwrite
       } else {
-        querystring += "&overwrite=yes";
+        querystring += "&overwrite=yes";//overwrite the file without prompting the user
         console.log("&overwrite=yes");
       }
 
