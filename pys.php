@@ -404,7 +404,16 @@ function userFilesTable()
       <div class="grid-cell-useraccount-heading">My Account</div>
       <div class="grid-cell-useraccount-settings">Settings</div>
       <div class="grid-cell-useraccount-files">
-        <?php echo userFilesTable(); ?>
+        <?php //echo userFilesTable(); ?>
+        
+        <table id='table-useraccount'>
+          <thead>
+            <th colspan='2'>File</th><th>Modified</th><th colspan='3'>Actions</th>
+          </thead>
+          <tbody id="tbody"> 
+          </tbody>
+        </table>
+          
       </div>
       <div class="grid-cell-useraccount-footer"> <button class="login_form_cancel_btn" onClick="closeAccount();">Close</button> </div>
 
@@ -528,7 +537,7 @@ function userFilesTable()
     {
       //"use strict"; 
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", "cloud_save.php", true);
+      xmlhttp.open("POST", "php_scripts/cloud_save.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) 
@@ -536,17 +545,6 @@ function userFilesTable()
           console.log("response is ");
           console.log(this.responseText); // echo from php
           let action = this.responseText;
-          /*
-          let resp = this.responseText;
-
-          let vals = resp.split("|");
-          let action = vals[0];
-          let sparkid = vals[1]; //TODO sparkid is not needed
-          */
-
-          //sessionStorage.setItem("sparkid", sparkid);
-
-          //an existing filename exists, display an alerbox geting the user to confirm they want to overwrite
           if (action == "confirm_overwrite") {
             //sessionStorage.setItem("sparkid",sparkid);
             confirmOverwrite();
@@ -581,6 +579,9 @@ function userFilesTable()
       //if code is not loaded from db by user, load default
       //if(codeLoaded != "1")
 
+      //TMP
+      loggedIn = true;
+
       if (loggedIn == false) {
         openLogin();
       } else if (loggedIn == true && this.accountOpened == false) {
@@ -592,7 +593,77 @@ function userFilesTable()
     const accountEnterAnim = "anim_samples_enter";
     const accountExitAnim = "anim_samples_exit";
 
+    function  fillUserSparkTable(sparks)
+    {
+
+
+      let row = "";
+
+      for (var s of sparks) 
+      {
+        row+=`<tr> \
+            <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td> \
+            <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
+            <td class ='grid-cell-useraccount-file-mod-date'>${s.modified}</td> \
+            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td> \
+            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/delete_icon.svg'></td> \
+            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
+            </tr>`;
+      }
+
+      var tbody = document.getElementById("tbody");
+      tbody.innerHTML = row;
+    }
+
+    async function loadSpark(sparkid)
+    {
+      const myInit = {
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded' 
+        },
+        body: `s=${sparkid}`
+      };
+      
+      const myRequest = new Request('php_scripts/cloud_load_spark.php', myInit);
+      
+      let response = await fetch(myRequest);
+      let data = await response.text();
+      console.log("load spark data is " + data);
+
+      if(data!="noresults")
+      {
+        let spark = JSON.parse(data);
+        editor.setValue(spark.code);
+        document.getElementById("filename-id").value = spark.name;
+      }
+
+      closeAccount();
+    }
+ 
+    async function getAccountDetails()
+    {
+      const myInit = {
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded' 
+        },
+      
+      };
+
+      const myRequest = new Request('php_scripts/cloud_load.php', myInit);
+
+      let response = await fetch(myRequest);
+      let data = await response.text();
+      let sparks = JSON.parse(data);
+  
+      fillUserSparkTable(sparks);
+    }
+
     async function openAccount() {
+
+      getAccountDetails();
+
       mainGridContainer.classList.toggle("blur_element");
 
       accountContainer.classList.remove(accountEnterAnim);

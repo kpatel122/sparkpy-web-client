@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once 'php_scripts/database.php';
-require_once 'php_scripts/spark.php';
+require_once 'database.php';
+require_once 'spark.php';
 
 $userLoggedIn = false; //should be logged in to get here but assume nothing
 $sparkExists = false;  //check if we have an existing spark in the database
@@ -15,14 +15,8 @@ if(isset($_SESSION["user_id"]))
     $user_id = $_SESSION["user_id"];
     $userLoggedIn = true;
 }
-/*
-if(isset($_POST['sparkid']))
-{
-    $sparkExists = true;
-    $spark_id = $_POST['sparkid'];
-}
-*/
-/* TMP REMOVE THIS */
+
+/****** TMP REMOVE ME ********* */
 if($userLoggedIn == false)
 {
     $userLoggedIn = true;
@@ -40,11 +34,6 @@ if(isset($_POST["filename"]))
     $filename = $_POST['filename'];
     $spark_id = Spark::getSparkIdFromFilename($user_id,$filename);
     $sparkExists = ($spark_id != null);
-    //if($sparkExists)
-    //{
-        //get the spark owner id
-    //    $sparkowner_id = Spark::getOwnerIdFromSparkId($spark_id); 
-   // }
 }
 else
 {

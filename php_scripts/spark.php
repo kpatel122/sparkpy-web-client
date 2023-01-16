@@ -11,25 +11,41 @@ private final function  __construct()
      
 }
 
+public static function getUserAccountSparks($spark_id)
+{
+    $query= "CALL spark_get_on_user_id(?)"; 
+    Database::prepare($query);
+    Database::getPrepared()->bind_param("i", $spark_id); 
+    $res = Database::runPrepared();
+    
+    return $res;
+
+}
+
 public static function getSpark($id)
 {
     $query= "CALL spark_get_on_id(?)"; 
     Database::prepare($query);
     Database::getPrepared()->bind_param("i", $id); 
     $res = Database::runPrepared();
+
+    
     
     if($res !=null)
     {
-        $row = $res[0];
-        self::$id = $row["spark_id"];
-        self::$name = $row["name"];
-        self::$code = $row["code"];
-        self::$owner_id = $row["owner_id"];
+        return $res[0];
+        
+
+        //self::$id = $row["spark_id"];
+        //self::$name = $row["name"];
+        //self::$code = $row["code"];
+        //self::$owner_id = $row["owner_id"];
     }
     else
     {
+        return null;
         //invalid id
-        self::$name = "unititled.py";
+        //self::$name = "unititled.py";
     }
     
     

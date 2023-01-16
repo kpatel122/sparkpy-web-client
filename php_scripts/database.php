@@ -112,7 +112,7 @@ class Database {
     public static function getConn() {
         if(!isset(self::$mysqli_conn)) 
         {
-            $ini_array = parse_ini_file("../../sparkpy.ini");
+            $ini_array = parse_ini_file("../../../sparkpy.ini");
 
 
             self::$server=$ini_array["server"];

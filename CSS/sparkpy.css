@@ -481,6 +481,7 @@ border: 1px solid #ddd;
 {
     padding: 8px;
     padding-right: 50px;
+    cursor: pointer;
 }
 .grid-cell-useraccount-file-mod-date
 {
@@ -503,7 +504,7 @@ grid-row-gap: 0px;
 border: 2px solid black;
 margin: 0px;
 padding: 0px;
-width: min-content;
+width: auto;
 background-color: #ffffff;
  
 }
@@ -520,7 +521,7 @@ background-color: #ffffff;
 
 .grid-cell-useraccount-heading {text-align: center; border: 2px solid black; grid-area: 1 / 1 / 2 / 3; }
 .grid-cell-useraccount-settings {border: 2px solid black; grid-area: 2 / 1 / 3 / 2; }
-.grid-cell-useraccount-files {border: 2px solid black; grid-area: 2 / 2 / 3 / 3; }
+.grid-cell-useraccount-files { border: 2px solid black; grid-area: 2 / 2 / 3 / 3; }
 .grid-cell-useraccount-footer {border: 2px solid black; grid-area: 3 / 1 / 4 / 3; }
 /*************************** USER ACCOUNT END ***************************/
 
