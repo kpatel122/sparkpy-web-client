@@ -622,10 +622,10 @@ function userFilesTable()
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded' 
         },
-        body: `s=${sparkid}`
+        body: `action=getspark&s=${sparkid}`
       };
       
-      const myRequest = new Request('php_scripts/cloud_load_spark.php', myInit);
+      const myRequest = new Request('php_scripts/cloud_load.php', myInit);
       
       let response = await fetch(myRequest);
       let data = await response.text();
@@ -640,7 +640,7 @@ function userFilesTable()
 
       closeAccount();
     }
- 
+    
     async function getAccountDetails()
     {
       const myInit = {
@@ -648,6 +648,7 @@ function userFilesTable()
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded' 
         },
+        body: `action=getusersparks`
       
       };
 
