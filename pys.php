@@ -15,9 +15,13 @@ if (isset($_SESSION["user_id"])) {
   $userid = $_SESSION["user_id"];
 } else {
   //$user_name = "Login";
+  /*
   $user_name = "<div   class=\"g_id_signin\" data-type=\"standard\" data-size=\"small\" data-theme=\"filled_blue\"
                   data-text=\"signin\" data-shape=\"rectangular\" data-logo_alignment=\"left\">
                   </div>";
+  */
+  $user_name = "<div id=\"googleSignIn\"></div>";
+
   $loggedIn = "0";
 }
 
@@ -25,33 +29,6 @@ $code = "";
 $filename = "";
 $isSparkOwner = false; //is the currently logged in user the owner of the spark
 $sparkId = -1;
-
-
-function userFilesTable()
-{
-  $html = "";
-  $table = "<table id='table-useraccount'>";
-  $heading = "<th colspan='2'>File</th><th>Modified</th><th colspan='3'>Actions</th>";
-
-  $row = "<tr>
-        <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td>
-        <td class ='grid-cell-useraccount-file-name'>spark1.py</td>
-        <td class ='grid-cell-useraccount-file-mod-date'>03/02/23</td>
-        <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td>
-        <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/delete_icon.svg'></td>
-        <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td>
-        </tr>";
-
-  $html .= $table;
-  $html .= $heading;
-  for ($x = 0; $x < 5; $x++) {
-    $html .= $row;
-  }
-  $html .= "</TABLE>";
-
-  return $html;
-}
-
 
 ?>
 
@@ -124,11 +101,11 @@ function userFilesTable()
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 
-<body onload="brython({debug:1})">
+<body>
 
 
-  <div id="g_id_onload" data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com" data-login_uri="http://localhost/login_res.php" data-auto_prompt="false">
-  </div>
+  <!--<div id="g_id_onload" data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com" data-login_uri="http://localhost/php_scripts/login_res.php" data-auto_prompt="false">!-->
+  <!--<div id="g_id_onload" data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com" data-login_uri="http://localhost/pys.php" data-auto_prompt="false"></div>!-->
   <!-- <button type="button" onclick="saveCode()">save</button> !-->
   <!-- NAVBAR START !-->
   <nav class="navbar">
@@ -144,7 +121,8 @@ function userFilesTable()
         <li><a href="#" onclick="samplesClicked();">Samples</a></li>
         <li><a href="Docs\_build\html\index.html">Start Here</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="login.html"><?php echo $user_name; ?></a></li>
+        <li><a href="login.html" id="login-id"><div id="googleSignIn"></div></a></li>
+
       </ul>
     </div>
   </nav>
@@ -404,16 +382,19 @@ function userFilesTable()
       <div class="grid-cell-useraccount-heading">My Account</div>
       <div class="grid-cell-useraccount-settings">Settings</div>
       <div class="grid-cell-useraccount-files">
-        <?php //echo userFilesTable(); ?>
-        
+        <?php //echo userFilesTable();
+        ?>
+
         <table id='table-useraccount'>
           <thead>
-            <th colspan='2'>File</th><th>Modified</th><th colspan='3'>Actions</th>
+            <th colspan='2' style="cursor:pointer;" onClick='arrangeSparksByName();'>File</th>
+            <th style="cursor:pointer;" onClick='arrangeSparksByDate();'>Modified</th>
+            <th colspan='3'>Actions</th>
           </thead>
-          <tbody id="tbody"> 
+          <tbody id="tbody">
           </tbody>
         </table>
-          
+
       </div>
       <div class="grid-cell-useraccount-footer"> <button class="login_form_cancel_btn" onClick="closeAccount();">Close</button> </div>
 
@@ -449,15 +430,56 @@ function userFilesTable()
   <?php
   //has a spark been set
   if (isset($_GET['s'])) {
-  $sparkId = $_GET['s'];
-  Spark::getSpark($sparkId);
-  $code = Spark::getCode();
-  $filename = Spark::getName();
-  //echo "<script>sessionStorage.setItem(\"sparkid\", $sparkId); </script>";
-  echo "<script> document.getElementById(\"filename-id\").value = '$filename'; </script>";
-  
+    $sparkId = $_GET['s'];
+    Spark::getSpark($sparkId);
+    $code = Spark::getCode();
+    $filename = Spark::getName();
+    //echo "<script>sessionStorage.setItem(\"sparkid\", $sparkId); </script>";
+    echo "<script> document.getElementById(\"filename-id\").value = '$filename'; </script>";
   }
   ?>
+
+
+<script>
+  //https://developers.google.com/identity/gsi/web/reference/js-reference
+
+        async function validateJWT(credential)
+        {
+          const myInit = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `credential=`+credential
+          };
+          const myRequest = new Request('php_scripts/login.php', myInit);
+          let response = await fetch(myRequest);
+          let data = await response.text();
+          console.log("login response " + data);
+          //document.getElementById("login-id").innerHTML = "<img src='<?php //echo $pic ?>' width='25px' height='25px' referrerpolicy='no-referrer'>";
+          document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
+        }
+        function handleCredentialResponse(response) {
+
+          console.log("Encoded JWT ID token: " + response.credential);
+          validateJWT(response.credential);
+
+        }
+
+        window.onload = function () {
+          brython({debug:1});
+
+          google.accounts.id.initialize({
+            client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("googleSignIn"),
+            { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+          );
+          //google.accounts.id.prompt(); // also display the One Tap dialog
+        }
+    </script>
 
   <script>
     const mainGridContainer = document.getElementById('container');
@@ -468,11 +490,14 @@ function userFilesTable()
 
     const editor = ace.edit("editor");
 
+    let sparksJSON = null;
+
+    let useSparkNameAscSort = true; //when sorting sparks by name, flip between ascending and descending
+    let useSparkDateAscSort = true; //when sorting sparks by date, flip between ascending and descending
+
     //called when the spark id is given in the url
-    function setFilename(filename)
-    {
-      alert("filename is " + filename);
-      document.getElementById("filename-id").value = filename; 
+    function setFilename(filename) {
+      document.getElementById("filename-id").value = filename;
     }
 
     function cloudSave() {
@@ -533,15 +558,13 @@ function userFilesTable()
       alertBoxContainer.style.display = "none";
     }
 
-    function saveCode(checkForOverwrite) 
-    {
-      //"use strict"; 
+    function saveCode(checkForOverwrite) {
+      //"use strict";
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("POST", "php_scripts/cloud_save.php", true);
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) 
-        {
+        if (this.readyState === 4 && this.status === 200) {
           console.log("response is ");
           console.log(this.responseText); // echo from php
           let action = this.responseText;
@@ -560,9 +583,9 @@ function userFilesTable()
 
       if (checkForOverwrite == true) {
         querystring += "&overwrite=check";
-        console.log("&overwrite=check");//check with the user for overwrite
+        console.log("&overwrite=check"); //check with the user for overwrite
       } else {
-        querystring += "&overwrite=yes";//overwrite the file without prompting the user
+        querystring += "&overwrite=yes"; //overwrite the file without prompting the user
         console.log("&overwrite=yes");
       }
 
@@ -574,8 +597,8 @@ function userFilesTable()
 
     function cloudLoad() {
 
-      //todo check if use is logged in 	
-      //openLogin();	
+      //todo check if use is logged in
+      //openLogin();
       //if code is not loaded from db by user, load default
       //if(codeLoaded != "1")
 
@@ -593,18 +616,94 @@ function userFilesTable()
     const accountEnterAnim = "anim_samples_enter";
     const accountExitAnim = "anim_samples_exit";
 
-    function  fillUserSparkTable(sparks)
+    function sortDateAsc(a, b) {
+      if (a.modified<b.modified) {
+        return -1;
+      }
+      if (b.modified<a.modified) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+    }
+
+    function sortDateDesc(a, b) {
+      if (a.modified<b.modified) {
+        return 1;
+      }
+      if (b.modified<a.modified) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    }
+
+    function arrangeSparksByDate()
     {
+      var dateSortFunc;
+      if(useSparkDateAscSort == true)
+      {
+        dateSortFunc = sortDateAsc;
+        useSparkDateAscSort = false;
+      }
+      else
+      {
+        dateSortFunc = sortDateDesc;
+        useSparkDateAscSort = true;
+      }
 
+      let dateSorted = sparksJSON.sort(dateSortFunc);
+      fillUserSparkTable(dateSorted);
 
+    }
+
+    function sortNameAsc(a, b) {
+      if (a.name<b.name) {
+        return -1;
+      }
+      if (b.name<a.name) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+    }
+    function sortNameDesc(a, b) {
+      if (a.name<b.name) {
+        return 1;
+      }
+      if (b.name<a.name) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    }
+
+    function arrangeSparksByName() {
+
+      var sortFunc;
+      if(useSparkNameAscSort == true)
+      {
+        sortFunc = sortNameAsc;
+        useSparkNameAscSort = false;
+      }
+      else
+      {
+        sortFunc = sortNameDesc;
+        useSparkNameAscSort = true;
+      }
+
+      let sorted = sparksJSON.sort(sortFunc);
+      fillUserSparkTable(sorted);
+    }
+
+    function fillUserSparkTable(sparks) {
       let row = "";
 
-      for (var s of sparks) 
-      {
-        row+=`<tr> \
+      for (var s of sparks) {
+        row += `<tr> \
             <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td> \
             <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
-            <td class ='grid-cell-useraccount-file-mod-date'>${s.modified}</td> \
+            <td class ='grid-cell-useraccount-file-mod-date' >${s.modified}</td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/delete_icon.svg'></td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
@@ -615,24 +714,21 @@ function userFilesTable()
       tbody.innerHTML = row;
     }
 
-    async function loadSpark(sparkid)
-    {
+    async function loadSpark(sparkid) {
       const myInit = {
-      method: 'POST',
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded' 
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: `action=getspark&s=${sparkid}`
       };
-      
+
       const myRequest = new Request('php_scripts/cloud_load.php', myInit);
-      
+
       let response = await fetch(myRequest);
       let data = await response.text();
-      console.log("load spark data is " + data);
 
-      if(data!="noresults")
-      {
+      if (data != "noresults") {
         let spark = JSON.parse(data);
         editor.setValue(spark.code);
         document.getElementById("filename-id").value = spark.name;
@@ -640,25 +736,24 @@ function userFilesTable()
 
       closeAccount();
     }
-    
-    async function getAccountDetails()
-    {
+
+    async function getAccountDetails() {
       const myInit = {
-      method: 'POST',
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded' 
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: `action=getusersparks`
-      
+
       };
 
       const myRequest = new Request('php_scripts/cloud_load.php', myInit);
 
       let response = await fetch(myRequest);
       let data = await response.text();
-      let sparks = JSON.parse(data);
-  
-      fillUserSparkTable(sparks);
+      sparksJSON = JSON.parse(data);
+
+      fillUserSparkTable(sparksJSON);
     }
 
     async function openAccount() {
@@ -836,15 +931,19 @@ function userFilesTable()
     def run(ev):
       document['console'].value = ''
       editor.run(editor.editor.getValue())
-         
+
     editor.reset()
 
     @bind(window, "message")
     def ready(ev):
-      #unity instance variable (window.unint) is now valid
-      sparkpy.SetUnityInstance(window.unint)
-      window.engineLoaded() #if you need to call JS after the engine is loaded.
-      document['run'].bind('click', run)
+      
+      if(ev.data == "unity_ready"):
+        #window.alert("ev.data " + ev.data)
+        #unity instance variable (window.unint) is now valid
+      
+        sparkpy.SetUnityInstance(window.unint)
+        window.engineLoaded() #if you need to call JS after the engine is loaded.
+        document['run'].bind('click', run)
 
     </script>
 

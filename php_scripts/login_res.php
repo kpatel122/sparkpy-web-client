@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+/*
+require_once '../vendor/autoload.php';
+require_once 'crypto.php';
+require_once 'database.php';
+*/
 require_once 'vendor/autoload.php';
 require_once 'php_scripts/crypto.php';
 require_once 'php_scripts/database.php';
@@ -9,9 +14,10 @@ require_once 'php_scripts/database.php';
 //https://developers.google.com/identity/gsi/web/guides/display-button
 
 
+
 function EncryptUserData(string &$name, string &$email)
-{
-  $ini_array = parse_ini_file("../../sparkpy.ini");
+{ 
+  $ini_array = parse_ini_file("../../../sparkpy.ini");
   $key= $ini_array["key"];
   $cypher = $ini_array["cypher"];
   $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cypher));
@@ -68,7 +74,7 @@ function ValidateGoogleToken()
   global $userid, $username, $email,$pic;
   $id_token = $_POST["credential"];
 
-  $ini_array = parse_ini_file("../../sparkpy.ini");
+  $ini_array = parse_ini_file("../../../sparkpy.ini");
   $CLIENT_ID = $ini_array["google_client"];
 
   $client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
@@ -90,7 +96,7 @@ function ValidateGoogleToken()
 }
 
 $tokencheck = ValidateGoogleToken();
-
+ 
 if($tokencheck == true)
 {
   SetSessionVariables();

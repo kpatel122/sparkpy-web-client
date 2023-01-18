@@ -17,6 +17,8 @@ if (isset($_SESSION["user_id"])) {
     $userLoggedIn = true;
     $user_id = 11;
 }
+//TMP
+$user_id = 11;
 
 $action  = "";
 $res = "";
@@ -49,12 +51,15 @@ switch ($action)
 function getUserSparks($user_id)
 {
     $sparks = spark::getUserAccountSparks($user_id);
+    $dateformat = 'd/m/y';
 
     //convert the result into a json array
     if ($sparks != null) {
         $results = array();
 
         foreach ($sparks as $spark) {
+            $mysqldate = date( $dateformat, strtotime( $spark['modified'] ) );
+            $spark['modified'] =  $mysqldate;
             array_push($results, $spark);
         }
         $res = json_encode($results);
