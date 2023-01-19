@@ -369,7 +369,9 @@ $sparkId = -1;
   <div class="account_container center_element sparkpy-fonts" id="account_container">
     <div class="grid-useraccount-parent">
       <div class="grid-cell-useraccount-heading">My Account</div>
-      <div class="grid-cell-useraccount-settings">Settings</div>
+      <div class="grid-cell-useraccount-settings">Settings
+      <button type="button" onclick="signOut();">Sign out</button> 
+      </div>
       <div class="grid-cell-useraccount-files">
         <?php //echo userFilesTable();
         ?>
@@ -386,7 +388,6 @@ $sparkId = -1;
 
       </div>
       <div class="grid-cell-useraccount-footer"> <button class="login_form_cancel_btn" onClick="closeAccount();">Close</button> </div>
-
     </div>
   </div>
   <!--USER ACCOUNT END !-->
@@ -423,7 +424,6 @@ $sparkId = -1;
     Spark::getSpark($sparkId);
     $code = Spark::getCode();
     $filename = Spark::getName();
-    //echo "<script>sessionStorage.setItem(\"sparkid\", $sparkId); </script>";
     echo "<script> document.getElementById(\"filename-id\").value = '$filename'; </script>";
   }
   ?>
@@ -435,6 +435,41 @@ $sparkId = -1;
   var requestedAccountLoad = false;
   var requestedAccountSave = false;
 
+        async function signOut()
+        {
+
+          const myInit = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `action=logout`
+          };
+          const myRequest = new Request('php_scripts/login.php', myInit);
+          let response = await fetch(myRequest);
+          let data1 ="";
+          data1 = await response.text();
+          if(data1  != "logged_out") // something went wrong
+          {
+            closeAccount();
+            return;
+          }
+          
+          this.loggedIn = false;
+          document.getElementById("login-id").innerHTML = "<div id=\"googleSignIn\">";
+          google.accounts.id.initialize({
+            client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("googleSignIn"),
+            { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+          );
+
+          closeAccount();
+          
+        }
+
         async function validateJWT(credential)
         {
           const myInit = {
@@ -442,18 +477,24 @@ $sparkId = -1;
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: `credential=`+credential
+            body: `action=login&credential=`+credential
           };
           const myRequest = new Request('php_scripts/login.php', myInit);
           let response = await fetch(myRequest);
           let data = await response.text();
-          console.log("login response " + data);
-           
-          document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
+          
+          if(data == "invalid_token")//something went wrong
+          {
+            if(this.loginFormOpen == true)
+            {
+              closeLogin();
+            }
+            
+            return;
+          }
           this.loggedIn = true;
+          document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
           
-          
-
           if(this.loginFormOpen == true)
           {
             closeLogin();
@@ -465,17 +506,14 @@ $sparkId = -1;
             else if(this.requestedAccountSave == true)
             {
               cloudSave();
-              this.requestedAccountSave == false;
+              this.requestedAccountSave = false;
             }
           }
         }
         function handleCredentialResponse(response) {
 
-          console.log("Encoded JWT ID token: " + response.credential);
           validateJWT(response.credential);
           
-          
-
         }
 
         window.onload = function () {
@@ -498,10 +536,6 @@ $sparkId = -1;
             { theme: "filled_black", size: "large", type: "standard",text: "sign_in_with",shape: "rectangular",logo_alignment: "left" }  // customization attributes
           );
           
-          
-          //<div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
-          
-          //google.accounts.id.prompt(); // also display the One Tap dialog
         }
     </script>
 
@@ -620,16 +654,7 @@ $sparkId = -1;
     }
 
 
-    function cloudLoad() {
-
-      //todo check if use is logged in
-      //openLogin();
-      //if code is not loaded from db by user, load default
-      //if(codeLoaded != "1")
-
-      //TMP
-      //loggedIn = true;
-     
+    function cloudLoad() {     
       if (loggedIn == false) {
         openLogin();
         this.requestedAccountLoad = true;

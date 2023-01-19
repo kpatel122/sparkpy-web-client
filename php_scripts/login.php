@@ -1,14 +1,9 @@
 <?php
 session_start();
 
-
 require_once '../vendor/autoload.php';
 require_once 'crypto.php';
 require_once 'database.php';
-
-//all payload data reference: https://developers.google.com/identity/gsi/web/reference/html-reference#server-side
-//https://developers.google.com/identity/gsi/web/guides/display-button
-
 
 
 function EncryptUserData(string &$name, string &$email)
@@ -29,6 +24,9 @@ function EncryptUserData(string &$name, string &$email)
   return $iv;
 
 }
+
+//all payload data reference: https://developers.google.com/identity/gsi/web/reference/html-reference#server-side
+//https://developers.google.com/identity/gsi/web/guides/display-button
 
 function AddUser(string $name, string $token_id, string $email,string $iv)
 {
@@ -56,6 +54,18 @@ $email = "";
 $pic="";
 
 $error_msg = "";
+
+function logout()
+{
+  UnsetSessionVariables();
+}
+
+function UnsetSessionVariables()
+{
+  unset($_SESSION["pic"]);
+  unset($_SESSION["user_id"]);
+
+}
 
 function SetSessionVariables()
 {
@@ -94,27 +104,60 @@ function ValidateGoogleToken()
 
 $res="";
 
-$tokencheck = ValidateGoogleToken();
+$action = $_POST["action"];
 
-if($tokencheck == true)
+switch ($action)
 {
-  SetSessionVariables();
   
-  $user_exists = CheckIfUserExists($userid);
-  if($user_exists == false)
+  case "login":
+    {
+      
+      $tokencheck = ValidateGoogleToken();
+
+      if($tokencheck == true)
+      {
+        SetSessionVariables();
+        
+        $user_exists = CheckIfUserExists($userid);
+        if($user_exists == false)
+        {
+          $iv = EncryptUserData($username,$email);
+          AddUser($username,$userid,$email,$iv);
+        }
+
+        $res = $pic;
+      }
+      else
+      {
+        $res = "invalid_token";
+      }
+
+      echo $res;
+      http_response_code(200);
+      
+
+    }break;
+  case "logout":
+    {
+
+      if(isset($_SESSION["user_id"]))
+      {
+        logout();
+        echo "logged_out";
+        http_response_code(200);
+      }
+      else
+      {
+        $res = "err logging out";
+        http_response_code(200); 
+        exit("trying to logout without being logged in");  
+          
+      }
+    }break;
+  default:
   {
-    $iv = EncryptUserData($username,$email);
-    AddUser($username,$userid,$email,$iv);
-  }
-
-  $res = $pic;
+    $res = "unknown action";
+    echo $res;
+    http_response_code(200);
+  }break;
 }
-else
-{
-    $res = "invalid token";
-}
-
-echo $res;
-http_response_code(200);
-
-?>

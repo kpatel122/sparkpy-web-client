@@ -119,39 +119,3 @@ else
 }
 
 ?>
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-        <!-- sparkpy -->
-        <link rel="stylesheet" href="CSS/sparkpy.css">
-        <title>sparkpy</title>
-        <link rel="icon" type="image/x-icon" href="Images/logo-icons/favicon.ico">
-    </head>
-
-    <body>
-        <!-- NAVBAR START !-->
-        <nav class="navbar">
-            <div class="logo-title"><img src="Images/logo.png" width="70%" height="70%"></div>
-            <a href="#" class="toggle-button">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            </a>
-            <div class="navbar-links sparkpy-fonts">
-            <ul>
-                <li><a href="pys.html">Home</a></li>
-                <li><a href="Docs\_build\html\index.html">Help</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
-            </div>
-        </nav>
-        <!-- NAVBAR ENDS -->
-
-        <h3><?php echo $error_msg?><h3>
-
-</body>
-</html> 

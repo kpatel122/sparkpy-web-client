@@ -1,4 +1,3 @@
-
 <?php
 class Crypto {
   // Properties
@@ -54,6 +53,3 @@ public  static function decrypt(string $encrypted_data,string $iv)
 }
 
 }
-
-
-?>
