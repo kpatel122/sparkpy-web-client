@@ -14,14 +14,8 @@ if (isset($_SESSION["user_id"])) {
   $loggedIn = "1";
   $userid = $_SESSION["user_id"];
 } else {
-  //$user_name = "Login";
-  /*
-  $user_name = "<div   class=\"g_id_signin\" data-type=\"standard\" data-size=\"small\" data-theme=\"filled_blue\"
-                  data-text=\"signin\" data-shape=\"rectangular\" data-logo_alignment=\"left\">
-                  </div>";
-  */
+  
   $user_name = "<div id=\"googleSignIn\"></div>";
-
   $loggedIn = "0";
 }
 
@@ -103,10 +97,6 @@ $sparkId = -1;
 
 <body>
 
-
-  <!--<div id="g_id_onload" data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com" data-login_uri="http://localhost/php_scripts/login_res.php" data-auto_prompt="false">!-->
-  <!--<div id="g_id_onload" data-client_id="866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com" data-login_uri="http://localhost/pys.php" data-auto_prompt="false"></div>!-->
-  <!-- <button type="button" onclick="saveCode()">save</button> !-->
   <!-- NAVBAR START !-->
   <nav class="navbar">
     <div class="logo-title""><a href=" /"> <img src="Images/logo.png" width="30%" height="30%"></a></div>
@@ -190,14 +180,13 @@ $sparkId = -1;
         <div class="grid-cell-menu-status2"> </div>
 
         <!-- login form !-->
+        <
         <div class="login_form sparkpy-fonts" id="loginButton">
           <h3 style="text-align:center;">Sign in to use <br>cloud features</h3>
-
-          <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
-          </div>
-
+          <div id="googleSignIn2"></div>
           <button class="login_form_cancel_btn" onClick="closeLogin();">Cancel</button>
         </div>
+        
         <!-- login form end !-->
 
       </div>
@@ -442,6 +431,9 @@ $sparkId = -1;
 
 <script>
   //https://developers.google.com/identity/gsi/web/reference/js-reference
+  var loginFormOpen = false;
+  var requestedAccountLoad = false;
+  var requestedAccountSave = false;
 
         async function validateJWT(credential)
         {
@@ -456,18 +448,41 @@ $sparkId = -1;
           let response = await fetch(myRequest);
           let data = await response.text();
           console.log("login response " + data);
-          //document.getElementById("login-id").innerHTML = "<img src='<?php //echo $pic ?>' width='25px' height='25px' referrerpolicy='no-referrer'>";
+           
           document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
+          this.loggedIn = true;
+          
+          
+
+          if(this.loginFormOpen == true)
+          {
+            closeLogin();
+            if(this.requestedAccountLoad == true)
+            {
+              openAccount();
+              this.requestedAccountLoad = false;
+            }
+            else if(this.requestedAccountSave == true)
+            {
+              cloudSave();
+              this.requestedAccountSave == false;
+            }
+          }
         }
         function handleCredentialResponse(response) {
 
           console.log("Encoded JWT ID token: " + response.credential);
           validateJWT(response.credential);
+          
+          
 
         }
 
         window.onload = function () {
           brython({debug:1});
+
+          //style reference
+          //https://developers.google.com/identity/gsi/web/reference/js-reference
 
           google.accounts.id.initialize({
             client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
@@ -477,6 +492,15 @@ $sparkId = -1;
             document.getElementById("googleSignIn"),
             { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
           );
+          
+          google.accounts.id.renderButton(
+            document.getElementById("googleSignIn2"),
+            { theme: "filled_black", size: "large", type: "standard",text: "sign_in_with",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+          );
+          
+          
+          //<div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
+          
           //google.accounts.id.prompt(); // also display the One Tap dialog
         }
     </script>
@@ -486,7 +510,7 @@ $sparkId = -1;
 
     var accountOpened = false;
 
-    var loggedIn = (<?php echo $loggedIn ?> == "1");
+    var loggedIn = false;
 
     const editor = ace.edit("editor");
 
@@ -502,9 +526,10 @@ $sparkId = -1;
 
     function cloudSave() {
 
-      loggedIn = true; //TMP ONLY
-      if (loggedIn == false) {
+      
+      if (this.loggedIn == false) {
         openLogin();
+        this.requestedAccountSave = true;
       } else {
         let filename = document.getElementById("filename-id").value;
         let code = editor.getValue();
@@ -603,10 +628,11 @@ $sparkId = -1;
       //if(codeLoaded != "1")
 
       //TMP
-      loggedIn = true;
-
+      //loggedIn = true;
+     
       if (loggedIn == false) {
         openLogin();
+        this.requestedAccountLoad = true;
       } else if (loggedIn == true && this.accountOpened == false) {
         openAccount();
         this.accountOpened = true;
@@ -876,11 +902,16 @@ $sparkId = -1;
   <!-- Login JS !-->
   <script>
     const loginForm = document.getElementById('loginButton');
+    
     const cloudLoadIcon = document.getElementById('cloud-load');
     const enterAnim = "anim_login_enter";
     const exitAnim = "anim_login_exit";
 
     function closeLogin() {
+      if(loginFormOpen == false)
+      {
+        return;
+      }
       loginForm.classList.remove(exitAnim);
       loginForm.classList.remove(enterAnim);
 
@@ -892,10 +923,16 @@ $sparkId = -1;
         loginForm.style.display = "none";
       }, 1000);
 
+      loginFormOpen = false;
+
     }
 
     function openLogin() {
-
+      if(loginFormOpen == true)
+      {
+        return;
+      }
+      
       loginForm.classList.remove(exitAnim);
       loginForm.classList.remove(enterAnim);
       window.setTimeout(function() {
@@ -907,6 +944,8 @@ $sparkId = -1;
 
       loginForm.style.marginLeft = rect.left + "px";
       loginForm.style.marginTop = (rect.bottom - rect.top) + 3 + "px";
+
+      loginFormOpen = true;
 
     }
   </script>

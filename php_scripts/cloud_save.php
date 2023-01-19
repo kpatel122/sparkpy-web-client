@@ -22,6 +22,7 @@ if($userLoggedIn == false)
     $userLoggedIn = true;
     $user_id = 11;
 }
+$user_id = 11;
 /****** REMOVE ME ********* */
 
 $code = $_POST['code'];
