@@ -15,14 +15,23 @@ if(isset($_SESSION["user_id"]))
     $user_id = $_SESSION["user_id"];
     $userLoggedIn = true;
 }
+else
+{
+    echo "CS_not_logged_in";
+    http_response_code(200);
+    exit("Cloud save: Not logged in");
+
+}
 
 /****** TMP REMOVE ME ********* */
+/*
 if($userLoggedIn == false)
 {
     $userLoggedIn = true;
     $user_id = 11;
 }
 $user_id = 11;
+*/
 /****** REMOVE ME ********* */
 
 $code = $_POST['code'];

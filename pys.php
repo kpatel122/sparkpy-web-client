@@ -369,7 +369,7 @@ $sparkId = -1;
   <div class="account_container center_element sparkpy-fonts" id="account_container">
     <div class="grid-useraccount-parent">
       <div class="grid-cell-useraccount-heading">My Account</div>
-      <div class="grid-cell-useraccount-settings">Settings
+      <div class="grid-cell-useraccount-settings"> 
       <button type="button" onclick="signOut();">Sign out</button> 
       </div>
       <div class="grid-cell-useraccount-files">
@@ -546,6 +546,8 @@ $sparkId = -1;
 
     var loggedIn = false;
 
+    var sparksLoaded = false;
+
     const editor = ace.edit("editor");
 
     let sparksJSON = null;
@@ -691,6 +693,9 @@ $sparkId = -1;
 
     function arrangeSparksByDate()
     {
+      if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
+        return;
+
       var dateSortFunc;
       if(useSparkDateAscSort == true)
       {
@@ -731,6 +736,9 @@ $sparkId = -1;
 
     function arrangeSparksByName() {
 
+      if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
+        return;
+
       var sortFunc;
       if(useSparkNameAscSort == true)
       {
@@ -745,6 +753,26 @@ $sparkId = -1;
 
       let sorted = sparksJSON.sort(sortFunc);
       fillUserSparkTable(sorted);
+    }
+
+    function fillUserSparkTableNoResults()
+    {
+      let row = "";
+      //when the user doesnt have any saved sparks
+       
+        row = `<tr> \
+            <td class ='grid-cell-useraccount-file-icon'></td> \
+            <td class ='grid-cell-useraccount-file-name'>No saved sparks</td> \
+            <td class ='grid-cell-useraccount-file-mod-date' ></td> \
+            <td class ='grid-cell-useraccount-actions-icon'></td> \
+            <td class ='grid-cell-useraccount-actions-icon'></td> \
+            <td class ='grid-cell-useraccount-actions-icon'></td> \
+            </tr>`;
+       
+
+      var tbody = document.getElementById("tbody");
+      tbody.innerHTML = row;
+
     }
 
     function fillUserSparkTable(sparks) {
@@ -802,7 +830,16 @@ $sparkId = -1;
 
       let response = await fetch(myRequest);
       let data = await response.text();
+      
+      if(data == "noresults")
+      {
+        fillUserSparkTableNoResults();
+        this.sparksLoaded = false;
+        //todo fill table no results
+        return;
+      }
       sparksJSON = JSON.parse(data);
+      this.sparksLoaded = true;
 
       fillUserSparkTable(sparksJSON);
     }

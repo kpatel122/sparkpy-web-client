@@ -30,16 +30,32 @@ function EncryptUserData(string &$name, string &$email)
 
 function AddUser(string $name, string $token_id, string $email,string $iv)
 {
-    //echo "<BR>..Adding user..<BR>";
     $insert_proc = "CALL add_user('$token_id','$name','$email','$iv')";
     Database::runProc($insert_proc);
 }
+
+function GetUserIdFromTokenId(string $token_id)
+{   
+    $user_count = "CALL user_get_id_on_token('$token_id')";
+
+    $result = Database::runProc($user_count,MYSQLI_NUM);
+    
+    if($result != null)
+    {
+      return $result[0][0];
+    }
+    
+    return null;
+}
+
+
 
 function CheckIfUserExists(string $token_id)
 {   
     $user_count = "CALL get_user_id_count('$token_id')";
 
     $result = Database::runProc($user_count,MYSQLI_NUM);
+
     $col = $result[0][0];
     
     if($col == 1) 
@@ -48,6 +64,7 @@ function CheckIfUserExists(string $token_id)
     return false;
 }
 
+$tokenid=""; //sub from google payload
 $userid ="";
 $username ="";
 $email = "";
@@ -67,6 +84,7 @@ function UnsetSessionVariables()
 
 }
 
+
 function SetSessionVariables()
 {
   global $userid, $pic;
@@ -76,8 +94,8 @@ function SetSessionVariables()
 
 function ValidateGoogleToken()
 {
-  global $userid, $username, $email,$pic;
-  $id_token = $_POST["credential"];
+  global $tokenid, $username, $email,$pic;
+  $credential = $_POST["credential"];
 
  
 
@@ -85,11 +103,11 @@ function ValidateGoogleToken()
   $CLIENT_ID = $ini_array["google_client"];
 
   $client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
-  $payload = $client->verifyIdToken($id_token);
+  $payload = $client->verifyIdToken($credential);
   
   if ($payload) {
     
-    $userid = $payload['sub'];
+    $tokenid = $payload['sub'];
     $username = $payload['name'];
     $email = $payload['email'];
     $pic = $payload['picture'];
@@ -116,20 +134,28 @@ switch ($action)
 
       if($tokencheck == true)
       {
-        SetSessionVariables();
         
-        $user_exists = CheckIfUserExists($userid);
+        $user_exists = CheckIfUserExists($tokenid);
         if($user_exists == false)
         {
           $iv = EncryptUserData($username,$email);
-          AddUser($username,$userid,$email,$iv);
+          AddUser($username,$tokenid,$email,$iv);
         }
 
-        $res = $pic;
+        $userid = GetUserIdFromTokenId($tokenid);
+        if($userid == null)
+        {
+          $res = "invalid_token_b1";
+        }
+        else
+        {
+          SetSessionVariables();
+          $res = $pic;
+        }
       }
       else
       {
-        $res = "invalid_token";
+        $res = "invalid_token_b2";
       }
 
       echo $res;

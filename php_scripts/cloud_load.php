@@ -9,7 +9,16 @@ $user_id = 0;
 if (isset($_SESSION["user_id"])) {
     $user_id = $_SESSION["user_id"];
     $userLoggedIn = true;
-} else {
+}
+else
+{
+    echo "CL_not_legged_in";
+    http_response_code(200);
+    exit("Cloud load: Not logged in");
+
+}
+/*
+else {
     //TMP remove me
     //exit("user not logged in"); //shouldn't happen
 
@@ -19,6 +28,7 @@ if (isset($_SESSION["user_id"])) {
 }
 //TMP
 $user_id = 11;
+*/
 
 $action  = "";
 $res = "";
@@ -29,7 +39,6 @@ if (isset($_POST["action"])) {
 else
 {
     exit("no action provided"); //shouldn't happen
-
 }
 
 switch ($action)

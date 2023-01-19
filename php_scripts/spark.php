@@ -29,26 +29,14 @@ public static function getSpark($id)
     Database::getPrepared()->bind_param("i", $id); 
     $res = Database::runPrepared();
 
-    
-    
     if($res !=null)
     {
         return $res[0];
-        
-
-        //self::$id = $row["spark_id"];
-        //self::$name = $row["name"];
-        //self::$code = $row["code"];
-        //self::$owner_id = $row["owner_id"];
     }
     else
     {
         return null;
-        //invalid id
-        //self::$name = "unititled.py";
     }
-    
-    
 }
 
 public static function getCode()
@@ -133,14 +121,5 @@ public static function createSpark($owner_id,$name,$description,$code)
     $res = Database::runPrepared();
     return $res[0]["new_id"];
 }
-
-public static function print()
-{
-    echo"<BR> id ".self::$id;
-    echo"<BR> name ".self::$name;
-    echo"<BR> code ".self::$code;
-}
-
-
 
 }
