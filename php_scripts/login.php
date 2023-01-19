@@ -52,7 +52,7 @@ function GetUserIdFromTokenId(string $token_id)
 
 function CheckIfUserExists(string $token_id)
 {   
-    $user_count = "CALL get_user_id_count('$token_id')";
+    $user_count = "CALL login_user('$token_id')";//"CALL get_user_id_count('$token_id')";
 
     $result = Database::runProc($user_count,MYSQLI_NUM);
 
