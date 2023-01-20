@@ -373,9 +373,7 @@ $sparkId = -1;
       <button type="button" onclick="signOut();">Sign out</button> 
       </div>
       <div class="grid-cell-useraccount-files">
-        <?php //echo userFilesTable();
-        ?>
-
+        
         <table id='table-useraccount'>
           <thead>
             <th colspan='2' style="cursor:pointer;" onClick='arrangeSparksByName();'>File</th>
@@ -396,7 +394,7 @@ $sparkId = -1;
   <div class="alertbox_container warning center_element sparkpy-fonts" id="alertbox_container_id">
     <div class="grid-alertbox-parent">
       <div class="grid-cell-alertbox-header">
-        <span style="width: 100%; margin-left: 0px; padding: 10px;"> <img src="Images/icons/warning_icon.svg"> File Exists </span>
+        <span style="width: 100%; margin-left: 0px; padding: 10px;"> <img src="Images/icons/warning_icon.svg"> <span id="alert_header_id">File Exists</span></span>
       </div>
       <div id="alert_message_id" class="grid-cell-alertbox-body" style="padding-top: 10px;padding-bottom: 10px;">Overwrite ?</div>
       <div class="grid-cell-alertbox-footer">
@@ -404,7 +402,7 @@ $sparkId = -1;
           <button class="alert_btn" onClick="overwriteSave()">Yes</button>
           <button class="alert_btn" onClick="overwriteClose()">No</button>
         </span>
-        <div style="padding-top: 10px;">
+        <div style="padding-top: 10px;" id="alert_check_id">
           <input type="checkbox" id="overwrite_checkbox" name="overwrite">
           <label for="overwrite">remember my choice</label>
         </div>
@@ -565,9 +563,15 @@ $sparkId = -1;
     document.getElementById("filename-id").value = filename;
   }
 
-  function deleteSpark(sparkid)
+  function deleteSpark(sparkinfo)
   {
-    alert("deleting " + sparkid);
+
+    let vals = sparkinfo.split("|");
+    let sparkid = vals[0];
+    let filename = decodeURI(vals[1]);
+    
+    setAlertBoxValues("Delete File","Delete " + filename + "?", false );
+
   }
 
   function cloudSave() 
@@ -592,14 +596,39 @@ $sparkId = -1;
 
   const alertBoxContainer = document.getElementById("alertbox_container_id");
   const alertMessage = document.getElementById("alert_message_id");
+  const alertHeader = document.getElementById("alert_header_id");
+  const alertCheck = document.getElementById("alert_check_id");
 
+  function setAlertBoxValues(header,message,showcheck)
+  {
+    alertHeader.innerHTML = header;
+    alertMessage.innerHTML = message;
+    if(showcheck == true)
+    {
+      alertCheck.style.display = "block";
+    }
+    else
+    {
+      alertCheck.style.display = "none";
+    }
+
+    alertBoxContainer.style.display = "block";
+  }
+/*
+  function confirmDelete()
+  {
+     
+    let filename = document.getElementById("filename-id").value;
+    setAlertBoxValues("Delete File","Delete " + filename + "?", false );
+
+  }
+*/
   function confirmOverwrite() 
   {
     //an existing filename exists, display the confirm to overwrite alert box
+    
     let filename = document.getElementById("filename-id").value;
-
-    alertBoxContainer.style.display = "block";
-    alertMessage.innerHTML = "Overwrite " + filename + "?"
+    setAlertBoxValues("File Exists","Overwrite " + filename + "?", true );
 
   }
 
@@ -791,14 +820,16 @@ $sparkId = -1;
 
     function fillUserSparkTable(sparks) {
       let row = "";
+      let filename ="";
 
       for (var s of sparks) {
+        filename = encodeURIComponent(s.name); 
         row += `<tr> \
             <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td> \
             <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
             <td class ='grid-cell-useraccount-file-mod-date' >${s.modified}</td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td> \
-            <td class ='grid-cell-useraccount-actions-icon' onClick='deleteSpark(${s.spark_id})'><img src='Images/icons/delete_icon.svg'></td> \
+            <td class ='grid-cell-useraccount-actions-icon' onClick=deleteSpark(\"${s.spark_id}|${filename}\");><img src='Images/icons/delete_icon.svg'></td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
             </tr>`;
       }
