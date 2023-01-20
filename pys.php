@@ -435,325 +435,339 @@ $sparkId = -1;
   var requestedAccountLoad = false;
   var requestedAccountSave = false;
 
-        async function signOut()
-        {
+  async function signOut()
+  {
 
-          const myInit = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `action=logout`
-          };
-          const myRequest = new Request('php_scripts/login.php', myInit);
-          let response = await fetch(myRequest);
-          let data1 ="";
-          data1 = await response.text();
-          if(data1  != "logged_out") // something went wrong
-          {
-            closeAccount();
-            return;
-          }
-          
-          this.loggedIn = false;
-          document.getElementById("login-id").innerHTML = "<div id=\"googleSignIn\">";
-          google.accounts.id.initialize({
-            client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
-            callback: handleCredentialResponse
-          });
-          google.accounts.id.renderButton(
-            document.getElementById("googleSignIn"),
-            { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
-          );
-
-          closeAccount();
-          
-        }
-
-        async function validateJWT(credential)
-        {
-          const myInit = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `action=login&credential=`+credential
-          };
-          const myRequest = new Request('php_scripts/login.php', myInit);
-          let response = await fetch(myRequest);
-          let data = await response.text();
-          
-          if(data == "invalid_token")//something went wrong
-          {
-            if(this.loginFormOpen == true)
-            {
-              closeLogin();
-            }
-            
-            return;
-          }
-          this.loggedIn = true;
-          document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
-          
-          if(this.loginFormOpen == true)
-          {
-            closeLogin();
-            if(this.requestedAccountLoad == true)
-            {
-              openAccount();
-              this.requestedAccountLoad = false;
-            }
-            else if(this.requestedAccountSave == true)
-            {
-              cloudSave();
-              this.requestedAccountSave = false;
-            }
-          }
-        }
-        function handleCredentialResponse(response) {
-
-          validateJWT(response.credential);
-          
-        }
-
-        window.onload = function () {
-          brython({debug:1});
-
-          //style reference
-          //https://developers.google.com/identity/gsi/web/reference/js-reference
-
-          google.accounts.id.initialize({
-            client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
-            callback: handleCredentialResponse
-          });
-          google.accounts.id.renderButton(
-            document.getElementById("googleSignIn"),
-            { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
-          );
-          
-          google.accounts.id.renderButton(
-            document.getElementById("googleSignIn2"),
-            { theme: "filled_black", size: "large", type: "standard",text: "sign_in_with",shape: "rectangular",logo_alignment: "left" }  // customization attributes
-          );
-          
-        }
-    </script>
-
-  <script>
-    const mainGridContainer = document.getElementById('container');
-
-    var accountOpened = false;
-
-    var loggedIn = false;
-
-    var sparksLoaded = false;
-
-    const editor = ace.edit("editor");
-
-    let sparksJSON = null;
-
-    let useSparkNameAscSort = true; //when sorting sparks by name, flip between ascending and descending
-    let useSparkDateAscSort = true; //when sorting sparks by date, flip between ascending and descending
-
-    //called when the spark id is given in the url
-    function setFilename(filename) {
-      document.getElementById("filename-id").value = filename;
-    }
-
-    function cloudSave() {
-
-      
-      if (this.loggedIn == false) {
-        openLogin();
-        this.requestedAccountSave = true;
-      } else {
-        let filename = document.getElementById("filename-id").value;
-        let code = editor.getValue();
-        let promptForOverwrite = true;
-
-        let noPromptFilename = sessionStorage.getItem("overwrite_no_prompt_name");
-
-        if (noPromptFilename == filename) {
-          promptForOverwrite = false
-        }
-        saveCode(promptForOverwrite);
-
-      }
-    }
-
-    const alertBoxContainer = document.getElementById("alertbox_container_id");
-    const alertMessage = document.getElementById("alert_message_id");
-
-    function confirmOverwrite() {
-      //an existing filename exists, display the confirm to overwrite alert box
-      let filename = document.getElementById("filename-id").value;
-
-      alertBoxContainer.style.display = "block";
-      alertMessage.innerHTML = "Overwrite " + filename + "?"
-
-    }
-
-    function overwriteSave() {
-      //when the user confirms they want to overwrite
-
-      //get checkbox value
-      let remember_my_choice = document.getElementById("overwrite_checkbox").checked;
-      let filename = document.getElementById("filename-id").value;
-      let hasSparkid = false;
-
-      //user has selected to remember overwrite choice, store the spark id for the coice in session storage
-      if (remember_my_choice == true) {
-        sessionStorage.setItem("overwrite_no_prompt_name", filename); //this filename will not prompt an alert box
-      }
-
-      //the user has confirmed they want to overwrite so no need for an alertbox
-      let alertForOverwrite = false;
-
-      saveCode(alertForOverwrite);
-      overwriteClose();
-
-    }
-
-    function overwriteClose() {
-      //the user cancels the confirm to overwrite alert box
-      alertBoxContainer.style.display = "none";
-    }
-
-    function saveCode(checkForOverwrite) {
-      //"use strict";
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", "php_scripts/cloud_save.php", true);
-      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-          console.log("response is ");
-          console.log(this.responseText); // echo from php
-          let action = this.responseText;
-          if (action == "confirm_overwrite") {
-            //sessionStorage.setItem("sparkid",sparkid);
-            confirmOverwrite();
-          }
-        }
-      };
-
-      //var editor = ace.edit("editor");
-
-      var code = editor.getValue();
-      let filename = document.getElementById("filename-id").value;
-      let querystring = "code=" + code + "&filename=" + filename;
-
-      if (checkForOverwrite == true) {
-        querystring += "&overwrite=check";
-        console.log("&overwrite=check"); //check with the user for overwrite
-      } else {
-        querystring += "&overwrite=yes"; //overwrite the file without prompting the user
-        console.log("&overwrite=yes");
-      }
-
-      //console.log("sending query string " + querystring);
-      xmlhttp.send(querystring);
-
-    }
-
-
-    function cloudLoad() {     
-      if (loggedIn == false) {
-        openLogin();
-        this.requestedAccountLoad = true;
-      } else if (loggedIn == true && this.accountOpened == false) {
-        openAccount();
-        this.accountOpened = true;
-      }
-    }
-    const accountContainer = document.getElementById("account_container");
-    const accountEnterAnim = "anim_samples_enter";
-    const accountExitAnim = "anim_samples_exit";
-
-    function sortDateAsc(a, b) {
-      if (a.modified<b.modified) {
-        return -1;
-      }
-      if (b.modified<a.modified) {
-        return 1;
-      }
-      // a must be equal to b
-      return 0;
-    }
-
-    function sortDateDesc(a, b) {
-      if (a.modified<b.modified) {
-        return 1;
-      }
-      if (b.modified<a.modified) {
-        return -1;
-      }
-      // a must be equal to b
-      return 0;
-    }
-
-    function arrangeSparksByDate()
+    const myInit = 
     {
-      if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
-        return;
-
-      var dateSortFunc;
-      if(useSparkDateAscSort == true)
+      method: 'POST',
+      headers: 
       {
-        dateSortFunc = sortDateAsc;
-        useSparkDateAscSort = false;
-      }
-      else
-      {
-        dateSortFunc = sortDateDesc;
-        useSparkDateAscSort = true;
-      }
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `action=logout`
+    };
+    const myRequest = new Request('php_scripts/login.php', myInit);
+    let response = await fetch(myRequest);
+    let data1 ="";
+    data1 = await response.text();
+    if(data1  != "logged_out") // something went wrong
+    {
+      closeAccount();
+      return;
+    }
+          
+    this.loggedIn = false;
+    document.getElementById("login-id").innerHTML = "<div id=\"googleSignIn\">";
+    google.accounts.id.initialize({
+      client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("googleSignIn"),
+      { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+    );
+    closeAccount();
+  }
 
-      let dateSorted = sparksJSON.sort(dateSortFunc);
-      fillUserSparkTable(dateSorted);
+  async function validateJWT(credential)
+  {
+    const myInit = 
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `action=login&credential=`+credential
+    };
+    const myRequest = new Request('php_scripts/login.php', myInit);
+    let response = await fetch(myRequest);
+    let data = await response.text();
+    
+    if(data == "invalid_token")//something went wrong
+    {
+      if(this.loginFormOpen == true)
+      {
+        closeLogin();
+      }
+      
+      return;
+    }
+    this.loggedIn = true;
+    document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
+    
+    if(this.loginFormOpen == true)
+    {
+      closeLogin();
+      if(this.requestedAccountLoad == true)
+      {
+        openAccount();
+        this.requestedAccountLoad = false;
+      }
+      else if(this.requestedAccountSave == true)
+      {
+        cloudSave();
+        this.requestedAccountSave = false;
+      }
+    }
+  }
+
+  function handleCredentialResponse(response) 
+  {
+
+    validateJWT(response.credential);
+    
+  }
+
+  window.onload = function () 
+  {
+    brython({debug:1});
+
+    //style reference
+    //https://developers.google.com/identity/gsi/web/reference/js-reference
+
+    google.accounts.id.initialize({
+      client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("googleSignIn"),
+      { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+    );
+    
+    google.accounts.id.renderButton(
+      document.getElementById("googleSignIn2"),
+      { theme: "filled_black", size: "large", type: "standard",text: "sign_in_with",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+    );
+    
+  }
+</script>
+
+<script>
+  const mainGridContainer = document.getElementById('container');
+
+  var accountOpened = false;
+
+  var loggedIn = false;
+
+  var sparksLoaded = false;
+
+  const editor = ace.edit("editor");
+
+  let sparksJSON = null;
+
+  let useSparkNameAscSort = true; //when sorting sparks by name, flip between ascending and descending
+  let useSparkDateAscSort = true; //when sorting sparks by date, flip between ascending and descending
+
+  //called when the spark id is given in the url
+  function setFilename(filename)
+  {
+    document.getElementById("filename-id").value = filename;
+  }
+
+  function deleteSpark(sparkid)
+  {
+    alert("deleting " + sparkid);
+  }
+
+  function cloudSave() 
+  {
+    if (this.loggedIn == false) {
+      openLogin();
+      this.requestedAccountSave = true;
+    } else {
+      let filename = document.getElementById("filename-id").value;
+      let code = editor.getValue();
+      let promptForOverwrite = true;
+
+      let noPromptFilename = sessionStorage.getItem("overwrite_no_prompt_name");
+
+      if (noPromptFilename == filename) {
+        promptForOverwrite = false
+      }
+      saveCode(promptForOverwrite);
 
     }
+  }
 
-    function sortNameAsc(a, b) {
-      if (a.name<b.name) {
-        return -1;
-      }
-      if (b.name<a.name) {
-        return 1;
-      }
-      // a must be equal to b
-      return 0;
+  const alertBoxContainer = document.getElementById("alertbox_container_id");
+  const alertMessage = document.getElementById("alert_message_id");
+
+  function confirmOverwrite() 
+  {
+    //an existing filename exists, display the confirm to overwrite alert box
+    let filename = document.getElementById("filename-id").value;
+
+    alertBoxContainer.style.display = "block";
+    alertMessage.innerHTML = "Overwrite " + filename + "?"
+
+  }
+
+  function overwriteSave() 
+  {
+    //when the user confirms they want to overwrite
+
+    //get checkbox value
+    let remember_my_choice = document.getElementById("overwrite_checkbox").checked;
+    let filename = document.getElementById("filename-id").value;
+    let hasSparkid = false;
+
+    //user has selected to remember overwrite choice, store the spark id for the coice in session storage
+    if (remember_my_choice == true) {
+      sessionStorage.setItem("overwrite_no_prompt_name", filename); //this filename will not prompt an alert box
     }
-    function sortNameDesc(a, b) {
-      if (a.name<b.name) {
-        return 1;
+
+    //the user has confirmed they want to overwrite so no need for an alertbox
+    let alertForOverwrite = false;
+
+    saveCode(alertForOverwrite);
+    overwriteClose();
+
+  }
+
+  function overwriteClose() 
+  {
+    //the user cancels the confirm to overwrite alert box
+    alertBoxContainer.style.display = "none";
+  }
+
+  function saveCode(checkForOverwrite) 
+  {
+    //"use strict";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "php_scripts/cloud_save.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState === 4 && this.status === 200) {
+        console.log("response is ");
+        console.log(this.responseText); // echo from php
+        let action = this.responseText;
+        if (action == "confirm_overwrite") {
+          //sessionStorage.setItem("sparkid",sparkid);
+          confirmOverwrite();
+        }
       }
-      if (b.name<a.name) {
-        return -1;
-      }
-      // a must be equal to b
-      return 0;
+    };
+
+    //var editor = ace.edit("editor");
+
+    var code = editor.getValue();
+    let filename = document.getElementById("filename-id").value;
+    let querystring = "code=" + code + "&filename=" + filename;
+
+    if (checkForOverwrite == true) {
+      querystring += "&overwrite=check";
+      console.log("&overwrite=check"); //check with the user for overwrite
+    } else {
+      querystring += "&overwrite=yes"; //overwrite the file without prompting the user
+      console.log("&overwrite=yes");
     }
 
-    function arrangeSparksByName() {
+    //console.log("sending query string " + querystring);
+    xmlhttp.send(querystring);
 
-      if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
-        return;
+  }
 
-      var sortFunc;
-      if(useSparkNameAscSort == true)
-      {
-        sortFunc = sortNameAsc;
-        useSparkNameAscSort = false;
-      }
-      else
-      {
-        sortFunc = sortNameDesc;
-        useSparkNameAscSort = true;
-      }
 
-      let sorted = sparksJSON.sort(sortFunc);
-      fillUserSparkTable(sorted);
+  function cloudLoad() 
+  {     
+    if (loggedIn == false) {
+      openLogin();
+      this.requestedAccountLoad = true;
+    } else if (loggedIn == true && this.accountOpened == false) {
+      openAccount();
+      this.accountOpened = true;
     }
+  }
+  const accountContainer = document.getElementById("account_container");
+  const accountEnterAnim = "anim_samples_enter";
+  const accountExitAnim = "anim_samples_exit";
+
+  function sortDateAsc(a, b) {
+    if (a.modified<b.modified) {
+      return -1;
+    }
+    if (b.modified<a.modified) {
+      return 1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+
+  function sortDateDesc(a, b) {
+    if (a.modified<b.modified) {
+      return 1;
+    }
+    if (b.modified<a.modified) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+
+  function arrangeSparksByDate()
+  {
+    if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
+      return;
+
+    var dateSortFunc;
+    if(useSparkDateAscSort == true)
+    {
+      dateSortFunc = sortDateAsc;
+      useSparkDateAscSort = false;
+    }
+    else
+    {
+      dateSortFunc = sortDateDesc;
+      useSparkDateAscSort = true;
+    }
+
+    let dateSorted = sparksJSON.sort(dateSortFunc);
+    fillUserSparkTable(dateSorted);
+
+  }
+
+  function sortNameAsc(a, b) {
+    if (a.name<b.name) {
+      return -1;
+    }
+    if (b.name<a.name) {
+      return 1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+  function sortNameDesc(a, b) {
+    if (a.name<b.name) {
+      return 1;
+    }
+    if (b.name<a.name) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+
+  function arrangeSparksByName() {
+
+    if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
+      return;
+
+    var sortFunc;
+    if(useSparkNameAscSort == true)
+    {
+      sortFunc = sortNameAsc;
+      useSparkNameAscSort = false;
+    }
+    else
+    {
+      sortFunc = sortNameDesc;
+      useSparkNameAscSort = true;
+    }
+
+    let sorted = sparksJSON.sort(sortFunc);
+    fillUserSparkTable(sorted);
+  }
 
     function fillUserSparkTableNoResults()
     {
@@ -784,7 +798,7 @@ $sparkId = -1;
             <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
             <td class ='grid-cell-useraccount-file-mod-date' >${s.modified}</td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td> \
-            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/delete_icon.svg'></td> \
+            <td class ='grid-cell-useraccount-actions-icon' onClick='deleteSpark(${s.spark_id})'><img src='Images/icons/delete_icon.svg'></td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
             </tr>`;
       }
