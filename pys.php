@@ -419,9 +419,9 @@ $sparkId = -1;
   //has a spark been set
   if (isset($_GET['s'])) {
     $sparkId = $_GET['s'];
-    Spark::getSpark($sparkId);
-    $code = Spark::getCode();
-    $filename = Spark::getName();
+    $res = Spark::getSpark($sparkId);
+    $code = $res["code"];
+    $filename = $res["name"];
     echo "<script> document.getElementById(\"filename-id\").value = '$filename'; </script>";
   }
   ?>
