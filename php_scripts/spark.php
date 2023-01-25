@@ -72,6 +72,14 @@ public static function updateSpark($spark_id,$name,$code)
     Database::execPrepared();
 }
 
+public static function deleteSpark($spark_id)
+{
+    $query= "CALL spark_delete(?)"; 
+    Database::prepare($query);
+    Database::getPrepared()->bind_param("i", $spark_id); 
+    Database::execPrepared();
+}
+
 public static function getSparkIdFromFilename($userid, $filename)
 {
     //without calling the entire get spark query

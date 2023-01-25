@@ -52,8 +52,17 @@ switch ($action)
         if (isset($_POST["s"])) {
             getSpark($_POST["s"]);
         } else {
-            exit("no spark id provided");
+            exit("get spark: no spark id provided");
         }     
+    }break;
+    case "deletespark":
+    {
+        if (isset($_POST["s"])) {
+            deleteSpark($_POST["s"]);
+        } else {
+            exit("spark delete: no spark id provided");
+        }
+        
     }break;
 }
 
@@ -97,4 +106,26 @@ function getSpark($spark_id)
 
     echo $res;
     http_response_code(200);
+}
+
+function deleteSpark($spark_id)
+{
+    global $user_id;
+    $res = "";
+    //verify the logged in user is the owner of the spark
+    $owner = Spark::getOwnerIdFromSparkId($spark_id);
+    
+    if($user_id == $owner)
+    {
+        Spark::deleteSpark($spark_id);
+        $res = "ok";
+    }
+    else
+    {
+        $res = "user is not owner of spark";
+    }
+    
+    echo $res;
+    http_response_code(200);
+
 }

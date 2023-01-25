@@ -378,7 +378,7 @@ $sparkId = -1;
           <thead>
             <th colspan='2' style="cursor:pointer;" onClick='arrangeSparksByName();'>File</th>
             <th style="cursor:pointer;" onClick='arrangeSparksByDate();'>Modified</th>
-            <th colspan='3'>Actions</th>
+            <th colspan='2'>Actions</th>
           </thead>
           <tbody id="tbody">
           </tbody>
@@ -399,8 +399,8 @@ $sparkId = -1;
       <div id="alert_message_id" class="grid-cell-alertbox-body" style="padding-top: 10px;padding-bottom: 10px;">Overwrite ?</div>
       <div class="grid-cell-alertbox-footer">
         <span>
-          <button class="alert_btn" onClick="overwriteSave()">Yes</button>
-          <button class="alert_btn" onClick="overwriteClose()">No</button>
+          <button class="alert_btn" id="alert-btn-yes-id" onClick="overwriteSave()">Yes</button>
+          <button class="alert_btn" id="alert-btn-no-id" onClick="alertBoxClose()">No</button>
         </span>
         <div style="padding-top: 10px;" id="alert_check_id">
           <input type="checkbox" id="overwrite_checkbox" name="overwrite">
@@ -563,6 +563,34 @@ $sparkId = -1;
     document.getElementById("filename-id").value = filename;
   }
 
+  async function deleteSparkDBRequest(sparkid)
+  {
+     
+    const myInit = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=deletespark&s=${sparkid}`
+      };
+
+      const myRequest = new Request('php_scripts/cloud_load.php', myInit);
+
+      let response = await fetch(myRequest);
+      let data = await response.text();
+
+      console.log("delete result is " + data);
+
+      if(data == "ok")
+      {
+        deleteRow(sparkid);
+      }
+      
+    
+    
+    alertBoxClose();
+  }
+
   function deleteSpark(sparkinfo)
   {
 
@@ -570,7 +598,8 @@ $sparkId = -1;
     let sparkid = vals[0];
     let filename = decodeURI(vals[1]);
     
-    setAlertBoxValues("Delete File","Delete " + filename + "?", false );
+    setAlertBoxValues("Delete File","Delete " + filename + "?", false,`deleteSparkDBRequest(${sparkid})` );
+    
 
   }
 
@@ -590,7 +619,6 @@ $sparkId = -1;
         promptForOverwrite = false
       }
       saveCode(promptForOverwrite);
-
     }
   }
 
@@ -598,8 +626,10 @@ $sparkId = -1;
   const alertMessage = document.getElementById("alert_message_id");
   const alertHeader = document.getElementById("alert_header_id");
   const alertCheck = document.getElementById("alert_check_id");
+  const alertYesButton = document.getElementById("alert-btn-yes-id");
+  
 
-  function setAlertBoxValues(header,message,showcheck)
+  function setAlertBoxValues(header,message,showcheck,onClickYes)
   {
     alertHeader.innerHTML = header;
     alertMessage.innerHTML = message;
@@ -613,28 +643,27 @@ $sparkId = -1;
     }
 
     alertBoxContainer.style.display = "block";
-  }
-/*
-  function confirmDelete()
-  {
-     
-    let filename = document.getElementById("filename-id").value;
-    setAlertBoxValues("Delete File","Delete " + filename + "?", false );
 
+    //set the callback
+    //alertYesButton.onclick = onClickYes;
+    alertYesButton.setAttribute("onclick",onClickYes);
+    
   }
-*/
+
   function confirmOverwrite() 
   {
     //an existing filename exists, display the confirm to overwrite alert box
     
     let filename = document.getElementById("filename-id").value;
-    setAlertBoxValues("File Exists","Overwrite " + filename + "?", true );
+    setAlertBoxValues("File Exists","Overwrite " + filename + "?", true, "overwriteSave()" );
 
   }
 
   function overwriteSave() 
   {
     //when the user confirms they want to overwrite
+
+    
 
     //get checkbox value
     let remember_my_choice = document.getElementById("overwrite_checkbox").checked;
@@ -650,11 +679,11 @@ $sparkId = -1;
     let alertForOverwrite = false;
 
     saveCode(alertForOverwrite);
-    overwriteClose();
+    alertBoxClose();
 
   }
 
-  function overwriteClose() 
+  function alertBoxClose() 
   {
     //the user cancels the confirm to overwrite alert box
     alertBoxContainer.style.display = "none";
@@ -809,7 +838,6 @@ $sparkId = -1;
             <td class ='grid-cell-useraccount-file-mod-date' ></td> \
             <td class ='grid-cell-useraccount-actions-icon'></td> \
             <td class ='grid-cell-useraccount-actions-icon'></td> \
-            <td class ='grid-cell-useraccount-actions-icon'></td> \
             </tr>`;
        
 
@@ -818,17 +846,22 @@ $sparkId = -1;
 
     }
 
+    function deleteRow(rowid)  
+    {   
+      var row = document.getElementById("user_spark_"+rowid);
+      row.parentNode.removeChild(row);
+    }
+
     function fillUserSparkTable(sparks) {
       let row = "";
       let filename ="";
 
       for (var s of sparks) {
         filename = encodeURIComponent(s.name); 
-        row += `<tr> \
+        row += `<tr id='user_spark_${s.spark_id}'> \
             <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td> \
             <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
             <td class ='grid-cell-useraccount-file-mod-date' >${s.modified}</td> \
-            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/edit_icon.svg'></td> \
             <td class ='grid-cell-useraccount-actions-icon' onClick=deleteSpark(\"${s.spark_id}|${filename}\");><img src='Images/icons/delete_icon.svg'></td> \
             <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
             </tr>`;
