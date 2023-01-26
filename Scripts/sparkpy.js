@@ -44,3 +44,49 @@ function download(filename, text) {
   pom.setAttribute('download', filename);
   pom.click();
 }
+
+var isLightTheme = true;
+const LIGHT_THEME = "ace/theme/chrome";
+const DARK_THEME = "ace/theme/chaos";
+const DEFAULT_FONT_SIZE = '14';
+//var editor = ace.edit("editor");
+
+const toggle = document.getElementById("toggle-switch");
+const toggleContainer = document.getElementById("settings-toggle-container");
+
+function toggleEditorTheme()
+{
+  //alert("change theme");
+
+  toggle.classList.toggle("toggle-active");
+  toggleContainer.classList.toggle("toggle-container-active"); 
+
+  
+  if(isLightTheme == true)
+  {
+    codeEditor.setTheme(DARK_THEME);
+    isLightTheme = false;
+  }
+  else
+  {
+    codeEditor.setTheme(LIGHT_THEME);
+    isLightTheme = true;
+  }
+}
+
+function fontSizeChanged() {
+  size = parseInt(document.getElementById("font-size").value);
+  document.getElementById('editor').style.fontSize = size + "px";
+}
+
+function setDefaultSettings()
+{
+ 
+  
+  document.getElementById("font-size").value = DEFAULT_FONT_SIZE;
+  codeEditor.setTheme(LIGHT_THEME);
+  fontSizeChanged();
+}
+
+setDefaultSettings();
+

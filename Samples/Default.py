@@ -2,11 +2,14 @@ import sparkpy
 
 #hello world example
 
-#create office environment
-sparkpy.Environment("dessert")
+#create environment
+sparkpy.Environment("forest")
 
 #create robot character
 robot = sparkpy.Character("YBot")
 
-#create a speach box
+#set talking animation
+robot.SetAnimation("Talking1")
+
+#create a speech box
 robot.Chat("Hello World")

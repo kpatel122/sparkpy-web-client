@@ -5,24 +5,24 @@ require_once 'php_scripts/database.php';
 require_once 'php_scripts/spark.php';
 
 $user_name = NULL;
+$loggedIn = "";
+$userid = -1;
 
-if(isset($_SESSION["user_id"]))
-{
+if (isset($_SESSION["user_id"])) {
   $pic = $_SESSION["pic"];
   $user_name = "<img src='$pic' width='25px' height='25px' referrerpolicy='no-referrer'>";
-}
-else
-{
-  $user_name = "Login";
+  $loggedIn = "1";
+  $userid = $_SESSION["user_id"];
+} else {
+  
+  $user_name = "<div id=\"googleSignIn\"></div>";
+  $loggedIn = "0";
 }
 
-$code = "NOT SET";
-if(isset($_GET['s']))
-{
-  $id = $_GET['s'];
-  Spark::getSpark($id);
-  $code = Spark::getCode();
-}
+$code = "";
+$filename = "";
+$isSparkOwner = false; //is the currently logged in user the owner of the spark
+$sparkId = -1;
 
 ?>
 
@@ -32,14 +32,13 @@ if(isset($_GET['s']))
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="Images/logo-icons/favicon.ico">
-  
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 
   <!-- sparkpy -->
   <link rel="stylesheet" href="CSS/sparkpy.css">
-  <!--main styling-->
-  <link rel="stylesheet" href="CSS/dropdowns.css">
-  <!--settings row-->
-  <link rel="stylesheet" href="CSS/settingsRow.css">
+  <link rel="stylesheet" href="CSS/animations.css">
+
   <!--toggle button-->
   <title>sparkpy</title>
 
@@ -89,58 +88,18 @@ if(isset($_GET['s']))
   <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
-  
-
-  <script type="text/python3" id="tests_editor">
-
-  from browser import document, window, bind
-  import brython.tests.editor as editor
-         
-  def run(ev):
-    document['console'].value = ''
-    editor.run(editor.editor.getValue())
-    
-  document['run'].bind('click', run)
 
 
-  editor.reset()
-  
 
-  #samples loader
-  smp = document['samples']
-
-  document.forms['SamplesForm'].reset() #firefox ingnores selected attribute
-
-  def selectSample(ev):
-    filename = smp.value  
-
-    if(filename == ''):
-      return
-
-    fake_qs = '?foo=%s' #%time.time()
-    code = open(filename +fake_qs).read()
-    editor.editor.setValue(code)
-    
-  code = 'import sparkpy\n\n #create dessert environment\nsparkpy.Environment(\"forest\")\n\n'\
-          '#create robot character\nrobot = sparkpy.Character(\"ybot\")\n\n' \
-          '#set animation to talk\nrobot.SetAnimation(\"talking1\")\n\n'\
-          '#create a speech box\nrobot.Chat(\"Hello World\")'
-  #editor.editor.setValue(code)
-
-  smp.bind("change", selectSample)
-
- 
- 
-
-  </script>
   <script src="brython/ace/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="brython/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
-<body onload="brython({debug:1})">
-  <button type="button" onclick="saveCode()">save</button>
+
+<body>
+
   <!-- NAVBAR START !-->
   <nav class="navbar">
-    <div class="logo-title"><a href="/"> <img src="Images/logo.png" width="70%" height="70%"></a></div>
+    <div class="logo-title""><a href=" /"> <img src="Images/logo.png" width="30%" height="30%"></a></div>
     <a href="#" class="navmenu-hamburger" onclick="navMenuClick();"> <!-- navMenuClick() defined in sparkpy.js-->
       <span class="bar"></span>
       <span class="bar"></span>
@@ -149,196 +108,1236 @@ if(isset($_GET['s']))
     <div class="navbar-links sparkpy-fonts" id="navbar-links-id">
       <ul>
         <!-- <li><a href="pys.html">Home</a></li>!-->
+        <li><a href="#" onclick="samplesClicked();">Samples</a></li>
         <li><a href="Docs\_build\html\index.html">Start Here</a></li>
-        <li><a href="about.html">About</a></li> 
-        <li><a href="login.html"><?php echo $user_name; ?></a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="login.html" id="login-id"><div id="googleSignIn"></div></a></li>
+
       </ul>
     </div>
   </nav>
   <!-- NAVBAR END-->
 
   <!-- MAIN GRID START-->
-  <div class="grid-container" id="container">
+  <div class="main-grid-container" id="container">
 
+    <!-- MENU CONTAINER START-->
     <div class="grid-item grid-item-settings">
 
-      <!-- EMBEDDED SETTINGS GRIP START -->
-      <div class="settings-grid">
-
-        <div class="settings-play-icon" title="Run">
-          <button class="play-icon" id="run" aria-label="run" onclick="unityRestScene()"></button> <!--unityRestScene() defined in pys.html-->
-          <!--play button-->
+      <!--START MAIN MENU GRID !-->
+      <div class="grid-parent-menu">
+        <!-- play icon !-->
+        <div class="grid-cell-menu-play" title="Run Code" id="run" onclick="unityRestScene()"><!--unityRestScene() defined in pys.html-->
+          <button class="play-icon" aria-label="run" id="play-icon-id">
+          </button>
+          <span style="margin-top:10px;  margin-right:0px;" id="play-text-id" class="run-text">Run</span>
         </div>
-        <div class="settings-settings-icon" title="Settings">
+        <!-- filename input box !-->
+        <div class="grid-cell-menu-filename" title="filename">
+          <input class="filename-box" value="untitled.py" id="filename-id">
+        </div>
 
-          <div class="toggle-container" id="settings-toggle-container" onclick="toggleSettings()"> <!--toggleSettings() defined in settingsRow.js-->
+        <!-- theme light/dark toggle !-->
+        <div class="grid-cell-menu-theme" title="Editor light/dark">
+          <div class="toggle-container" id="settings-toggle-container" onclick="toggleEditorTheme()">
+            <!--toggleSettings() defined in settingsRow.js-->
             <span class="toggle" id="toggle-switch"></span>
           </div>
-
         </div>
-        <div class="settings-themes-dropdown">
-          <!--themes dropdown-->
-          <div id="themes-select" class="theme-select" style="display:none;" title="Editor theme">
-            <select id="themes" style="max-width:min-content" onchange="themeSelect();">  <!--themeSelect() defined in themes.js-->
-              <optgroup id="group-light" label="Light"></optgroup>
-              <optgroup id="group-dark" label="Dark"></optgroup>
-            </select>
-          </div>
-          <!--samples dropdown-->
-          <div class="theme-select" title="Samples">
-            <form name="SamplesForm" method="POST">
-              <select name="samples" id="samples" style="max-width:min-content;display:block">
-                <optgroup label="Basic">
-                  <option disabled value="" selected>Samples</option>
-                  <option value="Samples/1-CreateEnvironment.py">1-Create Environment</option>
-                  <option value="Samples/2-CreateCharacter.py">2-Create Character</option>
-                  <option value="Samples/3-SetAnimation.py">3-Set Animation</option>
-                  <option value="Samples/4-KeyboardControl.py">4-Keyboard Control</option>
-                  <option value="Samples/4-ThirdPersonControl.py">5-Third Person Control</option>
-                  <option value="Samples/5-Sounds.py">6-Sounds</option>
-                </optgroup>
-                <optgroup label="Special Effects">
-                  <option value="Samples/7-SimpleEffects.py">1-Simple Effect</option>
-                  <option value="Samples/8-AdvancedEffects.py">2-Advanced Effect</option>
-                </optgroup>
-                <optgroup label="LOGO- Trails">
-                  <option value="Samples/10-TrailsBasicLine.py">1-Line</option>
-                  <option value="Samples/11-TrailsSquare.py">1-Square</option>
-                  <option value="Samples/12-TrailsMuSquare.py">2-Multi Colour Square</option>
-                  <option value="Samples/13-TrailsHex.py">3 Hexagon</option>
-                </optgroup>
-                <optgroup label="Mini Games">
-                  <option value="Samples/14-Numbers.py">Number Guessing</option>
-                  <option value="Samples/15-Quiz.py">Quiz</option>
-                </optgroup>
 
-              </select>
-            </form>
-          </div>
-        </div>
-        <!--Load icon/Font size when load is shown fonts select is hidden and vice versa-->
-        <div class="settings-load-icon" title="Load">
-          
-          
-          <button class="load-icon" id="load" aria-label="load" onclick="loadFile()"></button> <!--loadFile() defined in sparkpy.js-->
+        <!-- local load icon !-->
+        <div class="grid-cell-menu-local-load" title="Load from PC">
+          <button class="load-icon" id="load" aria-label="load" onclick="loadFile()"></button>
+          <!--loadFile() defined in sparkpy.js-->
           <input type="file" accept=".py" onchange="getFileFromUser()" id="loadFileId" style="display: none;" /><!-- hide this field because of its default looks, linked by loadFile() !-->
-          
-          <input title="Font size" id="font-size" class="theme-select" style="width: 40px; padding-top: 2px; display:none;" type="number" min="10" max="20"
-            value="14" onchange="fontSizeChanged();"> <!--fontSizeChanged() defined in settingsRow.js-->
-            
         </div>
-        <!--Save icon-->
-        <!-- <div class="settings-save-icon"> !-->
-        <div class="settings-save-icon" title="Save"> 
-            <button class="save-icon" id="save" aria-label="save" onclick="saveFile()"></button> <!--saveFile() defined in sparkpy.js-->
+
+        <!--local save !-->
+        <div class="grid-cell-menu-local-save" title="Save to PC">
+          <button class="save-icon" id="save" aria-label="save" onclick="saveFile()"></button>
+          <!--saveFile() defined in sparkpy.js-->
+        </div>
+
+        <!--cloud load !-->
+
+        <!--cloud load !-->
+        <div class="grid-cell-menu-cloud-load" title="Load from user account" id="cloud-load">
+          <button class="cloud-load-icon" aria-label="save" onclick="cloudLoad()"></button> <!--saveFile() defined in sparkpy.js-->
+        </div>
+
+        <!--cloud save !-->
+        <div class="grid-cell-menu-cloud-save" title="Save to user account">
+          <button class="cloud-save-icon" id="cloud-save" aria-label="save" onclick="cloudSave()"></button>
+        </div>
+
+        <!--font size !-->
+        <div class="grid-cell-menu-font-size">
+
+          <input title="Editor font size" id="font-size" class="fontsize-box" type="number" min="10" max="20" value="14" onchange="fontSizeChanged()"> <!--fontSizeChanged() defined in settingsRow.js-->
+        </div>
+
+        <div class="grid-cell-menu-status1 "> <span id="status-text-id" class="sparkpy-fonts status-text" style="display: none;">Saved</span></div>
+        <div class="grid-cell-menu-status2 status-animation"  >
+            <svg style="display:none;"  id="tick-path-id"  version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 145 145">
+              <circle id="tickp1"  fill="none" stroke="#73AF55" stroke-width="16" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+              <polyline id="tickp2" fill="none" stroke="#73AF55" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+            </svg>
+            <svg style="display:none;"  id="cross-path-id" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 145 145">
+              <circle id="crossp1" class="path circle" fill="none" stroke="#D06079" stroke-width="16" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+              <line id="crossp2" class="path line" fill="none" stroke="#D06079" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+              <line id="crossp3" class="path line" fill="none" stroke="#D06079" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+            </svg>
+            <div id="waiting-animation-id" class="lds-dual-ring" style="display:none;"></div>
+        </div>
+
+        <!-- login form !-->
+        <div class="login_form sparkpy-fonts" id="loginButton">
+          <h3 style="text-align:center;">Sign in to use <br>cloud features</h3>
+          <div id="googleSignIn2"></div>
+          <button class="login_form_cancel_btn" onClick="closeLogin();">Cancel</button>
+        </div>
+        
+        <!-- login form end !-->
+
+      </div>
+      <!-- MENU CONTAINER END-->
+
+    </div>
+    <!-- MENU CONTAINER END-->
+
+
+
+    <!-- ACE EDITOR START-->
+    <div class="grid-item grid-item-code-editor" style="border: var(--border_size_editor) var(--border_colour_editor) solid ;">
+      <div id="editor"></div>
+    </div>
+    <!-- ACE EDITOR END-->
+
+    <!-- CONSOLE START-->
+    <div class=" grid-item grid-item-shell">
+      <textarea id="console" autocomplete="off"></textarea>
+    </div>
+    <!-- CONSOLE END-->
+
+    <!-- GRAPHICS START-->
+    <div class="grid-item-unity">
+      <iframe id="unityiframe" src="index.html" style="width: 100%; height: 100%; border: none; margin-top:10px; ">Browser not
+        compatible.</iframe>
+    </div>
+    <!-- GRAPHICS END-->
+  </div>
+  <!-- MAIN GRID END -->
+
+  <!-- SAMPLES START !-->
+  <div class="samples_container center_element sparkpy-fonts" id="samples_container">
+    <h3 style="text-align:center;">Samples</h3>
+    <div class="grid-samples-parent">
+
+      <div class="grid-samples-div1 samples_category_basic" onclick="openSample('CreateEnvironment.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/environment.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          1.Create Environment
         </div>
       </div>
-      <!-- EMBEDDED SETTINGS GRIP END -->
-    </div>
 
-    <!-- ACE editor-->
-    <div class="grid-item grid-item-code-editor" style="border: var(--border_size) var(--border_colour) solid ;" >
-      <div id="editor"></div> </div>
-      <div class=" grid-item grid-item-shell"><textarea id="console" autocomplete="off"></textarea></div>
-      <div class="grid-item grid-item-unity" >
-        <iframe id="unityiframe" src="index.html" style="width: 100%;height: 100%; border: none; margin-top: 50px; ">Browser not
-          compatible.</iframe>
+      <div class="grid-samples-div2 samples_category_basic" onclick="openSample('CreateCharacter.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/character.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description ">
+          2.Create Character
+        </div>
+      </div>
+      <div class="grid-samples-div3 samples_category_basic" onclick="openSample('SetAnimation.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/set_animation.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          3.Set Animation
+        </div>
+      </div>
+      <div class="grid-samples-div4 samples_category_basic" onclick="openSample('KeyboardControl.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/keyboard_control.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          4.Keyboard Control
+        </div>
+      </div>
+      <div class="grid-samples-div5 samples_category_basic" onclick="openSample('ThirdPersonControl.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/third_person.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          5.Third Person Control
+        </div>
+      </div>
+      <div class="grid-samples-div6 samples_category_basic" onclick="openSample('Sounds.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/sounds.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          6.Sounds
+        </div>
+      </div>
+      <div class="grid-samples-div7 samples_category_basic" onclick="openSample('Effects.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/effects.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          7.Effects
+        </div>
+      </div>
+      <div class="grid-samples-div8 samples_category_basic" onclick="openSample('Primitives.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/primitives.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          8.Primitives
+        </div>
+      </div>
+      <div class="grid-samples-div9 samples_category_basic" onclick="openSample('Quiz.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/quiz.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          9.Quiz Game
+        </div>
+      </div>
+      <div class="grid-samples-div10 samples_category_basic" onclick="openSample('Numbers.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/number_guessing.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          10.Number Guessing Game
+        </div>
+      </div>
+      <div class="grid-samples-div11 samples_category_basic" onclick="openSample('TrailsBasicLine.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/trails_line.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          11.Trails-Line
+        </div>
+      </div>
+      <div class="grid-samples-div12 samples_category_basic" onclick="openSample('TrailsSquare.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/trails_square.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          12.Trails-Square
+        </div>
+      </div>
+      <div class="grid-samples-div13 samples_category_basic" onclick="openSample('TrailsMuSquare.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/multi_coloured_square.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          13.Trails-Multi Colour Square
+        </div>
+      </div>
+      <div class="grid-samples-div14 samples_category_basic" onclick="openSample('TrailsMuSquare.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/multi_coloured_square.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          14.Trails-Triangle
+        </div>
+      </div>
+      <div class="grid-samples-div15 samples_category_basic" onclick="openSample('TrailsMuSquare.py')">
+        <video muted="muted" onmouseover="this.play()" onmouseout="this.pause();" loop class="samples_video">
+          <source src="Vids/multi_coloured_square.mp4" type="video/mp4">
+          </source>
+        </video>
+        <div class="samples_description">
+          15.Trails-Triangle
+        </div>
       </div>
     </div>
-    <!-- MAIN GRID END -->
+
+    <button class="login_form_cancel_btn" onClick="samplesClicked();">Close</button>
+  </div>
+  <!-- SAMPLES END !-->
+
+  <!--USER ACCOUNT START !-->
+  <div class="account_container center_element sparkpy-fonts" id="account_container">
+    <div class="grid-useraccount-parent">
+      <div class="grid-cell-useraccount-heading">My Account</div>
+      <div class="grid-cell-useraccount-settings"> 
+      <button type="button" onclick="signOut();">Sign out</button> 
+      </div>
+      <div class="grid-cell-useraccount-files">
+        
+        <table id='table-useraccount'>
+          <thead>
+            <th colspan='2' style="cursor:pointer;" onClick='arrangeSparksByName();'>File</th>
+            <th style="cursor:pointer;" onClick='arrangeSparksByDate();'>Modified</th>
+            <th colspan='2'>Actions</th>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
+
+      </div>
+      <div class="grid-cell-useraccount-footer"> <button class="login_form_cancel_btn" onClick="closeAccount();">Close</button> </div>
+    </div>
+  </div>
+  <!--USER ACCOUNT END !-->
+
+  <!-- ALERT BOX START !-->
+  <div class="alertbox_container warning center_element sparkpy-fonts" id="alertbox_container_id">
+    <div class="grid-alertbox-parent">
+      <div class="grid-cell-alertbox-header">
+        <span style="width: 100%; margin-left: 0px; padding: 10px;"> <img src="Images/icons/warning_icon.svg"> <span id="alert_header_id">File Exists</span></span>
+      </div>
+      <div id="alert_message_id" class="grid-cell-alertbox-body" style="padding-top: 10px;padding-bottom: 10px;">Overwrite ?</div>
+      <div class="grid-cell-alertbox-footer">
+        <span>
+          <button class="alert_btn" id="alert-btn-yes-id" onClick="overwriteSave()">Yes</button>
+          <button class="alert_btn" id="alert-btn-no-id" onClick="alertBoxClose()">No</button>
+        </span>
+        <div style="padding-top: 10px;" id="alert_check_id">
+          <input type="checkbox" id="overwrite_checkbox" name="overwrite">
+          <label for="overwrite">remember my choice</label>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-    <!-- bridge div for linking unity application events with website e.g. collisions, input: Assets/pyslib  !-->
-    <div id="unity_events"></div>
+  <!-- ALERT BOX END !-->
 
-    <!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
-    <div id="unity_return_values"></div>
+  <!-- global script variables start !-->
 
-    <div id="reset_id"></div>
+  <?php
+  //has a spark been set
+  if (isset($_GET['s'])) {
+    $sparkId = $_GET['s'];
+    $res = Spark::getSpark($sparkId);
+    $code = $res["code"];
+    $filename = $res["name"];
+    echo "<script> document.getElementById(\"filename-id\").value = '$filename'; </script>";
+  }
+  ?>
 
-    <script>
-
-    </script>
-    <script type="text/python3">
-    from browser import document,window,bind,aio
-    import sparkpy
-    
-    
-    @bind(window, "message")
-    def ready(ev):
-      #unity instance variable (window.unint) is now valid
-      sparkpy.SetUnityInstance(window.unint)
-    
-    </script>
-
-    <!-- Need to merge with main grid-->
-    
-    <td>Brython version: <span id="version"></span></td>
-    
-    <!--sparkpy-->
-    <script src="Scripts/sparkpy.js"></script>
-    <script src="Scripts/settingsRow.js"></script>
-    <script src="Scripts/themes.js"></script>
-    <script>
-      const resetEvent = new CustomEvent('resetScene'); //only make this once
-      function unityRestScene() 
-      {
-        //reset the scene. Call the reset scene method in sparkpy via binding to this event
-        document.getElementById("reset_id").dispatchEvent(resetEvent); //event is binded in sparkpy.py
-        //set focus on unity
-        document.getElementById("unityiframe").focus();
-      }
-
-      //one of these for each type of event
-      function inputEventHandler(event) 
-      {
-        //this function is called from pyslib.js from unity
-        //input text is entered
-      }
-
-    </script>
 
 <script>
-    var editor = ace.edit("editor");
-   
+  //https://developers.google.com/identity/gsi/web/reference/js-reference
+  var loginFormOpen = false;
+  var requestedAccountLoad = false;
+  var requestedAccountSave = false;
+
+  async function signOut()
+  {
+
+    const myInit = 
+    {
+      method: 'POST',
+      headers: 
+      {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `action=logout`
+    };
+    const myRequest = new Request('php_scripts/login.php', myInit);
+    let response = await fetch(myRequest);
+    let data1 ="";
+    data1 = await response.text();
+    if(data1  != "logged_out") // something went wrong
+    {
+      closeAccount();
+      return;
+    }
+          
+    this.loggedIn = false;
+    document.getElementById("login-id").innerHTML = "<div id=\"googleSignIn\">";
+    google.accounts.id.initialize({
+      client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("googleSignIn"),
+      { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+    );
+    closeAccount();
+  }
+
+  async function validateJWT(credential)
+  {
+    const myInit = 
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `action=login&credential=`+credential
+    };
+    const myRequest = new Request('php_scripts/login.php', myInit);
+    let response = await fetch(myRequest);
+    let data = await response.text();
+    
+    if(data == "invalid_token")//something went wrong
+    {
+      if(this.loginFormOpen == true)
+      {
+        closeLogin();
+      }
+      
+      return;
+    }
+    this.loggedIn = true;
+    document.getElementById("login-id").innerHTML = "<img src='"+data+"' width='25px' height='25px' referrerpolicy='no-referrer'>";
+    
+    if(this.loginFormOpen == true)
+    {
+      closeLogin();
+      if(this.requestedAccountLoad == true)
+      {
+        openAccount();
+        this.requestedAccountLoad = false;
+      }
+      else if(this.requestedAccountSave == true)
+      {
+        cloudSave();
+        this.requestedAccountSave = false;
+      }
+    }
+  }
+
+  function handleCredentialResponse(response) 
+  {
+
+    validateJWT(response.credential);
+    
+  }
+
+  window.onload = function () 
+  {
+    brython({debug:1});
+
+    //style reference
+    //https://developers.google.com/identity/gsi/web/reference/js-reference
+
+    google.accounts.id.initialize({
+      client_id: "866465079568-odepv40d3gf059misj6c2gropii7bca2.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("googleSignIn"),
+      { theme: "filled_blue", size: "small", type: "standard",text: "signin",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+    );
+    
+    google.accounts.id.renderButton(
+      document.getElementById("googleSignIn2"),
+      { theme: "filled_black", size: "large", type: "standard",text: "sign_in_with",shape: "rectangular",logo_alignment: "left" }  // customization attributes
+    );
+    
+  }
+</script>
+
+<script>
+  const mainGridContainer = document.getElementById('container');
+
+  var accountOpened = false;
+
+  var loggedIn = false;
+
+  var sparksLoaded = false;
+
+  const editor = ace.edit("editor");
+
+  let sparksJSON = null;
+
+  let useSparkNameAscSort = true; //when sorting sparks by name, flip between ascending and descending
+  let useSparkDateAscSort = true; //when sorting sparks by date, flip between ascending and descending
+
+  const waitAnimation = document.getElementById('waiting-animation-id');
+  const timeToShowStatus = 2000;
+  const timeToShowError = 4000;
 
   
+
+  function startWaitAnimation()
+  {
+    waitAnimation.style.display = "block";
+  }
+  function endWaitAnimation()
+  {
+    waitAnimation.style.display = "none";
+  }
+
+  function delay(time) 
+  {
+  return new Promise(resolve => setTimeout(resolve, time));
+  }
+
+  async function statusText(text,colour, timeToShow)
+  {
+
     
+    
+    const statusTextElement = document.getElementById("status-text-id");
+    
+    
+    statusTextElement.style.display = "block";
+    statusTextElement.innerHTML = text;
+    statusTextElement.style.color = colour;
+
+    await delay(timeToShow);
+
+    statusTextElement.classList.toggle("fadeOut");
+
+    await delay(500);
+
+    statusTextElement.classList.toggle("fadeOut");
+    statusTextElement.style.display = "none";
+    
+
+
+  }
+
+  async function showCrossBox(msg, timeToShow)
+  {
+    statusText(msg,"#D06079",timeToShow);
+    const i = document.getElementById('cross-path-id');
+    const c1 = document.getElementById("crossp1"); 
+    const c2 = document.getElementById("crossp2");
+    const c3 = document.getElementById("crossp3");
+
+    i.style.display = "block";
+
+    c1.classList.add("path");
+    c1.classList.add("circle");
+
+    c2.classList.add("path");
+    c2.classList.add("line");
+
+    c3.classList.add("path");
+    c3.classList.add("line");
+
+   
+    
+    await delay(timeToShow);
+
+    i.classList.toggle("fadeOut");
+
+    await delay(500);
+
+    i.classList.toggle("fadeOut");
+
+
+
+    i.style.display = "none";
+  }
+
+  async function tickBox(msg)
+  {
+  //  <circle id="tickp1"  
+//<polyline id="tickp2" 
+    statusText(msg,"#73AF55",timeToShowStatus);
+    const i = document.getElementById("tick-path-id");
+    const p1 = document.getElementById("tickp1"); 
+    const p2 = document.getElementById("tickp2");
+
+    i.style.display = "block";
+    p1.classList.add("path");
+    p1.classList.add("circle");
+
+    p2.classList.add("path");
+    p2.classList.add("check");
+
+    await delay(timeToShowStatus);
+
+    i.classList.toggle("fadeOut");
+
+    await delay(500);
+
+    i.classList.toggle("fadeOut");
+
+    
+
+    i.style.display = "none";
+  }
+
+  //called when the spark id is given in the url
+  function setFilename(filename)
+  {
+    document.getElementById("filename-id").value = filename;
+  }
+
+  async function deleteSparkDBRequest(sparkid)
+  {
+     
+    const myInit = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=deletespark&s=${sparkid}`
+      };
+
+      const myRequest = new Request('php_scripts/cloud_load.php', myInit);
+
+      let response = await fetch(myRequest);
+      let data = await response.text();
+
+      console.log("delete result is " + data);
+
+      if(data == "ok")
+      {
+        deleteRow(sparkid);
+      }
+      
+    
+    
+    alertBoxClose();
+  }
+
+  function deleteSpark(sparkinfo)
+  {
+
+    let vals = sparkinfo.split("|");
+    let sparkid = vals[0];
+    let filename = decodeURI(vals[1]);
+    
+    setAlertBoxValues("Delete File","Delete " + filename + "?", false,`deleteSparkDBRequest(${sparkid})` );
+    
+
+  }
+
+  function cloudSave() 
+  {
+    let filename = document.getElementById("filename-id").value;      
+    if(filename == "")
+    {
+      showCrossBox("filename empty",timeToShowError);
+      return;
+    }
+      
+
+    if (this.loggedIn == false) {
+      openLogin();
+      this.requestedAccountSave = true;
+    } else {
+            let code = editor.getValue();
+      let promptForOverwrite = true;
+
+      let noPromptFilename = sessionStorage.getItem("overwrite_no_prompt_name");
+
+      if (noPromptFilename == filename) {
+        promptForOverwrite = false
+      }
+      saveCode(promptForOverwrite);
+    }
+  }
+
+  const alertBoxContainer = document.getElementById("alertbox_container_id");
+  const alertMessage = document.getElementById("alert_message_id");
+  const alertHeader = document.getElementById("alert_header_id");
+  const alertCheck = document.getElementById("alert_check_id");
+  const alertYesButton = document.getElementById("alert-btn-yes-id");
+  
+
+  function setAlertBoxValues(header,message,showcheck,onClickYes)
+  {
+    alertHeader.innerHTML = header;
+    alertMessage.innerHTML = message;
+    if(showcheck == true)
+    {
+      alertCheck.style.display = "block";
+    }
+    else
+    {
+      alertCheck.style.display = "none";
+    }
+
+    alertBoxContainer.style.display = "block";
+
+    //set the callback
+    //alertYesButton.onclick = onClickYes;
+    alertYesButton.setAttribute("onclick",onClickYes);
+    
+  }
+
+  function confirmOverwrite() 
+  {
+    //an existing filename exists, display the confirm to overwrite alert box
+    
+    let filename = document.getElementById("filename-id").value;
+    setAlertBoxValues("File Exists","Overwrite " + filename + "?", true, "overwriteSave()" );
+
+  }
+
+  function overwriteSave() 
+  {
+    //when the user confirms they want to overwrite
+
+    
+
+    //get checkbox value
+    let remember_my_choice = document.getElementById("overwrite_checkbox").checked;
+    let filename = document.getElementById("filename-id").value;
+    let hasSparkid = false;
+
+    //user has selected to remember overwrite choice, store the spark id for the coice in session storage
+    if (remember_my_choice == true) {
+      sessionStorage.setItem("overwrite_no_prompt_name", filename); //this filename will not prompt an alert box
+    }
+
+    //the user has confirmed they want to overwrite so no need for an alertbox
+    let alertForOverwrite = false;
+
+    saveCode(alertForOverwrite);
+    alertBoxClose();
+
+  }
+
+  function alertBoxClose() 
+  {
+    //the user cancels the confirm to overwrite alert box
+    alertBoxContainer.style.display = "none";
+  }
+
+  async function saveCode(checkForOverwrite) 
+  {
+    //"use strict";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "php_scripts/cloud_save.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState === 4 && this.status === 200) {
+        //console.log("response is ");
+        //console.log(this.responseText); // echo from php
+        let action = this.responseText;
+        if (action == "confirm_overwrite") {
+          //sessionStorage.setItem("sparkid",sparkid);
+          confirmOverwrite();
+        }
+        if(action == "updated" || action == "created")
+        {
+          
+          endWaitAnimation();
+          tickBox("Saved");
+          
+        }
+      }
+    };
+
+    //var editor = ace.edit("editor");
+
+    var code = editor.getValue();
+    let filename = document.getElementById("filename-id").value;
+    let querystring = "code=" + code + "&filename=" + filename;
+
+    if (checkForOverwrite == true) {
+      querystring += "&overwrite=check";
+      //console.log("&overwrite=check"); //check with the user for overwrite
+    } else {
+      querystring += "&overwrite=yes"; //overwrite the file without prompting the user
+      //console.log("&overwrite=yes");
+    }
+
+    //console.log("sending query string " + querystring);
+    startWaitAnimation();
+    xmlhttp.send(querystring);
+
+  }
+
+
+  function cloudLoad() 
+  {     
+    if (loggedIn == false) {
+      openLogin();
+      this.requestedAccountLoad = true;
+    } else if (loggedIn == true && this.accountOpened == false) {
+      openAccount();
+      this.accountOpened = true;
+    }
+  }
+  const accountContainer = document.getElementById("account_container");
+  const accountEnterAnim = "anim_samples_enter";
+  const accountExitAnim = "anim_samples_exit";
+
+  function sortDateAsc(a, b) {
+    if (a.modified<b.modified) {
+      return -1;
+    }
+    if (b.modified<a.modified) {
+      return 1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+
+  function sortDateDesc(a, b) {
+    if (a.modified<b.modified) {
+      return 1;
+    }
+    if (b.modified<a.modified) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+
+  function arrangeSparksByDate()
+  {
+    if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
+      return;
+
+    var dateSortFunc;
+    if(useSparkDateAscSort == true)
+    {
+      dateSortFunc = sortDateAsc;
+      useSparkDateAscSort = false;
+    }
+    else
+    {
+      dateSortFunc = sortDateDesc;
+      useSparkDateAscSort = true;
+    }
+
+    let dateSorted = sparksJSON.sort(dateSortFunc);
+    fillUserSparkTable(dateSorted);
+
+  }
+
+  function sortNameAsc(a, b) {
+    if (a.name<b.name) {
+      return -1;
+    }
+    if (b.name<a.name) {
+      return 1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+  function sortNameDesc(a, b) {
+    if (a.name<b.name) {
+      return 1;
+    }
+    if (b.name<a.name) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  }
+
+  function arrangeSparksByName() {
+
+    if(this.sparksLoaded == false) //no sparks for the user, nothing to sort
+      return;
+
+    var sortFunc;
+    if(useSparkNameAscSort == true)
+    {
+      sortFunc = sortNameAsc;
+      useSparkNameAscSort = false;
+    }
+    else
+    {
+      sortFunc = sortNameDesc;
+      useSparkNameAscSort = true;
+    }
+
+    let sorted = sparksJSON.sort(sortFunc);
+    fillUserSparkTable(sorted);
+  }
+
+    function fillUserSparkTableNoResults()
+    {
+      let row = "";
+      //when the user doesnt have any saved sparks
+       
+        row = `<tr> \
+            <td class ='grid-cell-useraccount-file-icon'></td> \
+            <td class ='grid-cell-useraccount-file-name'>No saved sparks</td> \
+            <td class ='grid-cell-useraccount-file-mod-date' ></td> \
+            <td class ='grid-cell-useraccount-actions-icon'></td> \
+            <td class ='grid-cell-useraccount-actions-icon'></td> \
+            </tr>`;
+       
+
+      var tbody = document.getElementById("tbody");
+      tbody.innerHTML = row;
+
+    }
+
+    function deleteRow(rowid)  
+    {   
+      var row = document.getElementById("user_spark_"+rowid);
+      row.parentNode.removeChild(row);
+    }
+
+    function fillUserSparkTable(sparks) {
+      let row = "";
+      let filename ="";
+
+      for (var s of sparks) {
+        filename = encodeURIComponent(s.name); 
+        row += `<tr id='user_spark_${s.spark_id}'> \
+            <td class ='grid-cell-useraccount-file-icon'><img src='Images/logo-icons/favicon-32x32.png'></td> \
+            <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
+            <td class ='grid-cell-useraccount-file-mod-date' >${s.modified}</td> \
+            <td class ='grid-cell-useraccount-actions-icon' onClick=deleteSpark(\"${s.spark_id}|${filename}\");><img src='Images/icons/delete_icon.svg'></td> \
+            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
+            </tr>`;
+      }
+
+      var tbody = document.getElementById("tbody");
+      tbody.innerHTML = row;
+    }
+
+    async function loadSpark(sparkid) {
+      const myInit = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=getspark&s=${sparkid}`
+      };
+
+      const myRequest = new Request('php_scripts/cloud_load.php', myInit);
+
+      let response = await fetch(myRequest);
+      let data = await response.text();
+
+      if (data != "noresults") {
+        let spark = JSON.parse(data);
+        editor.setValue(spark.code);
+        document.getElementById("filename-id").value = spark.name;
+      }
+
+      closeAccount();
+    }
+
+    async function getAccountDetails() {
+      const myInit = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=getusersparks`
+
+      };
+
+      const myRequest = new Request('php_scripts/cloud_load.php', myInit);
+
+      startWaitAnimation();
+      
+
+      let response = await fetch(myRequest);
+      let data = await response.text();
+      
+      
+
+      endWaitAnimation();
+
+      if(data == "noresults")
+      {
+        fillUserSparkTableNoResults();
+        this.sparksLoaded = false;
+        //todo fill table no results
+        return;
+      }
+      sparksJSON = JSON.parse(data);
+      this.sparksLoaded = true;
+
+      fillUserSparkTable(sparksJSON);
+    }
+
+    async function openAccount() {
+
+      await getAccountDetails();
+
+      
+
+      mainGridContainer.classList.toggle("blur_element");
+
+      accountContainer.classList.remove(accountEnterAnim);
+      accountContainer.classList.remove(accountExitAnim);
+      window.setTimeout(function() {
+        accountContainer.style.display = "block";
+        accountContainer.classList.add(accountEnterAnim);
+
+      }, 50);
+    }
+
+    function closeAccount() {
+      accountContainer.classList.remove(accountEnterAnim);
+      accountContainer.classList.remove(accountExitAnim);
+      accountContainer.classList.remove(accountEnterAnim);
+      accountContainer.classList.remove(accountExitAnim);
+
+      window.setTimeout(function() {
+        accountContainer.classList.add(accountExitAnim);
+      }, 50);
+      window.setTimeout(function() {
+        mainGridContainer.classList.toggle("blur_element");
+      }, 500);
+
+      window.setTimeout(function() {
+        accountContainer.style.display = "none";
+      }, 1000);
+      this.accountOpened = false;
+    }
+  </script>
+
+  <!-- Sample JS !-->
+  <script>
+    //const editor = ace.edit("editor");
+    const samplesContainer = document.getElementById('samples_container');
+    const samplesEnterAnim = "anim_samples_enter";
+    const samplesExitAnim = "anim_samples_exit";
+
+
+    //const mainGridContainer = document.getElementById('container');
+    const blueAmount = "10px";
+    let samplesOpened = false;
+
+    async function openSample(name) {
+
+      //open the file
+      const response = await fetch('Samples/' + name);
+      const data = await response.text();
+
+      //load the code
+      //const editor = ace.edit("editor");
+      editor.setValue(data);
+
+      //close the samples box
+      samplesClicked()
+    }
+
+    function openSamples() {
+
+      samplesContainer.classList.remove(samplesEnterAnim);
+      samplesContainer.classList.remove(samplesExitAnim);
+      window.setTimeout(function() {
+        samplesContainer.style.display = "block";
+        samplesContainer.classList.add(samplesEnterAnim);
+      }, 50);
+
+    }
+
+    function closeSamples() {
+
+      samplesContainer.classList.remove(samplesEnterAnim);
+      samplesContainer.classList.remove(samplesExitAnim);
+
+      samplesContainer.classList.remove(samplesEnterAnim);
+      samplesContainer.classList.remove(samplesExitAnim);
+
+      window.setTimeout(function() {
+        samplesContainer.classList.add(samplesExitAnim);
+      }, 50);
+
+
+      window.setTimeout(function() {
+        mainGridContainer.classList.toggle("blur_element");
+
+      }, 500);
+
+
+      window.setTimeout(function() {
+        samplesContainer.style.display = "none";
+
+      }, 1000);
+
+    }
+
+
+    function samplesClicked() {
+
+      if (samplesOpened == false) {
+        mainGridContainer.classList.toggle("blur_element");
+        samplesOpened = true;
+        openSamples();
+
+      } else {
+
+        samplesOpened = false;
+        closeSamples()
+
+      }
+    }
+  </script>
+  <!-- End Samples JS !-->
+
+
+  <!-- Login JS !-->
+  <script>
+    const loginForm = document.getElementById('loginButton');
+    
+    const cloudLoadIcon = document.getElementById('cloud-load');
+    const enterAnim = "anim_login_enter";
+    const exitAnim = "anim_login_exit";
+
+    function closeLogin() {
+      if(loginFormOpen == false)
+      {
+        return;
+      }
+      loginForm.classList.remove(exitAnim);
+      loginForm.classList.remove(enterAnim);
+
+      window.setTimeout(function() {
+        loginForm.classList.add(exitAnim);
+      }, 50);
+
+      window.setTimeout(function() {
+        loginForm.style.display = "none";
+      }, 1000);
+
+      loginFormOpen = false;
+
+    }
+
+    function openLogin() {
+      if(loginFormOpen == true)
+      {
+        return;
+      }
+      
+      loginForm.classList.remove(exitAnim);
+      loginForm.classList.remove(enterAnim);
+      window.setTimeout(function() {
+        loginForm.style.display = "block";
+        loginForm.classList.add(enterAnim);
+      }, 50);
+
+      let rect = cloudLoadIcon.getBoundingClientRect();
+
+      loginForm.style.marginLeft = rect.left + "px";
+      loginForm.style.marginTop = (rect.bottom - rect.top) + 3 + "px";
+
+      loginFormOpen = true;
+
+    }
+  </script>
+
+  <!-- END login js !-->
+
+  <!-- bridge div for linking unity application events with website e.g. collisions, input: Assets/pyslib  !-->
+  <div id="unity_events"></div>
+
+  <!--this div is a bridge unity uses this div to set return values- unity project: Assets/pyslib-->
+  <div id="unity_return_values"></div>
+
+  <div id="reset_id"></div>
+
+
+
+  <script type="text/python3">
+    from browser import document,window,bind
+    import brython.tests.editor as editor
+    import sparkpy
+
+    def run(ev):
+      document['console'].value = ''
+      editor.run(editor.editor.getValue())
+
+    editor.reset()
+
+    @bind(window, "message")
+    def ready(ev):
+      
+      if(ev.data == "unity_ready"):
+        #window.alert("ev.data " + ev.data)
+        #unity instance variable (window.unint) is now valid
+      
+        sparkpy.SetUnityInstance(window.unint)
+        window.engineLoaded() #if you need to call JS after the engine is loaded.
+        document['run'].bind('click', run)
+
+    </script>
+
+  <script>
+    //page loaded function
+    window.addEventListener("load", pageLoaded, true);
+    async function pageLoaded() {
+      c = document.getElementById("run");
+      c.disabled = true;
+
+      var codeLoaded = "<?php echo isset($_GET['s']); ?>";
+
+      //if code is not loaded from db by user, load default
+      if (codeLoaded != "1") {
+        const response = await fetch('Samples/Default.py');
+        const data = await response.text();
+
+        //load the code
+        editor.setValue(data);
+      }
+    }
+
+    //engine loaded function
+    function engineLoaded() {
+
+    }
+  </script>
+
+  <!-- Need to merge with main grid-->
+
+  <span style="display: none;" id="version"></span><!--Brython version: need this id for brython to load properly  !-->
+
+  <!--sparkpy-->
+  <script src="Scripts/sparkpy.js"></script>
+
+  <script>
+    const resetEvent = new CustomEvent('resetScene'); //only make this once
+    function unityRestScene() {
+
+      //reset the scene. Call the reset scene method in sparkpy via binding to this event
+      document.getElementById("reset_id").dispatchEvent(resetEvent); //event is binded in sparkpy.py
+      //set focus on unity
+      document.getElementById("unityiframe").focus();
+    }
+
+    //one of these for each type of event
+    function inputEventHandler(event) {
+      //this function is called from pyslib.js from unity
+      //input text is entered
+    }
+  </script>
+
+  <!--Save cloud  code !-->
+  <script>
+    //var editor = ace.edit("editor");
+
     <?php
     $txt = json_encode($code);
     echo "var out={$txt};";
     ?>
-    
+
     editor.setValue(out);
-
-    function saveCode()
-    {
-      //"use strict";   
- 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", "save_code.php", true);
-      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.onreadystatechange = function() {
-          if (this.readyState === 4 || this.status === 200){ 
-              console.log(this.responseText); // echo from php
-          }       
-      };
-
-      var editor = ace.edit("editor");
-
-      var code = editor.getValue();
-      xmlhttp.send("id=1&code="+code);
-       
-    }
-
-</script>
+  </script>
 
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3QCQRGS7F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
     gtag('js', new Date());
 
     gtag('config', 'G-W3QCQRGS7F');

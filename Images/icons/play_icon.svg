@@ -1,1 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M18.3 36.4q-.75.5-1.525.05Q16 36 16 35.1V12.6q0-.9.775-1.35.775-.45 1.525.05L36 22.6q.7.45.7 1.25T36 25.1Z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="17.938421"
+   width="14.49"
+   version="1.1"
+   id="svg118"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs122" />
+  <path
+     d="m 1.61,17.754211 q -0.525,0.35 -1.0675,0.035 Q 0,17.474211 0,16.844211 V 1.0942105 q 0,-0.62999997 0.5425,-0.94499997 0.5425,-0.315 1.0675,0.035 L 14,8.0942106 q 0.49,0.315 0.49,0.875 0,0.56 -0.49,0.875 z"
+     id="path116"
+     style="stroke-width:0.7" />
+</svg>
