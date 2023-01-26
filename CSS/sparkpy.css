@@ -8,7 +8,7 @@
     --border_size_editor: 1px;  
     --border_colour_editor: rgb(210, 210, 210);
 
-    --border_size_menu: 0px;  
+    --border_size_menu: 4px;  
     --border_colour_menu: rgb(132, 132, 132);
     --menu_gaps: 15px;
 
@@ -121,32 +121,44 @@
 
 
 /* NEW MENU BAR TITLE EMBEDDED */
+
 .grid-parent-menu 
 {
+    
+  
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: 1fr;
-    grid-column-gap: 5px;
+    /*grid-column-gap: 5px;*/
+    grid-column-gap: 0px;
     grid-row-gap: 0px;
-    border: var(--border_size_menu) solid var(--border_colour_menu);
+     
     
-    width: min-content;
+    /*width: min-content;*/
+    width: 100%;
     height: min-content;
-    margin-left: 2px;
+    margin-left: 0px;
     margin-top: 5px;
     white-space: nowrap;
+
+    border: 0px solid black;
 }
 
+/*display: grid;
+height:90vh;
+ 
+grid-template-columns: 30% 70%; */ /* editor unity*/
+
 .grid-cell-menu-play { grid-area: 1 / 1 / 2 / 2; cursor: pointer; height: min-content; width: min-content; display:flex; }
-.grid-cell-menu-filename { grid-area: 1 / 2 / 2 / 3; border-right: solid var(--border_size_menu) var(--border_colour_menu);   /*border: 1px solid black;*/}
-.grid-cell-menu-local-load { grid-area: 1 / 3 / 2 / 4; /*border: 1px solid black;*/}
-.grid-cell-menu-local-save  { grid-area: 1 / 4 / 2 / 5; border-right: solid var(--border_size_menu) var(--border_colour_menu)/* border: 1px solid black;*/ }
-.grid-cell-menu-cloud-load{ grid-area: 1 / 5 / 2 / 6; /*border: 1px solid black;*/}
-.grid-cell-menu-cloud-save { grid-area: 1 / 6 / 2 / 7; border-right: solid var(--border_size_menu) var(--border_colour_menu)/*border: 1px solid black;*/}
-.grid-cell-menu-status1{ grid-area: 1 / 7 / 2 / 8; /*border: 1px solid black;*/}
-.grid-cell-menu-theme{ grid-area: 1 / 8 / 2 / 9; /*border: 1px solid black; */}
-.grid-cell-menu-font-size { grid-area: 1 / 9 / 2 / 10; /*border: 1px solid black;*/}
-.grid-cell-menu-status2 { grid-area: 1 / 10 / 2 / 11; border-right: solid var(--border_size_menu) var(--border_colour_menu)/*border: 1px solid black; */}
+.grid-cell-menu-filename { grid-area: 1 / 2 / 2 / 3;  }
+.grid-cell-menu-local-load { grid-area: 1 / 3 / 2 / 4; }
+.grid-cell-menu-local-save  { grid-area: 1 / 4 / 2 / 5;  }
+.grid-cell-menu-cloud-load{ grid-area: 1 / 5 / 2 / 6; }
+.grid-cell-menu-cloud-save { grid-area: 1 / 6 / 2 / 7; }
+.grid-cell-menu-theme{ grid-area: 1 / 7 / 2 / 8; }
+.grid-cell-menu-font-size{ grid-area: 1 / 8 / 2 / 9;  }
+.grid-cell-menu-status2  { grid-area: 1 / 9 / 2 / 10; }
+.grid-cell-menu-status1{ grid-area: 1 / 10 / 2 / 11; margin-top: 12px; }
 
 
 
@@ -157,9 +169,8 @@
     border: none;
     cursor: pointer;
     float: left;
-    margin-left: 5px;
+    margin-left: 5px; 
     margin-top: 10px;
-    transform: scale(1);
     opacity: var(--menu_icon_default_opacity)
   }
   .play-icon:hover
@@ -196,7 +207,7 @@
     border: none;
     cursor: pointer;
     float: left;
-    margin-left: 2px;
+    
     margin-top: 12px;
     transform: scale(1);
     opacity: var(--menu_icon_default_opacity)
@@ -208,7 +219,7 @@
   }
 
   .save-icon {
-    width: 1.8em;
+    width: 1.4em;
     height: 1.5em;
     background: url("/Images/icons/save_icon.svg")  no-repeat;
     border: none;
@@ -216,7 +227,7 @@
     float: left;
     margin-left: 2px;
     margin-top: 12px;
-    margin-right: var(--menu_gaps);
+    /*margin-right: var(--menu_gaps);*/
     transform: scale(1);
     opacity: var(--menu_icon_default_opacity)
   }
@@ -264,10 +275,12 @@
     border: none;
     cursor: pointer;
     float: left;
+    /*
     margin-left: 2px;
+    */
     margin-top: 12px;
     transform: scale(1);
-    margin-right: var(--menu_gaps);  
+    /*margin-right: var(--menu_gaps);*/  
 
     opacity: var(--menu_icon_default_opacity)
   }
@@ -290,9 +303,15 @@
       width: 35px; height: 20px; padding: 1px;
       
   }
-  .status1
+  .status-text
   {
-    margin-left: 0px;
+    color: #73AF55;
+    
+  }
+  .status-animation
+  {
+    margin-top: 5px;
+    align-content: right;
   }
 
 /* sign in with gooogle button*/
@@ -625,6 +644,134 @@ background-color: #ffffff;
             .grid-item-unity { grid-area: 3 / 1 / 4 / 2; }
             .grid-item-shell { grid-area: 4 / 1 / 5 / 2; } 
 }
+
+/**************************SUCCESS TICK START******************************/
+
+
+svg {
+  width: 30px;
+  display: block;
+   
+}
+
+.path {
+	 stroke-dasharray: 1000;
+	 stroke-dashoffset: 0;
+}
+ .path.circle {
+	 -webkit-animation: dash .9s ease-in-out;
+	 animation: dash .9s ease-in-out;
+}
+ .path.line {
+	 stroke-dashoffset: 1000;
+	 -webkit-animation: dash .9s .35s ease-in-out forwards;
+	 animation: dash .9s .35s ease-in-out forwards;
+}
+ .path.check {
+	 stroke-dashoffset: -100;
+	 -webkit-animation: dash-check .9s .35s ease-in-out forwards;
+	 animation: dash-check .9s .35s ease-in-out forwards;
+}
+ p {
+	 text-align: center;
+	 /*margin: 20px 0 60px;*/
+	 font-size: 1.25em;
+}
+ p.success {
+	 color: #73AF55;
+}
+ p.error {
+	 color: #D06079;
+}
+ 
+
+
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@-webkit-keyframes dash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+
+@keyframes dash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+
+
+/**************************SUCCESS TICK END*******************************/
+
+/************************FADE START************************************/
+
+.fadeOut {
+  -webkit-animation: fadeout 0.5s linear forwards;
+  animation: fadeout 0.5s linear forwards;
+  opacity: 1;
+}
+
+@-webkit-keyframes fadeout {
+100% { opacity: 0; }
+}
+
+@keyframes fadeout {
+100% { opacity: 0; }
+}
+
+/************************FADE END*************************************/
+
+/************************SPINNER START********************************/
+.lds-dual-ring {
+  display: inline-block;
+ 
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0px;
+  border-radius: 100%;
+  border: 6px solid rgb(0, 0, 0);
+  /*border-color: rgb(98, 98, 98) transparent rgb(98, 98, 98) transparent;*/
+  border-color: var(--navbar_background) transparent var(--navbar_background) transparent;
+  
+
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/************************END SPINNER**********************************/
 
 
 /*GLOBAL STYLES*/

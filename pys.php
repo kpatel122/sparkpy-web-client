@@ -176,8 +176,14 @@ $sparkId = -1;
           <input title="Editor font size" id="font-size" class="fontsize-box" type="number" min="10" max="20" value="14" onchange="fontSizeChanged()"> <!--fontSizeChanged() defined in settingsRow.js-->
         </div>
 
-        <div class="grid-cell-menu-status1"> <span class="status1"></span></div>
-        <div class="grid-cell-menu-status2"> </div>
+        <div class="grid-cell-menu-status1 "> <span id="status-text-id" class="sparkpy-fonts status-text" style="display: none;">Saved</span></div>
+        <div class="grid-cell-menu-status2 status-animation"  >
+            <svg style="display:none;"  id="status-image-id"  version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 145 145">
+              <circle id="tickp1"  fill="none" stroke="#73AF55" stroke-width="16" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+              <polyline id="tickp2" fill="none" stroke="#73AF55" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+            </svg>
+            <div id="waiting-animation-id" class="lds-dual-ring" style="display:none;"></div>
+        </div>
 
         <!-- login form !-->
         <
@@ -557,6 +563,76 @@ $sparkId = -1;
   let useSparkNameAscSort = true; //when sorting sparks by name, flip between ascending and descending
   let useSparkDateAscSort = true; //when sorting sparks by date, flip between ascending and descending
 
+  const waitAnimation = document.getElementById('waiting-animation-id');
+
+  function startWaitAnimation()
+  {
+    waitAnimation.style.display = "block";
+  }
+  function endWaitAnimation()
+  {
+    waitAnimation.style.display = "none";
+  }
+
+  function delay(time) 
+  {
+  return new Promise(resolve => setTimeout(resolve, time));
+  }
+
+  async function statusText(text,colour)
+  {
+
+    
+    
+    const statusText = document.getElementById("status-text-id");
+    
+    
+    statusText.style.display = "block";
+
+    await delay(2000);
+
+    statusText.classList.toggle("fadeOut");
+
+    await delay(2000);
+
+    statusText.classList.toggle("fadeOut");
+    statusText.style.display = "none";
+
+
+  }
+  async function tickBox()
+  {
+
+    
+    
+
+  //  <circle id="tickp1"  
+//<polyline id="tickp2" 
+    statusText("Saved","#73AF55");
+    const i = document.getElementById("status-image-id");
+    const p1 = document.getElementById("tickp1"); 
+    const p2 = document.getElementById("tickp2");
+
+    i.style.display = "block";
+    p1.classList.add("path");
+    p1.classList.add("circle");
+
+    p2.classList.add("path");
+    p2.classList.add("check");
+
+    await delay(2000);
+
+    i.classList.toggle("fadeOut");
+
+    await delay(2000);
+
+    i.classList.toggle("fadeOut");
+
+    
+
+    i.style.display = "none";
+  }
+
   //called when the spark id is given in the url
   function setFilename(filename)
   {
@@ -689,7 +765,7 @@ $sparkId = -1;
     alertBoxContainer.style.display = "none";
   }
 
-  function saveCode(checkForOverwrite) 
+  async function saveCode(checkForOverwrite) 
   {
     //"use strict";
     var xmlhttp = new XMLHttpRequest();
@@ -703,6 +779,13 @@ $sparkId = -1;
         if (action == "confirm_overwrite") {
           //sessionStorage.setItem("sparkid",sparkid);
           confirmOverwrite();
+        }
+        if(action == "updated" || action == "created")
+        {
+          
+          endWaitAnimation();
+          tickBox();
+          
         }
       }
     };
@@ -722,6 +805,7 @@ $sparkId = -1;
     }
 
     //console.log("sending query string " + querystring);
+    startWaitAnimation();
     xmlhttp.send(querystring);
 
   }
@@ -906,9 +990,16 @@ $sparkId = -1;
 
       const myRequest = new Request('php_scripts/cloud_load.php', myInit);
 
+      startWaitAnimation();
+      
+
       let response = await fetch(myRequest);
       let data = await response.text();
       
+      
+
+      endWaitAnimation();
+
       if(data == "noresults")
       {
         fillUserSparkTableNoResults();
@@ -924,7 +1015,9 @@ $sparkId = -1;
 
     async function openAccount() {
 
-      getAccountDetails();
+      await getAccountDetails();
+
+      
 
       mainGridContainer.classList.toggle("blur_element");
 
