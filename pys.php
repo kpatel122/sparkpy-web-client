@@ -127,9 +127,9 @@ $sparkId = -1;
       <!--START MAIN MENU GRID !-->
       <div class="grid-parent-menu">
         <!-- play icon !-->
-        <div class="grid-cell-menu-play" title="Run Code" id="run" onclick="unityRestScene()">
+        <div class="grid-cell-menu-play" title="Run Code" id="run" onclick="unityRestScene()"><!--unityRestScene() defined in pys.html-->
           <button class="play-icon" aria-label="run" id="play-icon-id">
-          </button><!--unityRestScene() defined in pys.html-->
+          </button>
           <span style="margin-top:10px;  margin-right:0px;" id="play-text-id" class="run-text">Run</span>
         </div>
         <!-- filename input box !-->
@@ -178,15 +178,19 @@ $sparkId = -1;
 
         <div class="grid-cell-menu-status1 "> <span id="status-text-id" class="sparkpy-fonts status-text" style="display: none;">Saved</span></div>
         <div class="grid-cell-menu-status2 status-animation"  >
-            <svg style="display:none;"  id="status-image-id"  version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 145 145">
+            <svg style="display:none;"  id="tick-path-id"  version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 145 145">
               <circle id="tickp1"  fill="none" stroke="#73AF55" stroke-width="16" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
               <polyline id="tickp2" fill="none" stroke="#73AF55" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+            </svg>
+            <svg style="display:none;"  id="cross-path-id" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 145 145">
+              <circle id="crossp1" class="path circle" fill="none" stroke="#D06079" stroke-width="16" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+              <line id="crossp2" class="path line" fill="none" stroke="#D06079" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+              <line id="crossp3" class="path line" fill="none" stroke="#D06079" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
             </svg>
             <div id="waiting-animation-id" class="lds-dual-ring" style="display:none;"></div>
         </div>
 
         <!-- login form !-->
-        <
         <div class="login_form sparkpy-fonts" id="loginButton">
           <h3 style="text-align:center;">Sign in to use <br>cloud features</h3>
           <div id="googleSignIn2"></div>
@@ -564,6 +568,10 @@ $sparkId = -1;
   let useSparkDateAscSort = true; //when sorting sparks by date, flip between ascending and descending
 
   const waitAnimation = document.getElementById('waiting-animation-id');
+  const timeToShowStatus = 2000;
+  const timeToShowError = 4000;
+
+  
 
   function startWaitAnimation()
   {
@@ -579,37 +587,71 @@ $sparkId = -1;
   return new Promise(resolve => setTimeout(resolve, time));
   }
 
-  async function statusText(text,colour)
+  async function statusText(text,colour, timeToShow)
   {
 
     
     
-    const statusText = document.getElementById("status-text-id");
+    const statusTextElement = document.getElementById("status-text-id");
     
     
-    statusText.style.display = "block";
+    statusTextElement.style.display = "block";
+    statusTextElement.innerHTML = text;
+    statusTextElement.style.color = colour;
 
-    await delay(2000);
+    await delay(timeToShow);
 
-    statusText.classList.toggle("fadeOut");
+    statusTextElement.classList.toggle("fadeOut");
 
-    await delay(2000);
+    await delay(500);
 
-    statusText.classList.toggle("fadeOut");
-    statusText.style.display = "none";
+    statusTextElement.classList.toggle("fadeOut");
+    statusTextElement.style.display = "none";
+    
 
 
   }
-  async function tickBox()
+
+  async function showCrossBox(msg, timeToShow)
   {
+    statusText(msg,"#D06079",timeToShow);
+    const i = document.getElementById('cross-path-id');
+    const c1 = document.getElementById("crossp1"); 
+    const c2 = document.getElementById("crossp2");
+    const c3 = document.getElementById("crossp3");
 
-    
-    
+    i.style.display = "block";
 
+    c1.classList.add("path");
+    c1.classList.add("circle");
+
+    c2.classList.add("path");
+    c2.classList.add("line");
+
+    c3.classList.add("path");
+    c3.classList.add("line");
+
+   
+    
+    await delay(timeToShow);
+
+    i.classList.toggle("fadeOut");
+
+    await delay(500);
+
+    i.classList.toggle("fadeOut");
+
+
+
+    i.style.display = "none";
+  }
+
+  async function tickBox(msg)
+  {
   //  <circle id="tickp1"  
 //<polyline id="tickp2" 
-    statusText("Saved","#73AF55");
-    const i = document.getElementById("status-image-id");
+    statusText(msg,"#73AF55",timeToShowStatus);
+    const i = document.getElementById("tick-path-id");
     const p1 = document.getElementById("tickp1"); 
     const p2 = document.getElementById("tickp2");
 
@@ -620,11 +662,11 @@ $sparkId = -1;
     p2.classList.add("path");
     p2.classList.add("check");
 
-    await delay(2000);
+    await delay(timeToShowStatus);
 
     i.classList.toggle("fadeOut");
 
-    await delay(2000);
+    await delay(500);
 
     i.classList.toggle("fadeOut");
 
@@ -681,12 +723,19 @@ $sparkId = -1;
 
   function cloudSave() 
   {
+    let filename = document.getElementById("filename-id").value;      
+    if(filename == "")
+    {
+      showCrossBox("filename empty",timeToShowError);
+      return;
+    }
+      
+
     if (this.loggedIn == false) {
       openLogin();
       this.requestedAccountSave = true;
     } else {
-      let filename = document.getElementById("filename-id").value;
-      let code = editor.getValue();
+            let code = editor.getValue();
       let promptForOverwrite = true;
 
       let noPromptFilename = sessionStorage.getItem("overwrite_no_prompt_name");
@@ -773,8 +822,8 @@ $sparkId = -1;
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.onreadystatechange = function() {
       if (this.readyState === 4 && this.status === 200) {
-        console.log("response is ");
-        console.log(this.responseText); // echo from php
+        //console.log("response is ");
+        //console.log(this.responseText); // echo from php
         let action = this.responseText;
         if (action == "confirm_overwrite") {
           //sessionStorage.setItem("sparkid",sparkid);
@@ -784,7 +833,7 @@ $sparkId = -1;
         {
           
           endWaitAnimation();
-          tickBox();
+          tickBox("Saved");
           
         }
       }
@@ -798,10 +847,10 @@ $sparkId = -1;
 
     if (checkForOverwrite == true) {
       querystring += "&overwrite=check";
-      console.log("&overwrite=check"); //check with the user for overwrite
+      //console.log("&overwrite=check"); //check with the user for overwrite
     } else {
       querystring += "&overwrite=yes"; //overwrite the file without prompting the user
-      console.log("&overwrite=yes");
+      //console.log("&overwrite=yes");
     }
 
     //console.log("sending query string " + querystring);

@@ -1,104 +1,94 @@
 
 <style>
 
-
-body {
-  font-family: Arial, sans-serif;
-  background: url(http://www.shukatsu-note.com/wp-content/uploads/2014/12/computer-564136_1280.jpg) no-repeat;
-  background-size: cover;
-  height: 100vh;
+svg {
+  width: 100px;
+  display: block;
+  margin: 40px auto 0;
 }
 
-h1 {
-  text-align: center;
-  font-family: Tahoma, Arial, sans-serif;
-  color: #06D85F;
-  margin: 80px 0;
+.path {
+	 stroke-dasharray: 1000;
+	 stroke-dashoffset: 0;
 }
+ .path.circle {
+	 -webkit-animation: dash .9s ease-in-out;
+	 animation: dash .9s ease-in-out;
+}
+ .path.line {
+	 stroke-dashoffset: 1000;
+	 -webkit-animation: dash .9s .35s ease-in-out forwards;
+	 animation: dash .9s .35s ease-in-out forwards;
+}
+ .path.check {
+	 stroke-dashoffset: -100;
+	 -webkit-animation: dash-check .9s .35s ease-in-out forwards;
+	 animation: dash-check .9s .35s ease-in-out forwards;
+}
+ p {
+	 text-align: center;
+	 margin: 20px 0 60px;
+	 font-size: 1.25em;
+}
+ p.success {
+	 color: #73AF55;
+}
+ p.error {
+	 color: #D06079;
+}
+ 
 
-.box {
-  width: 40%;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.2);
-  padding: 35px;
-  border: 2px solid #fff;
-  border-radius: 20px/50px;
-  background-clip: padding-box;
-  text-align: center;
-}
 
-.button {
-  font-size: 1em;
-  padding: 10px;
-  color: #fff;
-  border: 2px solid #06D85F;
-  border-radius: 20px/50px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease-out;
-}
-.button:hover {
-  background: #06D85F;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
-}
-.overlay:target {
-  visibility: visible;
-  opacity: 1;
-}
-
-.popup {
-  margin: 70px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  width: 30%;
-  position: relative;
-  transition: all 5s ease-in-out;
-}
-
-.popup h2 {
-  margin-top: 0;
-  color: #333;
-  font-family: Tahoma, Arial, sans-serif;
-}
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
-}
-.popup .close:hover {
-  color: #06D85F;
-}
-.popup .content {
-  max-height: 30%;
-  overflow: auto;
-}
-
-@media screen and (max-width: 700px){
-  .box{
-    width: 70%;
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
   }
-  .popup{
-    width: 70%;
+  100% {
+    stroke-dashoffset: 0;
   }
 }
 
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@-webkit-keyframes dash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+
+@keyframes dash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+/*********************************************************************************/
+
+.elementToFadeInAndOut {
+    -webkit-animation: fadeinout 5s linear forwards;
+    animation: fadeinout 5s linear forwards;
+    opacity: 0;
+}
+
+@-webkit-keyframes fadeinout {
+  50% { opacity: 1; }
+}
+
+@keyframes fadeinout {
+  50% { opacity: 1; }
+}
 
 </style>
 
@@ -108,19 +98,20 @@ h1 {
   </head>
 
 <body>
-<h1>Popup/Modal Windows without JavaScript</h1>
-<div class="box">
-  <a class="button" href="#popup1">Let me Pop up</a>
-</div>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+    <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+    <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+  </svg>
+  <p class="success">Oh Yeah!</p>
+  
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+    <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+    <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+    <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+  </svg>
+  <p class="error">Bummer!</p>
 
-<div id="popup1" class="overlay">
-  <div class="popup">
-    <h2>Here i am</h2>
-    <a class="close" href="#">&times;</a>
-    <div class="content">
-      Thank to pop me out of that button, but now i'm done so you can close this window.
-    </div>
-  </div>
-</div>
+
+  <div class=elementToFadeInAndOut><p>HELLO WORLD!!</p></div>
 
 </body>
