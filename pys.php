@@ -646,11 +646,11 @@ $sparkId = -1;
     i.style.display = "none";
   }
 
-  async function tickBox(msg)
+  async function tickBox(msg,msgTime)
   {
   //  <circle id="tickp1"  
 //<polyline id="tickp2" 
-    statusText(msg,"#73AF55",timeToShowStatus);
+    statusText(msg,"#73AF55",msgTime);
     const i = document.getElementById("tick-path-id");
     const p1 = document.getElementById("tickp1"); 
     const p2 = document.getElementById("tickp2");
@@ -679,6 +679,14 @@ $sparkId = -1;
   function setFilename(filename)
   {
     document.getElementById("filename-id").value = filename;
+  }
+
+  async function copyToLinkClipboard(sparkid)
+  {
+    navigator.clipboard.writeText("https://sparkpy.net/?s="+sparkid);
+    closeAccount();
+    await delay(700);
+    tickBox("link copied!",timeToShowStatus);
   }
 
   async function deleteSparkDBRequest(sparkid)
@@ -833,7 +841,7 @@ $sparkId = -1;
         {
           
           endWaitAnimation();
-          tickBox("Saved");
+          tickBox("Saved",timeToShowStatus);
           
         }
       }
@@ -996,7 +1004,7 @@ $sparkId = -1;
             <td class ='grid-cell-useraccount-file-name' onClick='loadSpark(${s.spark_id})'>${s.name}</td> \
             <td class ='grid-cell-useraccount-file-mod-date' >${s.modified}</td> \
             <td class ='grid-cell-useraccount-actions-icon' onClick=deleteSpark(\"${s.spark_id}|${filename}\");><img src='Images/icons/delete_icon.svg'></td> \
-            <td class ='grid-cell-useraccount-actions-icon'><img src='Images/icons/share_icon.svg'></td> \
+            <td class ='grid-cell-useraccount-actions-icon' onClick=copyToLinkClipboard(\"${s.spark_id}\");><img src='Images/icons/share_icon.svg'></td> \
             </tr>`;
       }
 
